@@ -1,0 +1,328 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  investor
+  admin
+  super_admin
+}
+
+enum KycStatus {
+  pending
+  approved
+  rejected
+}
+
+enum IdType {
+  id_book
+  passport
+  drivers_license
+}
+
+enum PropertyType {
+  residential
+  commercial
+  mixed_use
+}
+
+enum PropertyStatus {
+  draft
+  open
+  funded
+  closed
+}
+
+enum PledgeStatus {
+  pending
+  confirmed
+  cancelled
+}
+
+enum PaymentType {
+  pledge_payment
+  distribution
+  refund
+}
+
+enum PaymentStatus {
+  pending
+  succeeded
+  failed
+}
+
+enum DocType {
+  id_document
+  proof_of_address
+  investment_agreement
+  title_deed
+  other
+}
+
+enum SigningStatus {
+  pending
+  sent
+  signed
+  declined
+}
+
+enum DistributionStatus {
+  draft
+  processing
+  completed
+}
+
+enum DistributionPaymentStatus {
+  pending
+  paid
+  failed
+}
+
+enum InvitationStatus {
+  pending
+  accepted
+  expired
+}
+
+enum NotificationChannel {
+  email
+  sms
+  in_app
+}
+
+enum NotificationStatus {
+  queued
+  sent
+  failed
+}
+
+enum AuditAction {
+  create
+  update
+  delete
+  login
+  logout
+}
+
+model User {
+  id            String    @id @default(uuid()) @db.Uuid
+  email         String    @unique
+  passwordHash  String    @map("password_hash")
+  fullName      String    @map("full_name")
+  phone         String?
+  role          UserRole  @default(investor)
+  kycStatus     KycStatus @default(pending) @map("kyc_status")
+  kycVerifiedAt DateTime? @map("kyc_verified_at")
+  isActive      Boolean   @default(true) @map("is_active")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  investorProfile      InvestorProfile?
+  pledges              Pledge[]
+  payments             Payment[]
+  documents            Document[]
+  distributionLines    DistributionLine[]
+  notifications        Notification[]
+  auditLogs            AuditLog[]
+  createdProperties    Property[]         @relation("CreatedBy")
+  createdDistributions Distribution[]     @relation("DistributionCreatedBy")
+  createdInvitations   Invitation[]       @relation("InvitationCreatedBy")
+
+  @@map("users")
+}
+
+model InvestorProfile {
+  id                String  @id @default(uuid()) @db.Uuid
+  userId            String  @unique @map("user_id") @db.Uuid
+  idNumber          String? @map("id_number")
+  idType            IdType? @map("id_type")
+  taxNumber         String? @map("tax_number")
+  bankName          String? @map("bank_name")
+  bankAccountNumber String? @map("bank_account_number")
+  bankBranchCode    String? @map("bank_branch_code")
+  addressLine1      String? @map("address_line1")
+  city              String?
+  province          String?
+  postalCode        String? @map("postal_code")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("investor_profiles")
+}
+
+model Property {
+  id                       String         @id @default(uuid()) @db.Uuid
+  createdBy                String         @map("created_by") @db.Uuid
+  title                    String
+  propertyType             PropertyType   @map("property_type")
+  address                  String
+  province                 String
+  purchasePrice            Decimal        @map("purchase_price") @db.Decimal(14, 2)
+  targetRaise              Decimal        @map("target_raise") @db.Decimal(14, 2)
+  minimumPledge            Decimal        @map("minimum_pledge") @db.Decimal(14, 2)
+  fundedAmount             Decimal        @default(0) @map("funded_amount") @db.Decimal(14, 2)
+  grossMonthlyRent         Decimal        @map("gross_monthly_rent") @db.Decimal(14, 2)
+  operatingExpensesMonthly Decimal        @map("operating_expenses_monthly") @db.Decimal(14, 2)
+  netMonthlyRent           Decimal        @map("net_monthly_rent") @db.Decimal(14, 2)
+  projectedYieldPct        Decimal        @map("projected_yield_pct") @db.Decimal(5, 2)
+  loanAmount               Decimal?       @map("loan_amount") @db.Decimal(14, 2)
+  loanInterestRate         Decimal?       @map("loan_interest_rate") @db.Decimal(5, 2)
+  loanTermMonths           Int?           @map("loan_term_months")
+  status                   PropertyStatus @default(draft)
+  fundingCloseDate         DateTime?      @map("funding_close_date") @db.Date
+  createdAt                DateTime       @default(now()) @map("created_at")
+
+  creator       User           @relation("CreatedBy", fields: [createdBy], references: [id])
+  pledges       Pledge[]
+  documents     Document[]
+  distributions Distribution[]
+
+  @@map("properties")
+}
+
+model Pledge {
+  id          String       @id @default(uuid()) @db.Uuid
+  userId      String       @map("user_id") @db.Uuid
+  propertyId  String       @map("property_id") @db.Uuid
+  amount      Decimal      @db.Decimal(14, 2)
+  status      PledgeStatus @default(pending)
+  adminNote   String?      @map("admin_note")
+  confirmedAt DateTime?    @map("confirmed_at")
+  createdAt   DateTime     @default(now()) @map("created_at")
+
+  user              User               @relation(fields: [userId], references: [id])
+  property          Property           @relation(fields: [propertyId], references: [id])
+  payments          Payment[]
+  documents         Document[]
+  distributionLines DistributionLine[]
+
+  @@map("pledges")
+}
+
+model Payment {
+  id            String        @id @default(uuid()) @db.Uuid
+  pledgeId      String        @map("pledge_id") @db.Uuid
+  userId        String        @map("user_id") @db.Uuid
+  provider      String
+  providerRef   String?       @map("provider_ref")
+  amount        Decimal       @db.Decimal(14, 2)
+  type          PaymentType
+  status        PaymentStatus @default(pending)
+  failureReason String?       @map("failure_reason")
+  paidAt        DateTime?     @map("paid_at")
+  createdAt     DateTime      @default(now()) @map("created_at")
+
+  pledge Pledge @relation(fields: [pledgeId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("payments")
+}
+
+model Document {
+  id                 String       @id @default(uuid()) @db.Uuid
+  userId             String       @map("user_id") @db.Uuid
+  propertyId         String?      @map("property_id") @db.Uuid
+  pledgeId           String?      @map("pledge_id") @db.Uuid
+  docType            DocType      @map("doc_type")
+  fileName           String       @map("file_name")
+  s3Key              String       @map("s3_key")
+  mimeType           String       @map("mime_type")
+  signingStatus      SigningStatus @default(pending) @map("signing_status")
+  docusignEnvelopeId String?      @map("docusign_envelope_id")
+  signedAt           DateTime?    @map("signed_at")
+  createdAt          DateTime     @default(now()) @map("created_at")
+
+  user     User      @relation(fields: [userId], references: [id])
+  property Property? @relation(fields: [propertyId], references: [id])
+  pledge   Pledge?   @relation(fields: [pledgeId], references: [id])
+
+  @@map("documents")
+}
+
+model Distribution {
+  id          String             @id @default(uuid()) @db.Uuid
+  propertyId  String             @map("property_id") @db.Uuid
+  createdBy   String             @map("created_by") @db.Uuid
+  totalAmount Decimal            @map("total_amount") @db.Decimal(14, 2)
+  periodLabel String             @map("period_label")
+  status      DistributionStatus @default(draft)
+  notes       String?
+  processedAt DateTime?          @map("processed_at")
+  createdAt   DateTime           @default(now()) @map("created_at")
+
+  property Property          @relation(fields: [propertyId], references: [id])
+  creator  User              @relation("DistributionCreatedBy", fields: [createdBy], references: [id])
+  lines    DistributionLine[]
+
+  @@map("distributions")
+}
+
+model DistributionLine {
+  id             String                    @id @default(uuid()) @db.Uuid
+  distributionId String                    @map("distribution_id") @db.Uuid
+  userId         String                    @map("user_id") @db.Uuid
+  pledgeId       String                    @map("pledge_id") @db.Uuid
+  grossAmount    Decimal                   @map("gross_amount") @db.Decimal(14, 2)
+  withholdingTax Decimal                   @map("withholding_tax") @db.Decimal(14, 2)
+  netAmount      Decimal                   @map("net_amount") @db.Decimal(14, 2)
+  paymentStatus  DistributionPaymentStatus @default(pending) @map("payment_status")
+  providerRef    String?                   @map("provider_ref")
+  paidAt         DateTime?                 @map("paid_at")
+  createdAt      DateTime                  @default(now()) @map("created_at")
+
+  distribution Distribution @relation(fields: [distributionId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+  pledge       Pledge       @relation(fields: [pledgeId], references: [id])
+
+  @@map("distribution_lines")
+}
+
+model Invitation {
+  id         String           @id @default(uuid()) @db.Uuid
+  createdBy  String           @map("created_by") @db.Uuid
+  email      String
+  token      String           @unique
+  status     InvitationStatus @default(pending)
+  expiresAt  DateTime         @map("expires_at")
+  acceptedAt DateTime?        @map("accepted_at")
+  createdAt  DateTime         @default(now()) @map("created_at")
+
+  creator User @relation("InvitationCreatedBy", fields: [createdBy], references: [id])
+
+  @@map("invitations")
+}
+
+model Notification {
+  id          String              @id @default(uuid()) @db.Uuid
+  userId      String              @map("user_id") @db.Uuid
+  channel     NotificationChannel
+  type        String
+  subject     String?
+  status      NotificationStatus  @default(queued)
+  providerRef String?             @map("provider_ref")
+  sentAt      DateTime?           @map("sent_at")
+  createdAt   DateTime            @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("notifications")
+}
+
+model AuditLog {
+  id         String      @id @default(uuid()) @db.Uuid
+  userId     String?     @map("user_id") @db.Uuid
+  entityType String      @map("entity_type")
+  entityId   String?     @map("entity_id") @db.Uuid
+  action     AuditAction
+  payload    Json?
+  ipAddress  String?     @map("ip_address")
+  createdAt  DateTime    @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@map("audit_log")
+}

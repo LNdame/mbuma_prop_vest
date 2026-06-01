@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mbuma PropVest — Full ERD Schema</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f8f7f4; color: #1a1a18; padding: 32px 24px; }
+  h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  p.sub { font-size: 14px; color: #6b6a64; margin-bottom: 28px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #4a4a46; }
+  .dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  #erd { background: #fff; border: 1px solid #e2e0d8; border-radius: 12px; padding: 24px; overflow-x: auto; }
+  #erd svg { max-width: 100%; height: auto; }
+  .tables-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-top: 32px; }
+  .table-card { background: #fff; border: 1px solid #e2e0d8; border-radius: 10px; overflow: hidden; }
+  .table-header { padding: 10px 14px; font-size: 13px; font-weight: 600; letter-spacing: 0.02em; }
+  .table-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 14px; border-top: 1px solid #f0ede6; font-size: 12px; }
+  .col-name { color: #1a1a18; font-family: monospace; font-size: 12px; }
+  .col-type { color: #888; font-size: 11px; }
+  .badge { font-size: 10px; padding: 1px 6px; border-radius: 3px; font-weight: 600; margin-left: 6px; }
+  .pk { background: #FEF3C7; color: #92400E; }
+  .fk { background: #DBEAFE; color: #1E40AF; }
+  h2 { font-size: 16px; font-weight: 600; margin: 32px 0 16px; }
+</style>
+</head>
+<body>
+
+<h1>Mbuma PropVest — Full ERD Schema</h1>
+<p class="sub">11 tables · relational PostgreSQL · managed via Prisma ORM</p>
+
+<div class="legend">
+  <div class="legend-item"><div class="dot" style="background:#7C3AED"></div>Core users</div>
+  <div class="legend-item"><div class="dot" style="background:#0F6E56"></div>Properties</div>
+  <div class="legend-item"><div class="dot" style="background:#1D4ED8"></div>Investments</div>
+  <div class="legend-item"><div class="dot" style="background:#B45309"></div>Finance</div>
+  <div class="legend-item"><div class="dot" style="background:#6B7280"></div>System</div>
+</div>
+
+<div id="erd">
+  <pre class="mermaid">
+erDiagram
+  USERS {
+    uuid id PK
+    string email
+    string password_hash
+    string full_name
+    string phone
+    string role
+    string kyc_status
+    timestamp kyc_verified_at
+    boolean is_active
+    timestamp created_at
+  }
+
+  INVESTOR_PROFILES {
+    uuid id PK
+    uuid user_id FK
+    string id_number
+    string id_type
+    string tax_number
+    string bank_name
+    string bank_account_number
+    string bank_branch_code
+    string address_line1
+    string city
+    string province
+    string postal_code
+  }
+
+  PROPERTIES {
+    uuid id PK
+    uuid created_by FK
+    string title
+    string property_type
+    string address
+    string province
+    decimal purchase_price
+    decimal target_raise
+    decimal minimum_pledge
+    decimal funded_amount
+    decimal gross_monthly_rent
+    decimal operating_expenses_monthly
+    decimal net_monthly_rent
+    decimal projected_yield_pct
+    decimal loan_amount
+    decimal loan_interest_rate
+    string loan_term_months
+    string status
+    date funding_close_date
+    timestamp created_at
+  }
+
+  PLEDGES {
+    uuid id PK
+    uuid user_id FK
+    uuid property_id FK
+    decimal amount
+    string status
+    string admin_note
+    timestamp confirmed_at
+    timestamp created_at
+  }
+
+  PAYMENTS {
+    uuid id PK
+    uuid pledge_id FK
+    uuid user_id FK
+    string provider
+    string provider_ref
+    decimal amount
+    string type
+    string status
+    string failure_reason
+    timestamp paid_at
+    timestamp created_at
+  }
+
+  DOCUMENTS {
+    uuid id PK
+    uuid user_id FK
+    uuid property_id FK
+    uuid pledge_id FK
+    string doc_type
+    string file_name
+    string s3_key
+    string mime_type
+    string signing_status
+    string docusign_envelope_id
+    timestamp signed_at
+    timestamp created_at
+  }
+
+  DISTRIBUTIONS {
+    uuid id PK
+    uuid property_id FK
+    uuid created_by FK
+    decimal total_amount
+    string period_label
+    string status
+    string notes
+    timestamp processed_at
+    timestamp created_at
+  }
+
+  DISTRIBUTION_LINES {
+    uuid id PK
+    uuid distribution_id FK
+    uuid user_id FK
+    uuid pledge_id FK
+    decimal gross_amount
+    decimal withholding_tax
+    decimal net_amount
+    string payment_status
+    string provider_ref
+    timestamp paid_at
+    timestamp created_at
+  }
+
+  INVITATIONS {
+    uuid id PK
+    uuid created_by FK
+    string email
+    string token
+    string status
+    timestamp expires_at
+    timestamp accepted_at
+    timestamp created_at
+  }
+
+  NOTIFICATIONS {
+    uuid id PK
+    uuid user_id FK
+    string channel
+    string type
+    string subject
+    string status
+    string provider_ref
+    timestamp sent_at
+    timestamp created_at
+  }
+
+  AUDIT_LOG {
+    uuid id PK
+    uuid user_id FK
+    string entity_type
+    uuid entity_id
+    string action
+    json payload
+    string ip_address
+    timestamp created_at
+  }
+
+  USERS ||--o{ INVESTOR_PROFILES : "has profile"
+  USERS ||--o{ PLEDGES : "makes"
+  USERS ||--o{ PAYMENTS : "initiates"
+  USERS ||--o{ DOCUMENTS : "owns"
+  USERS ||--o{ DISTRIBUTION_LINES : "receives"
+  USERS ||--o{ NOTIFICATIONS : "gets"
+  USERS ||--o{ AUDIT_LOG : "generates"
+  PROPERTIES ||--o{ PLEDGES : "receives"
+  PROPERTIES ||--o{ DOCUMENTS : "has"
+  PROPERTIES ||--o{ DISTRIBUTIONS : "pays out"
+  PLEDGES ||--o{ PAYMENTS : "has"
+  PLEDGES ||--o{ DOCUMENTS : "triggers"
+  PLEDGES ||--o{ DISTRIBUTION_LINES : "earns"
+  DISTRIBUTIONS ||--o{ DISTRIBUTION_LINES : "splits into"
+  </pre>
+</div>
+
+<h2>Table reference</h2>
+<div class="tables-grid">
+
+  <div class="table-card">
+    <div class="table-header" style="background:#EDE9FE;color:#5B21B6;">USERS</div>
+    <div class="table-row"><span class="col-name">id <span class="badge pk">PK</span></span><span class="col-type">uuid</span></div>
+    <div class="table-row"><span class="col-name">email</span><span class="col-type">varchar unique</span></div>
+    <div class="table-row"><span class="col-name">password_hash</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">full_name</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">phone</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">role</span><span class="col-type">enum: INVESTOR | ADMIN</span></div>
+    <div class="table-row"><span class="col-name">kyc_status</span><span class="col-type">enum: PENDING | PASS | FAIL</span></div>
+    <div class="table-row"><span class="col-name">kyc_provider_ref</span><span class="col-type">varchar nullable</span></div>
+    <div class="table-row"><span class="col-name">kyc_verified_at</span><span class="col-type">timestamptz nullable</span></div>
+    <div class="table-row"><span class="col-name">is_active</span><span class="col-type">boolean default true</span></div>
+    <div class="table-row"><span class="col-name">created_at</span><span class="col-type">timestamptz</span></div>
+    <div class="table-row"><span class="col-name">updated_at</span><span class="col-type">timestamptz</span></div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header" style="background:#EDE9FE;color:#5B21B6;">INVESTOR_PROFILES</div>
+    <div class="table-row"><span class="col-name">id <span class="badge pk">PK</span></span><span class="col-type">uuid</span></div>
+    <div class="table-row"><span class="col-name">user_id <span class="badge fk">FK</span></span><span class="col-type">uuid → users</span></div>
+    <div class="table-row"><span class="col-name">id_number</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">id_type</span><span class="col-type">enum: SA_ID | PASSPORT</span></div>
+    <div class="table-row"><span class="col-name">nationality</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">tax_number</span><span class="col-type">varchar nullable</span></div>
+    <div class="table-row"><span class="col-name">bank_name</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">bank_account_number</span><span class="col-type">varchar encrypted</span></div>
+    <div class="table-row"><span class="col-name">bank_branch_code</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">address_line1</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">city</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">province</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">postal_code</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">created_at</span><span class="col-type">timestamptz</span></div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header" style="background:#D1FAE5;color:#065F46;">PROPERTIES</div>
+    <div class="table-row"><span class="col-name">id <span class="badge pk">PK</span></span><span class="col-type">uuid</span></div>
+    <div class="table-row"><span class="col-name">created_by <span class="badge fk">FK</span></span><span class="col-type">uuid → users</span></div>
+    <div class="table-row"><span class="col-name">title</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">description</span><span class="col-type">text</span></div>
+    <div class="table-row"><span class="col-name">address</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">province</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">property_type</span><span class="col-type">enum: RESIDENTIAL | COMMERCIAL</span></div>
+    <div class="table-row"><span class="col-name">purchase_price</span><span class="col-type">decimal(15,2)</span></div>
+    <div class="table-row"><span class="col-name">target_raise</span><span class="col-type">decimal(15,2)</span></div>
+    <div class="table-row"><span class="col-name">minimum_pledge</span><span class="col-type">decimal(15,2)</span></div>
+    <div class="table-row"><span class="col-name">funded_amount</span><span class="col-type">decimal(15,2) default 0</span></div>
+    <div class="table-row"><span class="col-name">gross_monthly_rent</span><span class="col-type">decimal(15,2)</span></div>
+    <div class="table-row"><span class="col-name">operating_expenses_monthly</span><span class="col-type">decimal(15,2)</span></div>
+    <div class="table-row"><span class="col-name">net_monthly_rent</span><span class="col-type">decimal(15,2) computed</span></div>
+    <div class="table-row"><span class="col-name">projected_yield_pct</span><span class="col-type">decimal(5,2) computed</span></div>
+    <div class="table-row"><span class="col-name">loan_amount</span><span class="col-type">decimal(15,2) nullable</span></div>
+    <div class="table-row"><span class="col-name">loan_interest_rate</span><span class="col-type">decimal(5,2) nullable</span></div>
+    <div class="table-row"><span class="col-name">loan_term_months</span><span class="col-type">integer nullable</span></div>
+    <div class="table-row"><span class="col-name">status</span><span class="col-type">enum: DRAFT | OPEN | FUNDED | CLOSED</span></div>
+    <div class="table-row"><span class="col-name">funding_close_date</span><span class="col-type">date</span></div>
+    <div class="table-row"><span class="col-name">cover_image_url</span><span class="col-type">varchar nullable</span></div>
+    <div class="table-row"><span class="col-name">created_at</span><span class="col-type">timestamptz</span></div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header" style="background:#DBEAFE;color:#1E3A8A;">PLEDGES</div>
+    <div class="table-row"><span class="col-name">id <span class="badge pk">PK</span></span><span class="col-type">uuid</span></div>
+    <div class="table-row"><span class="col-name">user_id <span class="badge fk">FK</span></span><span class="col-type">uuid → users</span></div>
+    <div class="table-row"><span class="col-name">property_id <span class="badge fk">FK</span></span><span class="col-type">uuid → properties</span></div>
+    <div class="table-row"><span class="col-name">amount</span><span class="col-type">decimal(15,2)</span></div>
+    <div class="table-row"><span class="col-name">status</span><span class="col-type">enum: PENDING | PAYMENT_PENDING | FUNDED | CANCELLED</span></div>
+    <div class="table-row"><span class="col-name">admin_note</span><span class="col-type">text nullable</span></div>
+    <div class="table-row"><span class="col-name">confirmed_at</span><span class="col-type">timestamptz nullable</span></div>
+    <div class="table-row"><span class="col-name">created_at</span><span class="col-type">timestamptz</span></div>
+    <div class="table-row"><span class="col-name">updated_at</span><span class="col-type">timestamptz</span></div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header" style="background:#FEF3C7;color:#92400E;">PAYMENTS</div>
+    <div class="table-row"><span class="col-name">id <span class="badge pk">PK</span></span><span class="col-type">uuid</span></div>
+    <div class="table-row"><span class="col-name">pledge_id <span class="badge fk">FK</span></span><span class="col-type">uuid → pledges</span></div>
+    <div class="table-row"><span class="col-name">user_id <span class="badge fk">FK</span></span><span class="col-type">uuid → users</span></div>
+    <div class="table-row"><span class="col-name">provider</span><span class="col-type">enum: PEACH | PAYFAST</span></div>
+    <div class="table-row"><span class="col-name">provider_ref</span><span class="col-type">varchar unique</span></div>
+    <div class="table-row"><span class="col-name">amount</span><span class="col-type">decimal(15,2)</span></div>
+    <div class="table-row"><span class="col-name">currency</span><span class="col-type">varchar default ZAR</span></div>
+    <div class="table-row"><span class="col-name">type</span><span class="col-type">enum: INBOUND | OUTBOUND</span></div>
+    <div class="table-row"><span class="col-name">status</span><span class="col-type">enum: INITIATED | SUCCESS | FAILED | REFUNDED</span></div>
+    <div class="table-row"><span class="col-name">failure_reason</span><span class="col-type">varchar nullable</span></div>
+    <div class="table-row"><span class="col-name">paid_at</span><span class="col-type">timestamptz nullable</span></div>
+    <div class="table-row"><span class="col-name">created_at</span><span class="col-type">timestamptz</span></div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header" style="background:#DBEAFE;color:#1E3A8A;">DOCUMENTS</div>
+    <div class="table-row"><span class="col-name">id <span class="badge pk">PK</span></span><span class="col-type">uuid</span></div>
+    <div class="table-row"><span class="col-name">user_id <span class="badge fk">FK</span></span><span class="col-type">uuid → users</span></div>
+    <div class="table-row"><span class="col-name">property_id <span class="badge fk">FK</span></span><span class="col-type">uuid → properties nullable</span></div>
+    <div class="table-row"><span class="col-name">pledge_id <span class="badge fk">FK</span></span><span class="col-type">uuid → pledges nullable</span></div>
+    <div class="table-row"><span class="col-name">doc_type</span><span class="col-type">enum: AGREEMENT | KYC_ID | TAX_CERT | PROPERTY_DOC</span></div>
+    <div class="table-row"><span class="col-name">file_name</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">s3_key</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">s3_bucket</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">mime_type</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">signing_status</span><span class="col-type">enum: NOT_REQUIRED | SENT | SIGNED | DECLINED</span></div>
+    <div class="table-row"><span class="col-name">docusign_envelope_id</span><span class="col-type">varchar nullable</span></div>
+    <div class="table-row"><span class="col-name">signed_at</span><span class="col-type">timestamptz nullable</span></div>
+    <div class="table-row"><span class="col-name">created_at</span><span class="col-type">timestamptz</span></div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header" style="background:#FEF3C7;color:#92400E;">DISTRIBUTIONS</div>
+    <div class="table-row"><span class="col-name">id <span class="badge pk">PK</span></span><span class="col-type">uuid</span></div>
+    <div class="table-row"><span class="col-name">property_id <span class="badge fk">FK</span></span><span class="col-type">uuid → properties</span></div>
+    <div class="table-row"><span class="col-name">created_by <span class="badge fk">FK</span></span><span class="col-type">uuid → users (admin)</span></div>
+    <div class="table-row"><span class="col-name">total_amount</span><span class="col-type">decimal(15,2)</span></div>
+    <div class="table-row"><span class="col-name">period_label</span><span class="col-type">varchar e.g. "Q1 2026"</span></div>
+    <div class="table-row"><span class="col-name">status</span><span class="col-type">enum: DRAFT | APPROVED | PROCESSING | PAID</span></div>
+    <div class="table-row"><span class="col-name">notes</span><span class="col-type">text nullable</span></div>
+    <div class="table-row"><span class="col-name">processed_at</span><span class="col-type">timestamptz nullable</span></div>
+    <div class="table-row"><span class="col-name">created_at</span><span class="col-type">timestamptz</span></div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header" style="background:#FEF3C7;color:#92400E;">DISTRIBUTION_LINES</div>
+    <div class="table-row"><span class="col-name">id <span class="badge pk">PK</span></span><span class="col-type">uuid</span></div>
+    <div class="table-row"><span class="col-name">distribution_id <span class="badge fk">FK</span></span><span class="col-type">uuid → distributions</span></div>
+    <div class="table-row"><span class="col-name">user_id <span class="badge fk">FK</span></span><span class="col-type">uuid → users</span></div>
+    <div class="table-row"><span class="col-name">pledge_id <span class="badge fk">FK</span></span><span class="col-type">uuid → pledges</span></div>
+    <div class="table-row"><span class="col-name">gross_amount</span><span class="col-type">decimal(15,2)</span></div>
+    <div class="table-row"><span class="col-name">withholding_tax</span><span class="col-type">decimal(15,2) default 0</span></div>
+    <div class="table-row"><span class="col-name">net_amount</span><span class="col-type">decimal(15,2)</span></div>
+    <div class="table-row"><span class="col-name">payment_status</span><span class="col-type">enum: PENDING | PAID | FAILED</span></div>
+    <div class="table-row"><span class="col-name">provider_ref</span><span class="col-type">varchar nullable</span></div>
+    <div class="table-row"><span class="col-name">paid_at</span><span class="col-type">timestamptz nullable</span></div>
+    <div class="table-row"><span class="col-name">created_at</span><span class="col-type">timestamptz</span></div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header" style="background:#F3F4F6;color:#374151;">INVITATIONS</div>
+    <div class="table-row"><span class="col-name">id <span class="badge pk">PK</span></span><span class="col-type">uuid</span></div>
+    <div class="table-row"><span class="col-name">created_by <span class="badge fk">FK</span></span><span class="col-type">uuid → users (admin)</span></div>
+    <div class="table-row"><span class="col-name">email</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">token</span><span class="col-type">varchar unique</span></div>
+    <div class="table-row"><span class="col-name">status</span><span class="col-type">enum: PENDING | ACCEPTED | EXPIRED</span></div>
+    <div class="table-row"><span class="col-name">expires_at</span><span class="col-type">timestamptz</span></div>
+    <div class="table-row"><span class="col-name">accepted_at</span><span class="col-type">timestamptz nullable</span></div>
+    <div class="table-row"><span class="col-name">created_at</span><span class="col-type">timestamptz</span></div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header" style="background:#F3F4F6;color:#374151;">NOTIFICATIONS</div>
+    <div class="table-row"><span class="col-name">id <span class="badge pk">PK</span></span><span class="col-type">uuid</span></div>
+    <div class="table-row"><span class="col-name">user_id <span class="badge fk">FK</span></span><span class="col-type">uuid → users</span></div>
+    <div class="table-row"><span class="col-name">channel</span><span class="col-type">enum: EMAIL | SMS</span></div>
+    <div class="table-row"><span class="col-name">type</span><span class="col-type">varchar e.g. PLEDGE_CONFIRMED</span></div>
+    <div class="table-row"><span class="col-name">subject</span><span class="col-type">varchar</span></div>
+    <div class="table-row"><span class="col-name">body</span><span class="col-type">text</span></div>
+    <div class="table-row"><span class="col-name">status</span><span class="col-type">enum: QUEUED | SENT | FAILED</span></div>
+    <div class="table-row"><span class="col-name">provider_ref</span><span class="col-type">varchar nullable</span></div>
+    <div class="table-row"><span class="col-name">sent_at</span><span class="col-type">timestamptz nullable</span></div>
+    <div class="table-row"><span class="col-name">created_at</span><span class="col-type">timestamptz</span></div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header" style="background:#FEE2E2;color:#991B1B;">AUDIT_LOG</div>
+    <div class="table-row"><span class="col-name">id <span class="badge pk">PK</span></span><span class="col-type">uuid</span></div>
+    <div class="table-row"><span class="col-name">user_id <span class="badge fk">FK</span></span><span class="col-type">uuid → users nullable</span></div>
+    <div class="table-row"><span class="col-name">entity_type</span><span class="col-type">varchar e.g. pledge, payment</span></div>
+    <div class="table-row"><span class="col-name">entity_id</span><span class="col-type">uuid nullable</span></div>
+    <div class="table-row"><span class="col-name">action</span><span class="col-type">varchar e.g. PLEDGE_FUNDED</span></div>
+    <div class="table-row"><span class="col-name">payload</span><span class="col-type">jsonb</span></div>
+    <div class="table-row"><span class="col-name">ip_address</span><span class="col-type">inet nullable</span></div>
+    <div class="table-row"><span class="col-name">created_at</span><span class="col-type">timestamptz</span></div>
+  </div>
+
+</div>
+
+<div style="margin-top:32px;padding:16px 20px;background:#fff;border:1px solid #e2e0d8;border-radius:10px;font-size:13px;color:#4a4a46;line-height:1.7;">
+  <strong style="color:#1a1a18;display:block;margin-bottom:6px;">Key design decisions</strong>
+  <ul style="padding-left:18px;">
+    <li><strong>net_monthly_rent</strong> = gross_monthly_rent − operating_expenses_monthly. Store it as a persisted computed column or recalculate on save — never trust a stale value for yield calculations</li>
+    <li><strong>projected_yield_pct</strong> = (net_monthly_rent × 12) / purchase_price × 100. Mark it <em>computed</em> in Prisma and recalculate whenever rent or expenses change</li>
+    <li><strong>operating_expenses_monthly</strong> should cover rates &amp; taxes, levies, insurance, and property management fees — document the breakdown in a separate <code>property_expense_breakdown</code> JSONB column if needed</li>
+    <li><strong>loan_amount / loan_interest_rate</strong> — include when the property is partially debt-financed; used to calculate the actual distributable cash after debt service</li>
+    <li><strong>bank_account_number</strong> on investor_profiles should be encrypted at rest (use pgcrypto or application-level AES-256)</li>
+    <li><strong>audit_log</strong> is append-only — never grant UPDATE or DELETE on this table, even to admins</li>
+    <li><strong>funded_amount</strong> on properties is a denormalised sum — update via trigger or in the same transaction as a pledge status change</li>
+    <li><strong>distribution_lines.withholding_tax</strong> — South Africa currently does not mandate REIT-style withholding for all structures, but include the field for future use</li>
+    <li>All monetary values use <strong>decimal(15,2)</strong> — never float</li>
+    <li>All timestamps use <strong>timestamptz</strong> (timezone-aware) — store in UTC, display in SAST</li>
+  </ul>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    fontFamily: 'system-ui, sans-serif',
+    fontSize: 13,
+  });
+</script>
+</body>
+</html>
