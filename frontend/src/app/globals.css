@@ -1,0 +1,48 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green-900: #0D2B1F;
+  --green-800: #144030;
+  --green-700: #1A5C44;
+  --green-600: #1F7A5A;
+  --green-500: #25996F;
+  --green-400: #2DB882;
+  --green-100: #E6F5EF;
+  --green-50:  #F2FAF6;
+
+  --gold-500: #C9973A;
+  --gold-400: #E0AC4A;
+  --gold-100: #FBF3E3;
+
+  --neutral-900: #111614;
+  --neutral-800: #1E2822;
+  --neutral-700: #2E3C35;
+  --neutral-500: #5A7065;
+  --neutral-400: #8FA99A;
+  --neutral-200: #D6E5DC;
+  --neutral-100: #EEF5F1;
+  --neutral-50:  #F7FBF8;
+  --white: #FFFFFF;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.10), 0 2px 6px rgba(0,0,0,.06);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,.14);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--white);
+  color: var(--neutral-900);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; }
