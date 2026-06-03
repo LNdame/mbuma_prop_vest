@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build:shared": "npm run build --workspace shared",
-    "build": "npm run build:shared && npm run build --workspace backend && npm run build --workspace frontend",
+    "build": "prisma generate && npm run build:shared && npm run build --workspace backend && npm run build --workspace frontend",
     "dev:backend": "npm run dev --workspace backend",
     "dev:frontend": "npm run dev --workspace frontend",
     "lint": "npm run lint --workspaces --if-present",

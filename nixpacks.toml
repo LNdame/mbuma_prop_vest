@@ -1,0 +1,10 @@
+[phases.build]
+cmds = [
+  "npm ci",
+  "npx prisma generate",
+  "npm run build:shared",
+  "npm run build --workspace backend"
+]
+
+[start]
+cmd = "node backend/dist/index.js"
