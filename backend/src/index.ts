@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import {
@@ -7,14 +6,10 @@ import {
   type Property,
   HEALTH_OK,
 } from '@mbuma/shared';
-import authRouter from './routes/auth.js';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-// Auth routes
-app.use('/api/auth', authRouter);
 
 // In-memory store (replace with a real DB later).
 const properties: Property[] = [];
