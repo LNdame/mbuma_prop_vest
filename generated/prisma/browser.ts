@@ -23,7 +23,52 @@ export * from './enums.ts';
  */
 export type User = Prisma.UserModel
 /**
- * Model Post
+ * Model InvestorProfile
  * 
  */
-export type Post = Prisma.PostModel
+export type InvestorProfile = Prisma.InvestorProfileModel
+/**
+ * Model Property
+ * 
+ */
+export type Property = Prisma.PropertyModel
+/**
+ * Model Pledge
+ * 
+ */
+export type Pledge = Prisma.PledgeModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model Document
+ * 
+ */
+export type Document = Prisma.DocumentModel
+/**
+ * Model Distribution
+ * 
+ */
+export type Distribution = Prisma.DistributionModel
+/**
+ * Model DistributionLine
+ * 
+ */
+export type DistributionLine = Prisma.DistributionLineModel
+/**
+ * Model Invitation
+ * 
+ */
+export type Invitation = Prisma.InvitationModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = Prisma.AuditLogModel

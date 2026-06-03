@@ -1,36 +1,41 @@
-import { prisma } from "../lib/prisma";
+import { scryptSync, randomBytes } from "crypto";
+import { prisma } from "../lib/prisma.js";
+
+function hashPassword(plain: string): string {
+  const salt = randomBytes(16).toString("hex");
+  const hash = scryptSync(plain, salt, 64).toString("hex");
+  return `${salt}:${hash}`;
+}
 
 async function main() {
-  await prisma.post.deleteMany();
   await prisma.user.deleteMany();
 
-  const alice = await prisma.user.create({
+  await prisma.user.create({
     data: {
-      email: "alice@example.com",
-      name: "Alice",
-      posts: {
-        create: [
-          { title: "First post", content: "Hello from Alice!" },
-          { title: "Second post", content: "More Prisma setup content." },
-        ],
-      },
+      email: "investor@propvest.dev",
+      passwordHash: hashPassword("Investor@123"),
+      fullName: "Seed Investor",
+      role: "investor",
+      kycStatus: "pending",
     },
   });
 
   await prisma.user.create({
     data: {
-      email: "bob@example.com",
-      name: "Bob",
-      posts: {
-        create: [{ title: "Bob's post", content: "This is Bob's first contribution." }],
-      },
+      email: "admin@propvest.dev",
+      passwordHash: hashPassword("Admin@123"),
+      fullName: "Seed Administrator",
+      role: "admin",
+      kycStatus: "approved",
     },
   });
 
-  console.log(`Seeded users and posts: ${alice.email}`);
+  console.log("Seeded: investor@propvest.dev (role=investor), admin@propvest.dev (role=admin)");
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+main()
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  })
+  .finally(() => prisma.$disconnect());

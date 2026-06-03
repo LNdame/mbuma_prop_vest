@@ -9,7 +9,151 @@
 * 🟢 You can import this file directly.
 */
 
+export const UserRole = {
+  investor: 'investor',
+  admin: 'admin',
+  super_admin: 'super_admin'
+} as const
+
+export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const KycStatus = {
+  pending: 'pending',
+  approved: 'approved',
+  rejected: 'rejected'
+} as const
+
+export type KycStatus = (typeof KycStatus)[keyof typeof KycStatus]
+
+
+export const IdType = {
+  id_book: 'id_book',
+  passport: 'passport',
+  drivers_license: 'drivers_license'
+} as const
+
+export type IdType = (typeof IdType)[keyof typeof IdType]
+
+
+export const PropertyType = {
+  residential: 'residential',
+  commercial: 'commercial',
+  mixed_use: 'mixed_use'
+} as const
+
+export type PropertyType = (typeof PropertyType)[keyof typeof PropertyType]
+
+
+export const PropertyStatus = {
+  draft: 'draft',
+  open: 'open',
+  funded: 'funded',
+  closed: 'closed'
+} as const
+
+export type PropertyStatus = (typeof PropertyStatus)[keyof typeof PropertyStatus]
+
+
+export const PledgeStatus = {
+  pending: 'pending',
+  confirmed: 'confirmed',
+  cancelled: 'cancelled'
+} as const
+
+export type PledgeStatus = (typeof PledgeStatus)[keyof typeof PledgeStatus]
+
+
+export const PaymentType = {
+  pledge_payment: 'pledge_payment',
+  distribution: 'distribution',
+  refund: 'refund'
+} as const
+
+export type PaymentType = (typeof PaymentType)[keyof typeof PaymentType]
+
+
+export const PaymentStatus = {
+  pending: 'pending',
+  succeeded: 'succeeded',
+  failed: 'failed'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const DocType = {
+  id_document: 'id_document',
+  proof_of_address: 'proof_of_address',
+  investment_agreement: 'investment_agreement',
+  title_deed: 'title_deed',
+  other: 'other'
+} as const
+
+export type DocType = (typeof DocType)[keyof typeof DocType]
+
+
+export const SigningStatus = {
+  pending: 'pending',
+  sent: 'sent',
+  signed: 'signed',
+  declined: 'declined'
+} as const
+
+export type SigningStatus = (typeof SigningStatus)[keyof typeof SigningStatus]
+
+
+export const DistributionStatus = {
+  draft: 'draft',
+  processing: 'processing',
+  completed: 'completed'
+} as const
+
+export type DistributionStatus = (typeof DistributionStatus)[keyof typeof DistributionStatus]
+
+
+export const DistributionPaymentStatus = {
+  pending: 'pending',
+  paid: 'paid',
+  failed: 'failed'
+} as const
+
+export type DistributionPaymentStatus = (typeof DistributionPaymentStatus)[keyof typeof DistributionPaymentStatus]
+
+
+export const InvitationStatus = {
+  pending: 'pending',
+  accepted: 'accepted',
+  expired: 'expired'
+} as const
+
+export type InvitationStatus = (typeof InvitationStatus)[keyof typeof InvitationStatus]
+
+
+export const NotificationChannel = {
+  email: 'email',
+  sms: 'sms',
+  in_app: 'in_app'
+} as const
+
+export type NotificationChannel = (typeof NotificationChannel)[keyof typeof NotificationChannel]
+
+
+export const NotificationStatus = {
+  queued: 'queued',
+  sent: 'sent',
+  failed: 'failed'
+} as const
+
+export type NotificationStatus = (typeof NotificationStatus)[keyof typeof NotificationStatus]
+
+
+export const AuditAction = {
+  create: 'create',
+  update: 'update',
+  delete: 'delete',
+  login: 'login',
+  logout: 'logout'
+} as const
+
+export type AuditAction = (typeof AuditAction)[keyof typeof AuditAction]
