@@ -1,8 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Allow importing the workspace shared package from outside /frontend.
   transpilePackages: ['@mbuma/shared'],
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${process.env.BACKEND_URL ?? 'http://localhost:4000'}/api/:path*`,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

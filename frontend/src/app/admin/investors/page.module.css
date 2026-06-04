@@ -59,3 +59,5 @@
 .btnSm:hover { border-color: var(--green-500); color: var(--green-600); }
 .btnSmAccent { font-size: 12px; font-weight: 500; padding: 5px 14px; border-radius: var(--radius-sm); border: 1px solid var(--green-400); background: var(--green-100); color: var(--green-700); transition: all .15s; white-space: nowrap; }
 .btnSmAccent:hover { background: var(--green-500); color: var(--white); }
+
+.dimmed { opacity: 0.5; pointer-events: none; }

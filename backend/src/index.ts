@@ -1,45 +1,23 @@
-import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import {
-  type ApiResponse,
-  type CreatePropertyInput,
-  type Property,
-  HEALTH_OK,
-} from '@mbuma/shared';
-import authRouter from './routes/auth.js';
+import { HEALTH_OK } from '@mbuma/shared';
+import authRouter        from './routes/auth.js';
+import investorsRouter   from './routes/investors.js';
+import invitationsRouter from './routes/invitations.js';
+import propertiesRouter from './routes/properties.js';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Auth routes
-app.use('/api/auth', authRouter);
-
-// In-memory store (replace with a real DB later).
-const properties: Property[] = [];
-
 app.get('/health', (_req, res) => {
   res.json({ status: HEALTH_OK });
 });
 
-app.get('/api/properties', (_req, res) => {
-  const body: ApiResponse<Property[]> = { data: properties };
-  res.json(body);
-});
-
-app.post('/api/properties', (req, res) => {
-  const input = req.body as CreatePropertyInput;
-  const property: Property = {
-    id: crypto.randomUUID(),
-    ...input,
-    status: 'available',
-    createdAt: new Date().toISOString(),
-  };
-  properties.push(property);
-  const body: ApiResponse<Property> = { data: property };
-  res.status(201).json(body);
-});
+app.use('/api/auth',       authRouter);
+app.use('/api/properties',  propertiesRouter);
+app.use('/api/investors',   investorsRouter);
+app.use('/api/invitations', invitationsRouter);
 
 const PORT = Number(process.env.PORT) || 4000;
 app.listen(PORT, () => {

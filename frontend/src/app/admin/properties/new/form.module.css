@@ -1,0 +1,343 @@
+/* ─── PAGE ──────────────────────────────────────────── */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1100px;
+}
+
+.pageHeader { display: flex; flex-direction: column; gap: 4px; }
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--neutral-500);
+  margin-bottom: 4px;
+}
+
+.breadcrumbLink { color: var(--green-600); }
+.breadcrumbLink:hover { text-decoration: underline; }
+.breadcrumbSep { color: var(--neutral-400); }
+
+.pageTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--neutral-900);
+  letter-spacing: -0.4px;
+}
+
+.pageSub { font-size: 14px; color: var(--neutral-500); }
+
+/* ─── LAYOUT ─────────────────────────────────────────── */
+.formLayout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+  align-items: start;
+}
+
+.leftCol  { display: flex; flex-direction: column; gap: 20px; }
+.rightCol { display: flex; flex-direction: column; gap: 16px; }
+
+.stickyCard { position: sticky; top: 24px; }
+
+/* ─── CARD ───────────────────────────────────────────── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--neutral-100);
+}
+
+.cardTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--neutral-800);
+}
+
+.cardHint {
+  font-size: 12px;
+  color: var(--neutral-400);
+}
+
+.cardBody {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cardFooter {
+  padding: 16px 20px;
+  border-top: 1px solid var(--neutral-100);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ─── FIELDS ─────────────────────────────────────────── */
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.row3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+}
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.fieldFull { display: flex; flex-direction: column; gap: 6px; }
+
+.label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--neutral-600, #4a5a52);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.req { color: #c0392b; }
+
+.input {
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--neutral-900);
+  background: var(--neutral-50);
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  width: 100%;
+}
+
+.input:focus {
+  border-color: var(--green-500);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(37,153,111,.10);
+}
+
+.select {
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--neutral-900);
+  background: var(--neutral-50);
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  outline: none;
+  transition: border-color .15s;
+  width: 100%;
+  appearance: auto;
+}
+
+.select:focus {
+  border-color: var(--green-500);
+  background: var(--white);
+}
+
+/* ─── INPUT WITH PREFIX/SUFFIX ───────────────────────── */
+.inputPrefix, .inputSuffix {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--neutral-50);
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.inputPrefix:focus-within, .inputSuffix:focus-within {
+  border-color: var(--green-500);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(37,153,111,.10);
+}
+
+.prefix, .suffix {
+  padding: 9px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--neutral-500);
+  background: var(--neutral-100);
+  border-right: 1px solid var(--neutral-200);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.suffix {
+  border-right: none;
+  border-left: 1px solid var(--neutral-200);
+}
+
+.inputWithPrefix, .inputWithSuffix {
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--neutral-900);
+  background: transparent;
+  border: none;
+  padding: 9px 12px;
+  outline: none;
+  width: 100%;
+  min-width: 0;
+}
+
+/* ─── CALCULATED FIELD ───────────────────────────────── */
+.calcField {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--green-50);
+  border: 1px solid var(--green-200, #b2dfc7);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+}
+
+.calcPrefix {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green-600);
+}
+
+.calcValue {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--green-700);
+  flex: 1;
+}
+
+.calcBadge {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--green-600);
+  background: rgba(37,153,111,.12);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+/* ─── DIVIDER ────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: var(--neutral-100);
+  margin: 4px 0;
+}
+
+/* ─── SUMMARY PANEL ──────────────────────────────────── */
+.summaryBody {
+  padding: 0;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--neutral-100);
+  gap: 8px;
+}
+
+.summaryRow:last-child { border-bottom: none; }
+
+.summaryLabel {
+  font-size: 12px;
+  color: var(--neutral-500);
+}
+
+.summaryVal {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--neutral-800);
+  text-align: right;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.summaryAccent { color: var(--green-600) !important; }
+
+/* ─── BUTTONS ────────────────────────────────────────── */
+.btnDraft {
+  width: 100%;
+  padding: 10px;
+  background: var(--white);
+  color: var(--neutral-700);
+  border: 1.5px solid var(--neutral-300, #c5d4ca);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: border-color .15s, background .15s;
+}
+
+.btnDraft:hover:not(:disabled) {
+  border-color: var(--neutral-500);
+  background: var(--neutral-50);
+}
+
+.btnDraft:disabled { opacity: .45; cursor: not-allowed; }
+
+.btnPublish {
+  width: 100%;
+  padding: 11px;
+  background: linear-gradient(135deg, var(--green-500), var(--green-700));
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  transition: opacity .15s;
+  box-shadow: 0 3px 12px rgba(37,153,111,.30);
+}
+
+.btnPublish:hover:not(:disabled) { opacity: .9; }
+.btnPublish:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ─── CHECKLIST ──────────────────────────────────────── */
+.checkList {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.checkDone  { color: var(--green-500); font-weight: 700; font-size: 14px; width: 16px; text-align: center; }
+.checkPending { color: var(--neutral-300, #c5d4ca); font-size: 14px; width: 16px; text-align: center; }
+
+.checkLabel     { color: var(--neutral-500); }
+.checkLabelDone { color: var(--neutral-700); font-weight: 500; }
+
+/* ─── ERROR ──────────────────────────────────────────── */
+.errorBanner {
+  margin: 0 20px 12px;
+  padding: 10px 14px;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: #B91C1C;
+}
