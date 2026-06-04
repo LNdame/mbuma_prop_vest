@@ -1,10 +1,9 @@
 import { Router, type Request, type Response } from 'express';
-import { PrismaClient } from '../../../generated/prisma/client.js';
+import { prisma } from '../lib/prisma.js';
 import { verifyPassword } from '../lib/password.js';
 import { signJwt } from '../lib/jwt.js';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 /**
  * POST /api/auth/login
