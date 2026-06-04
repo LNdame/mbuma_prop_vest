@@ -150,8 +150,8 @@ export default async function AdminDashboard() {
     ]);
     properties = propsRes.data;
     investors  = invRes.data;
-  } catch {
-    // Backend not running — fall through with empty arrays
+  } catch (err) {
+    console.error('[dashboard] apiFetch failed:', err);
   }
 
   const stats  = buildStats(properties, investors);

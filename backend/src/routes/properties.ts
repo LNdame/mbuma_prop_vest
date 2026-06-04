@@ -6,22 +6,46 @@ const router = Router();
 
 /* ── GET /api/properties ─────────────────────────────────────────── */
 router.get('/', async (_req, res: Response) => {
-  const properties = await prisma.property.findMany({
-    orderBy: { createdAt: 'desc' },
-  });
-  res.json({ data: properties });
+  try {
+    const properties = await prisma.property.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: { _count: { select: { pledges: true } } },
+    });
+
+    const data = properties.map(({ _count, ...p }) => ({
+      ...p,
+      investorCount: _count.pledges,
+    }));
+
+    res.json({ data });
+  } catch (err) {
+    console.error('GET /api/properties error:', err);
+    res.status(500).json({ error: 'Failed to fetch properties' });
+  }
 });
 
 /* ── GET /api/properties/:id ─────────────────────────────────────── */
 router.get('/:id', async (req, res: Response) => {
-  const property = await prisma.property.findUnique({
-    where: { id: req.params.id },
-  });
-  if (!property) {
-    res.status(404).json({ error: 'Property not found' });
-    return;
+  try {
+    const property = await prisma.property.findUnique({
+      where: { id: req.params.id },
+      include: {
+        pledges: {
+          where:   { status: { not: 'cancelled' } },
+          include: { user: { select: { id: true, fullName: true, email: true, kycStatus: true } } },
+          orderBy: { createdAt: 'desc' },
+        },
+      },
+    });
+    if (!property) {
+      res.status(404).json({ error: 'Property not found' });
+      return;
+    }
+    res.json({ data: property });
+  } catch (err) {
+    console.error('GET /api/properties/:id error:', err);
+    res.status(500).json({ error: 'Failed to fetch property' });
   }
-  res.json({ data: property });
 });
 
 /* ── POST /api/properties ────────────────────────────────────────── */
