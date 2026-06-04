@@ -104,7 +104,7 @@ export default function HomePage() {
           </ul>
 
           <div className={s.navActions}>
-            <button className={s.btnGhost}>Log In</button>
+            <a href="/login" className={s.btnGhost}>Log In</a>
             <button className={s.btnPrimary}>Request an Invitation</button>
           </div>
         </div>
@@ -447,7 +447,7 @@ export default function HomePage() {
               <li><a href="#properties">Properties</a></li>
               <li><a href="#how-it-works">How It Works</a></li>
               <li><a href="#about">Request Invitation</a></li>
-              <li><a href="#">Log In</a></li>
+              <li><a href="/login">Log In</a></li>
             </ul>
           </div>
 
