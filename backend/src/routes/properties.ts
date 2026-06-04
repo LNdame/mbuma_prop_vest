@@ -29,6 +29,13 @@ router.get('/:id', async (req, res: Response) => {
   try {
     const property = await prisma.property.findUnique({
       where: { id: req.params.id },
+      include: {
+        pledges: {
+          where:   { status: { not: 'cancelled' } },
+          include: { user: { select: { id: true, fullName: true, email: true, kycStatus: true } } },
+          orderBy: { createdAt: 'desc' },
+        },
+      },
     });
     if (!property) {
       res.status(404).json({ error: 'Property not found' });
