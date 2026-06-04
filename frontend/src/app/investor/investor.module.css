@@ -1,0 +1,632 @@
+/* ─── PAGE ──────────────────────────────────────────── */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.pageTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--neutral-900);
+  letter-spacing: -0.4px;
+}
+
+.pageSub {
+  font-size: 14px;
+  color: var(--neutral-500);
+  margin-top: 2px;
+}
+
+/* ─── BUTTONS ───────────────────────────────────────── */
+.btnPrimary {
+  background: linear-gradient(135deg, var(--green-500), var(--green-700));
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: opacity .15s;
+}
+
+.btnPrimary:hover { opacity: .88; }
+
+.btnSm {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--neutral-200);
+  background: var(--white);
+  color: var(--neutral-700);
+  white-space: nowrap;
+  transition: border-color .15s, color .15s;
+}
+
+.btnSm:hover {
+  border-color: var(--green-500);
+  color: var(--green-600);
+}
+
+.btnBlock {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, var(--green-500), var(--green-700));
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  transition: opacity .15s;
+}
+
+.btnBlock:hover { opacity: .88; }
+
+.btnOutline {
+  width: 100%;
+  padding: 10px;
+  background: var(--white);
+  color: var(--green-600);
+  border: 1px solid var(--green-400);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  transition: background .15s;
+}
+
+.btnOutline:hover { background: var(--green-50); }
+
+/* ─── STATS ROW ─────────────────────────────────────── */
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.statCard {
+  background: var(--white);
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.statLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--neutral-500);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 6px;
+}
+
+.statValue {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--neutral-900);
+  letter-spacing: -0.5px;
+}
+
+.statSub {
+  font-size: 12px;
+  color: var(--neutral-400);
+  margin-top: 4px;
+}
+
+.accent { color: var(--green-500) !important; }
+
+/* ─── GRIDS ─────────────────────────────────────────── */
+.mainGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 20px;
+}
+
+.leftCol  { display: flex; flex-direction: column; gap: 20px; }
+.rightCol { display: flex; flex-direction: column; gap: 20px; }
+
+.botGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 20px;
+}
+
+.fullGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+/* ─── PANEL ─────────────────────────────────────────── */
+.panel {
+  background: var(--white);
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--neutral-100);
+}
+
+.panelTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--neutral-800);
+}
+
+.panelLink {
+  font-size: 12px;
+  color: var(--green-500);
+  font-weight: 500;
+}
+
+.panelLink:hover { color: var(--green-600); }
+
+.panelFooter {
+  padding: 12px 18px;
+  border-top: 1px solid var(--neutral-100);
+}
+
+/* ─── ROWS ───────────────────────────────────────────── */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--neutral-100);
+  gap: 12px;
+}
+
+.row:last-of-type { border-bottom: none; }
+
+.rowLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.rowRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.rowIcon {
+  font-size: 18px;
+  width: 34px;
+  height: 34px;
+  background: var(--green-100);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rowName {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--neutral-800);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rowSub {
+  font-size: 11px;
+  color: var(--neutral-500);
+  margin-top: 1px;
+}
+
+/* ─── PROGRESS ──────────────────────────────────────── */
+.progTrack {
+  width: 56px;
+  height: 4px;
+  background: var(--neutral-100);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green-400), var(--green-600));
+  border-radius: 99px;
+}
+
+.propPct {
+  font-size: 11px;
+  color: var(--neutral-500);
+  width: 30px;
+  text-align: right;
+}
+
+/* ─── STATUS PILLS ──────────────────────────────────── */
+.pillOpen      { background: var(--green-100);  color: var(--green-700); font-size: 11px; padding: 2px 10px; border-radius: 99px; font-weight: 500; white-space: nowrap; }
+.pillFunded    { background: #E6F1FB;            color: #0C447C;          font-size: 11px; padding: 2px 10px; border-radius: 99px; font-weight: 500; white-space: nowrap; }
+.pillClosed    { background: var(--neutral-100); color: var(--neutral-500); font-size: 11px; padding: 2px 10px; border-radius: 99px; font-weight: 500; white-space: nowrap; }
+.pillDraft     { background: var(--neutral-100); color: var(--neutral-500); font-size: 11px; padding: 2px 10px; border-radius: 99px; font-weight: 500; white-space: nowrap; }
+.pillConfirmed { background: var(--green-100);  color: var(--green-700); font-size: 11px; padding: 2px 10px; border-radius: 99px; font-weight: 500; white-space: nowrap; }
+.pillPending   { background: var(--gold-100);   color: #7A5A1A;          font-size: 11px; padding: 2px 10px; border-radius: 99px; font-weight: 500; white-space: nowrap; }
+.pillPaid      { background: var(--green-100);  color: var(--green-700); font-size: 11px; padding: 2px 10px; border-radius: 99px; font-weight: 500; white-space: nowrap; }
+
+/* ─── DOTS ───────────────────────────────────────────── */
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dot_green  { background: var(--green-400); }
+.dot_gold   { background: var(--gold-400); }
+.dot_blue   { background: #378ADD; }
+.dot_gray   { background: var(--neutral-400); }
+
+/* ─── DISTRIBUTION CHART ─────────────────────────────── */
+.chartWrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 72px;
+  padding: 12px 18px 0;
+}
+
+.bar {
+  flex: 1;
+  background: var(--green-400);
+  border-radius: 3px 3px 0 0;
+  min-height: 6px;
+  opacity: 0.6;
+}
+
+.bar:last-child { opacity: 1; }
+
+.chartLabels {
+  display: flex;
+  gap: 6px;
+  padding: 5px 18px 12px;
+  border-bottom: 1px solid var(--neutral-100);
+}
+
+.chartLabels span {
+  flex: 1;
+  font-size: 10px;
+  color: var(--neutral-400);
+  text-align: center;
+}
+
+/* ─── META ROWS ──────────────────────────────────────── */
+.metaBlock { padding: 14px 18px; }
+
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.metaRow:last-child { margin-bottom: 0; }
+.metaLabel { color: var(--neutral-500); }
+.metaVal   { font-weight: 500; color: var(--neutral-800); }
+
+/* ─── ACTIVITY FEED ──────────────────────────────────── */
+.feedItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--neutral-100);
+}
+
+.feedItem:last-child { border-bottom: none; }
+
+.feedDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.feedText {
+  font-size: 13px;
+  color: var(--neutral-700);
+  line-height: 1.5;
+}
+
+.feedTime {
+  font-size: 11px;
+  color: var(--neutral-400);
+  margin-top: 2px;
+}
+
+/* ─── GLANCE ROWS ────────────────────────────────────── */
+.glanceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--neutral-100);
+  font-size: 13px;
+}
+
+.glanceRow:last-child { border-bottom: none; }
+.glanceLabel { color: var(--neutral-500); }
+.glanceVal   { font-weight: 600; color: var(--neutral-800); }
+
+/* ─── PROPERTY CARDS (grid view) ─────────────────────── */
+.propCard {
+  background: var(--white);
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow .2s, transform .2s;
+}
+
+.propCard:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.propCardImg {
+  height: 140px;
+  background: linear-gradient(135deg, var(--green-700), var(--green-600));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  position: relative;
+}
+
+.propCardImg.blue  { background: linear-gradient(135deg, #1a3a5c, #256899); }
+.propCardImg.amber { background: linear-gradient(135deg, #5c3a1a, #997825); }
+
+.propCardBadge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.badgeOpen   { background: var(--green-400); color: var(--green-900); }
+.badgeFunded { background: var(--gold-400);  color: #5c3a00; }
+
+.propCardProgressWrap {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: rgba(0,0,0,.25);
+}
+
+.propCardProgressFill {
+  height: 100%;
+  background: var(--green-400);
+}
+
+.propCardBody { padding: 16px; }
+
+.propCardType {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--green-600);
+  margin-bottom: 4px;
+}
+
+.propCardTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--neutral-900);
+  margin-bottom: 3px;
+  line-height: 1.3;
+}
+
+.propCardAddr {
+  font-size: 12px;
+  color: var(--neutral-500);
+  margin-bottom: 12px;
+}
+
+.propCardMetrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--neutral-200);
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.metricCell {
+  background: var(--neutral-50);
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.metricVal {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--neutral-900);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.metricLbl {
+  font-size: 10px;
+  color: var(--neutral-400);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.fundingRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--neutral-500);
+  margin-bottom: 5px;
+}
+
+.fundingRow strong { color: var(--neutral-700); font-weight: 600; }
+
+.fundingBarTrack {
+  height: 5px;
+  background: var(--neutral-200);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.fundingBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green-500), var(--green-400));
+  border-radius: 3px;
+}
+
+.btnCardCta {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green-700);
+  background: var(--green-50);
+  border: 1.5px solid var(--green-200, #b2dfc7);
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  transition: all .15s;
+}
+
+.btnCardCta:hover {
+  background: var(--green-700);
+  color: var(--white);
+  border-color: var(--green-700);
+}
+
+/* ─── PROFILE FORM ───────────────────────────────────── */
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formGroup.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.formLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--neutral-600, #4a5a52);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.formInput {
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--neutral-900);
+  background: var(--neutral-50);
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  outline: none;
+  transition: border-color .15s;
+}
+
+.formInput:focus {
+  border-color: var(--green-500);
+  background: var(--white);
+}
+
+.formInput:disabled {
+  color: var(--neutral-500);
+  background: var(--neutral-100);
+}
+
+/* ─── KYC STATUS BANNER ──────────────────────────────── */
+.kycCard {
+  background: linear-gradient(135deg, var(--green-700), var(--green-900));
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.kycCardLeft { display: flex; align-items: center; gap: 16px; }
+
+.kycBigDot {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(45,184,130,.25);
+  border: 2px solid var(--green-400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.kycCardTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 3px;
+}
+
+.kycCardSub {
+  font-size: 13px;
+  color: rgba(255,255,255,.65);
+}
+
+.btnKycAction {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green-900);
+  background: var(--green-400);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 20px;
+  white-space: nowrap;
+  transition: background .15s;
+}
+
+.btnKycAction:hover { background: #33d494; }
+
+/* ─── EMPTY STATE ────────────────────────────────────── */
+.emptyState {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--neutral-400);
+  font-size: 14px;
+}
+
+.emptyState span { font-size: 36px; display: block; margin-bottom: 12px; }
