@@ -6,64 +6,74 @@ const router = Router();
 
 /* ── GET /api/investors ──────────────────────────────────────────── */
 router.get('/', requireAuth, requireRole('admin', 'super_admin'), async (_req, res: Response) => {
-  const investors = await prisma.user.findMany({
-    where: { role: 'investor' },
-    orderBy: { createdAt: 'desc' },
-    include: {
-      investorProfile: true,
-      pledges: {
-        where: { status: { not: 'cancelled' } },
-        include: { property: { select: { id: true, title: true, status: true } } },
+  try {
+    const investors = await prisma.user.findMany({
+      where: { role: 'investor' },
+      orderBy: { createdAt: 'desc' },
+      include: {
+        investorProfile: true,
+        pledges: {
+          where: { status: { not: 'cancelled' } },
+          include: { property: { select: { id: true, title: true, status: true } } },
+        },
       },
-    },
-  });
+    });
 
-  const data = investors.map((u) => ({
-    id:           u.id,
-    fullName:     u.fullName,
-    email:        u.email,
-    phone:        u.phone,
-    kycStatus:    u.kycStatus,
-    kycVerifiedAt: u.kycVerifiedAt,
-    isActive:     u.isActive,
-    createdAt:    u.createdAt,
-    profile:      u.investorProfile,
-    pledges:      u.pledges,
-    totalInvested: u.pledges
-      .filter((p) => p.status === 'confirmed')
-      .reduce((sum, p) => sum + Number(p.amount), 0),
-    propertyCount: new Set(u.pledges.map((p) => p.propertyId)).size,
-  }));
+    const data = investors.map((u) => ({
+      id:            u.id,
+      fullName:      u.fullName,
+      email:         u.email,
+      phone:         u.phone,
+      kycStatus:     u.kycStatus,
+      kycVerifiedAt: u.kycVerifiedAt,
+      isActive:      u.isActive,
+      createdAt:     u.createdAt,
+      profile:       u.investorProfile,
+      pledges:       u.pledges,
+      totalInvested: u.pledges
+        .filter((p) => p.status === 'confirmed')
+        .reduce((sum, p) => sum + Number(p.amount), 0),
+      propertyCount: new Set(u.pledges.map((p) => p.propertyId)).size,
+    }));
 
-  res.json({ data });
+    res.json({ data });
+  } catch (err) {
+    console.error('GET /api/investors error:', err);
+    res.status(500).json({ error: 'Failed to fetch investors' });
+  }
 });
 
 /* ── GET /api/investors/:id ──────────────────────────────────────── */
 router.get('/:id', requireAuth, requireRole('admin', 'super_admin'), async (req, res: Response) => {
-  const user = await prisma.user.findUnique({
-    where: { id: req.params.id },
-    include: {
-      investorProfile: true,
-      pledges: {
-        include: {
-          property: { select: { id: true, title: true, propertyType: true, status: true, projectedYieldPct: true } },
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.params.id },
+      include: {
+        investorProfile: true,
+        pledges: {
+          include: {
+            property: { select: { id: true, title: true, propertyType: true, status: true, projectedYieldPct: true } },
+          },
+          orderBy: { createdAt: 'desc' },
         },
-        orderBy: { createdAt: 'desc' },
+        distributionLines: {
+          include: { distribution: { select: { periodLabel: true, processedAt: true } } },
+          orderBy: { createdAt: 'desc' },
+          take: 12,
+        },
       },
-      distributionLines: {
-        include: { distribution: { select: { periodLabel: true, processedAt: true } } },
-        orderBy: { createdAt: 'desc' },
-        take: 12,
-      },
-    },
-  });
+    });
 
-  if (!user || user.role === 'admin' || user.role === 'super_admin') {
-    res.status(404).json({ error: 'Investor not found' });
-    return;
+    if (!user || user.role === 'admin' || user.role === 'super_admin') {
+      res.status(404).json({ error: 'Investor not found' });
+      return;
+    }
+
+    res.json({ data: user });
+  } catch (err) {
+    console.error('GET /api/investors/:id error:', err);
+    res.status(500).json({ error: 'Failed to fetch investor' });
   }
-
-  res.json({ data: user });
 });
 
 /* ── POST /api/investors/:id/verify ─────────────────────────────── */

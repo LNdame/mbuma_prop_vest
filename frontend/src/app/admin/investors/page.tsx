@@ -6,8 +6,8 @@ export default async function InvestorsPage() {
   try {
     const result = await apiFetch<{ data: Investor[] }>('/api/investors');
     investors = result.data;
-  } catch {
-    // Backend unavailable — render empty state rather than crashing
+  } catch (err) {
+    console.error('[investors page] apiFetch failed:', err);
     investors = [];
   }
   return <InvestorsClient investors={investors} />;

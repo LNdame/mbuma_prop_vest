@@ -22,8 +22,11 @@ export async function apiFetch<T>(path: string): Promise<T> {
   const token = await getAdminToken();
   const res = await fetch(`${BACKEND}${path}`, {
     headers: { Authorization: `Bearer ${token}` },
-    next: { revalidate: 30 },
+    cache: 'no-store',
   });
-  if (!res.ok) throw new Error(`API ${path} failed: ${res.status}`);
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`API ${path} failed: ${res.status} ${body}`);
+  }
   return res.json();
 }
