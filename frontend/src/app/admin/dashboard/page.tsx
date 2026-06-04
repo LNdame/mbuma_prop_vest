@@ -77,7 +77,7 @@ export default function AdminDashboard() {
           <h1 className={s.pageTitle}>Dashboard</h1>
           <p className={s.pageSub}>Overview of your portfolio and pending actions</p>
         </div>
-        <button className={s.btnPrimary}>＋ New property</button>
+        <a href="/admin/properties/new"><button className={s.btnPrimary}>＋ New property</button></a>
       </div>
 
       {/* Stats row */}

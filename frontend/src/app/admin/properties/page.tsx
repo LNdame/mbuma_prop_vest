@@ -30,7 +30,7 @@ export default function PropertiesPage() {
           <h1 className={s.pageTitle}>Properties</h1>
           <p className={s.pageSub}>Manage listings, track funding progress and yields</p>
         </div>
-        <button className={s.btnPrimary}>＋ New property</button>
+        <a href="/admin/properties/new"><button className={s.btnPrimary}>＋ New property</button></a>
       </div>
 
       <div className={s.statsRow}>
