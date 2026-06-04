@@ -54,6 +54,7 @@ export const ModelName = {
   User: 'User',
   InvestorProfile: 'InvestorProfile',
   Property: 'Property',
+  PropertyImage: 'PropertyImage',
   Pledge: 'Pledge',
   Payment: 'Payment',
   Document: 'Document',
@@ -138,6 +139,21 @@ export const PropertyScalarFieldEnum = {
 } as const
 
 export type PropertyScalarFieldEnum = (typeof PropertyScalarFieldEnum)[keyof typeof PropertyScalarFieldEnum]
+
+
+export const PropertyImageScalarFieldEnum = {
+  id: 'id',
+  propertyId: 'propertyId',
+  url: 'url',
+  s3Key: 's3Key',
+  fileName: 'fileName',
+  mimeType: 'mimeType',
+  sizeBytes: 'sizeBytes',
+  position: 'position',
+  createdAt: 'createdAt'
+} as const
+
+export type PropertyImageScalarFieldEnum = (typeof PropertyImageScalarFieldEnum)[keyof typeof PropertyImageScalarFieldEnum]
 
 
 export const PledgeScalarFieldEnum = {

@@ -3,6 +3,7 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import s from './form.module.css';
+import ImageUploader, { type UploadedImage } from '../../../../components/ImageUploader';
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
@@ -39,6 +40,8 @@ const PROVINCES = ['Gauteng','Western Cape','KwaZulu-Natal','Eastern Cape','Limp
 export default function NewPropertyPage() {
   const router = useRouter();
   const [form, setForm]     = useState<FormState>(EMPTY);
+  const [images, setImages] = useState<UploadedImage[]>([]);
+  const [savedId, setSavedId] = useState<string | null>(null);
   const [error, setError]   = useState('');
   const [saving, setSaving] = useState(false);
 
@@ -83,6 +86,7 @@ export default function NewPropertyPage() {
       });
       const data = await res.json();
       if (!res.ok) { setError(data.error ?? 'Failed to save property'); return; }
+      setSavedId(data.data.id);
       router.push('/admin/properties');
     } catch {
       setError('Unable to reach the server. Please try again.');
@@ -238,6 +242,21 @@ export default function NewPropertyPage() {
               </div>
             </div>
 
+            {/* Property Images */}
+            <div className={s.card}>
+              <div className={s.cardHead}>
+                <span className={s.cardTitle}>Property Images</span>
+                <span className={s.cardHint}>First image becomes the cover · max 10 MB each</span>
+              </div>
+              <div className={s.cardBody}>
+                <ImageUploader
+                  propertyId={savedId}
+                  images={images}
+                  onChange={setImages}
+                />
+              </div>
+            </div>
+
             {/* Loan details (optional) */}
             <div className={s.card}>
               <div className={s.cardHead}>
@@ -356,6 +375,7 @@ export default function NewPropertyPage() {
                   { label: 'Gross monthly rent set',  done: !!form.grossMonthlyRent },
                   { label: 'Projected yield set',     done: !!form.projectedYieldPct },
                   { label: 'Funding close date set',  done: !!form.fundingCloseDate },
+                  { label: 'At least 1 image added',  done: images.some((i) => i.status === 'done') },
                 ].map((c) => (
                   <div key={c.label} className={s.checkItem}>
                     <span className={c.done ? s.checkDone : s.checkPending}>

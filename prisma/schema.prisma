@@ -176,12 +176,29 @@ model Property {
   fundingCloseDate         DateTime?      @map("funding_close_date") @db.Date
   createdAt                DateTime       @default(now()) @map("created_at")
 
-  creator       User           @relation("CreatedBy", fields: [createdBy], references: [id])
+  creator       User            @relation("CreatedBy", fields: [createdBy], references: [id])
   pledges       Pledge[]
   documents     Document[]
   distributions Distribution[]
+  images        PropertyImage[]
 
   @@map("properties")
+}
+
+model PropertyImage {
+  id         String   @id @default(uuid()) @db.Uuid
+  propertyId String   @map("property_id") @db.Uuid
+  url        String
+  s3Key      String   @map("s3_key")
+  fileName   String   @map("file_name")
+  mimeType   String   @map("mime_type")
+  sizeBytes  Int      @map("size_bytes")
+  position   Int      @default(0)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@map("property_images")
 }
 
 model Pledge {
