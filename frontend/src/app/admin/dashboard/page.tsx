@@ -9,6 +9,7 @@ interface Property {
   status: string;
   targetRaise: string;
   fundedAmount: string;
+  netMonthlyRent: string;
   projectedYieldPct: string;
 }
 
@@ -16,17 +17,58 @@ interface Investor {
   id: string;
   fullName: string;
   kycStatus: string;
+  isActive: boolean;
   totalInvested: number;
   propertyCount: number;
 }
 
-/* ── Static mock data (not yet from DB) ─────────────────────────── */
-const STATS = [
-  { label: 'Total raised',          value: 'R6.7M',   sub: '4 properties',  accent: false },
-  { label: 'Active investors',       value: '14',      sub: '3 pending',     accent: false },
-  { label: 'Monthly distributions', value: 'R47,200', sub: 'next: 1 Jul',   accent: true  },
-  { label: 'Portfolio yield',        value: '9.4%',    sub: 'avg. gross',    accent: false },
-];
+/* ── Stat helpers ────────────────────────────────────────────────── */
+function fmtRandShort(n: number) {
+  if (n >= 1_000_000) return 'R' + (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+  if (n >= 1_000)     return 'R' + n.toLocaleString('en-ZA');
+  return 'R' + n;
+}
+
+function buildStats(properties: Property[], investors: Investor[]) {
+  const totalRaised = properties.reduce((s, p) => s + Number(p.fundedAmount), 0);
+
+  const activeCount  = investors.filter(i => i.isActive).length;
+  const pendingCount = investors.filter(i => i.kycStatus === 'pending').length;
+
+  const liveProps   = properties.filter(p => p.status === 'open' || p.status === 'funded');
+  const monthlyDist = liveProps.reduce((s, p) => s + Number(p.netMonthlyRent), 0);
+
+  const yieldAvg = liveProps.length
+    ? liveProps.reduce((s, p) => s + Number(p.projectedYieldPct), 0) / liveProps.length
+    : 0;
+
+  return [
+    {
+      label: 'Total raised',
+      value: totalRaised ? fmtRandShort(totalRaised) : 'R0',
+      sub:   `${properties.length} ${properties.length === 1 ? 'property' : 'properties'}`,
+      accent: false,
+    },
+    {
+      label: 'Active investors',
+      value: String(activeCount),
+      sub:   `${pendingCount} pending KYC`,
+      accent: false,
+    },
+    {
+      label: 'Monthly net income',
+      value: monthlyDist ? fmtRandShort(monthlyDist) : 'R0',
+      sub:   `${liveProps.length} active ${liveProps.length === 1 ? 'property' : 'properties'}`,
+      accent: true,
+    },
+    {
+      label: 'Portfolio yield',
+      value: yieldAvg ? yieldAvg.toFixed(1) + '%' : '—',
+      sub:   'avg. gross',
+      accent: false,
+    },
+  ];
+}
 
 const QUICK_ACTIONS = [
   { icon: '👤', label: 'Invite investor',  color: 'purple', href: '/admin/investors/invite' },
@@ -45,13 +87,16 @@ const PENDING = [
 const DIST_BARS   = [35, 45, 55, 72, 90, 100];
 const DIST_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
 
-const GLANCE = [
-  { label: 'Total properties',     value: '3',        accent: false },
-  { label: 'Open raises',          value: '2',        accent: false },
-  { label: 'Fully funded',         value: '1',        accent: false },
-  { label: 'Total investors',      value: '3',        accent: false },
-  { label: 'Total distributed YTD', value: 'R0',     accent: true  },
-];
+function buildGlance(properties: Property[], investors: Investor[]) {
+  const totalInvested = investors.reduce((s, i) => s + i.totalInvested, 0);
+  return [
+    { label: 'Total properties',      value: String(properties.length),                                       accent: false },
+    { label: 'Open raises',           value: String(properties.filter(p => p.status === 'open').length),      accent: false },
+    { label: 'Fully funded',          value: String(properties.filter(p => p.status === 'funded').length),    accent: false },
+    { label: 'Total investors',       value: String(investors.length),                                         accent: false },
+    { label: 'Total invested',        value: totalInvested ? fmtRandShort(totalInvested) : 'R0',              accent: true  },
+  ];
+}
 
 const FEED = [
   { dot: 'green', text: 'Andile Molefe pledged on Kyalami Corner', time: 'Today'       },
@@ -103,11 +148,14 @@ export default async function AdminDashboard() {
       apiFetch<{ data: Property[] }>('/api/properties'),
       apiFetch<{ data: Investor[]  }>('/api/investors'),
     ]);
-    properties = propsRes.data.slice(0, 4);
-    investors  = invRes.data.slice(0, 5);
+    properties = propsRes.data;
+    investors  = invRes.data;
   } catch {
     // Backend not running — fall through with empty arrays
   }
+
+  const stats  = buildStats(properties, investors);
+  const glance = buildGlance(properties, investors);
 
   return (
     <div className={s.page}>
@@ -123,7 +171,7 @@ export default async function AdminDashboard() {
 
       {/* Stats row */}
       <div className={s.statsRow}>
-        {STATS.map((st) => (
+        {stats.map((st) => (
           <div key={st.label} className={s.statCard}>
             <div className={s.statLabel}>{st.label}</div>
             <div className={[s.statValue, st.accent ? s.accent : ''].filter(Boolean).join(' ')}>
@@ -174,9 +222,9 @@ export default async function AdminDashboard() {
               <span className={s.panelTitle}>Properties</span>
               <a href="/admin/properties" className={s.panelLink}>View all →</a>
             </div>
-            {properties.length === 0 ? (
+            {properties.slice(0, 4).length === 0 ? (
               <div className={s.emptyState}>No properties found — run the seed script</div>
-            ) : properties.map((p) => {
+            ) : properties.slice(0, 4).map((p) => {
               const fundedPct = pct(p.fundedAmount, p.targetRaise);
               const statusLabel = p.status.charAt(0).toUpperCase() + p.status.slice(1);
               return (
@@ -241,7 +289,7 @@ export default async function AdminDashboard() {
             <div className={s.panelHead}>
               <span className={s.panelTitle}>Portfolio at a glance</span>
             </div>
-            {GLANCE.map((g) => (
+            {glance.map((g) => (
               <div key={g.label} className={s.glanceRow}>
                 <span className={s.glanceLabel}>{g.label}</span>
                 <span className={[s.glanceVal, g.accent ? s.accent : ''].filter(Boolean).join(' ')}>
@@ -265,7 +313,7 @@ export default async function AdminDashboard() {
           </div>
           {investors.length === 0 ? (
             <div className={s.emptyState}>No investors found — run the seed script</div>
-          ) : investors.map((inv, i) => (
+          ) : investors.slice(0, 5).map((inv, i) => (
             <div key={inv.id} className={s.invRow}>
               <div className={s.invLeft}>
                 <div className={[s.invAvatar, s[AVATAR_COLORS[i % AVATAR_COLORS.length]]].join(' ')}>
