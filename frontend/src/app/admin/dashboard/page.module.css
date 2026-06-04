@@ -1,0 +1,504 @@
+/* ─── PAGE ──────────────────────────────────────────── */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.pageTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--neutral-900);
+  letter-spacing: -0.4px;
+}
+
+.pageSub {
+  font-size: 14px;
+  color: var(--neutral-500);
+  margin-top: 2px;
+}
+
+.btnPrimary {
+  background: linear-gradient(135deg, var(--green-500), var(--green-700));
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: opacity .15s;
+}
+
+.btnPrimary:hover { opacity: .88; }
+
+/* ─── STATS ─────────────────────────────────────────── */
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.statCard {
+  background: var(--white);
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.statLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--neutral-500);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 6px;
+}
+
+.statValue {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--neutral-900);
+  letter-spacing: -0.5px;
+}
+
+.statSub {
+  font-size: 12px;
+  color: var(--neutral-400);
+  margin-top: 4px;
+}
+
+.accent { color: var(--green-500) !important; }
+
+/* ─── QUICK ACTIONS ─────────────────────────────────── */
+.quickActions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.qaBtn {
+  background: var(--white);
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--neutral-800);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow .15s, border-color .15s;
+}
+
+.qaBtn:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--neutral-400);
+}
+
+.qaIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.qaIcon_purple { background: #EEEDFE; }
+.qaIcon_green  { background: var(--green-100); }
+.qaIcon_gold   { background: var(--gold-100); }
+.qaIcon_blue   { background: #E6F1FB; }
+
+/* ─── GRIDS ─────────────────────────────────────────── */
+.mainGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 20px;
+}
+
+.leftCol  { display: flex; flex-direction: column; gap: 20px; }
+.rightCol { display: flex; flex-direction: column; gap: 20px; }
+
+.botGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 20px;
+}
+
+/* ─── PANEL ─────────────────────────────────────────── */
+.panel {
+  background: var(--white);
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--neutral-100);
+}
+
+.panelTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--neutral-800);
+}
+
+.panelLink {
+  font-size: 12px;
+  color: var(--green-500);
+  font-weight: 500;
+}
+
+.panelLink:hover { color: var(--green-600); }
+
+.panelFooter {
+  padding: 12px 18px;
+  border-top: 1px solid var(--neutral-100);
+}
+
+.badgeCount {
+  background: #FFF0F0;
+  color: #C0392B;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+/* ─── PENDING ACTIONS ───────────────────────────────── */
+.pendingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--neutral-100);
+}
+
+.pendingRow:last-of-type { border-bottom: none; }
+
+.pendingInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pendingName {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--neutral-800);
+}
+
+.pendingSub {
+  font-size: 12px;
+  color: var(--neutral-500);
+  margin-top: 1px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot_orange { background: var(--gold-400); }
+.dot_green  { background: var(--green-400); }
+.dot_gray   { background: var(--neutral-400); }
+.dot_blue   { background: #378ADD; }
+.dot_gold   { background: var(--gold-400); }
+
+/* ─── PROPERTIES ────────────────────────────────────── */
+.propRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--neutral-100);
+  gap: 12px;
+}
+
+.propRow:last-of-type { border-bottom: none; }
+
+.propLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.propIcon {
+  font-size: 18px;
+  width: 32px;
+  height: 32px;
+  background: var(--green-100);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.propName {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--neutral-800);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.propSub {
+  font-size: 11px;
+  color: var(--neutral-500);
+}
+
+.propRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.progTrack {
+  width: 56px;
+  height: 4px;
+  background: var(--neutral-100);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green-400), var(--green-600));
+  border-radius: 99px;
+}
+
+.propPct {
+  font-size: 11px;
+  color: var(--neutral-500);
+  width: 30px;
+  text-align: right;
+}
+
+/* ─── STATUS PILLS ──────────────────────────────────── */
+.pillOpen    { background: var(--green-100); color: var(--green-700); font-size: 11px; padding: 2px 10px; border-radius: 99px; font-weight: 500; }
+.pillFunded  { background: #E6F1FB; color: #0C447C; font-size: 11px; padding: 2px 10px; border-radius: 99px; font-weight: 500; }
+.pillDraft   { background: var(--neutral-100); color: var(--neutral-500); font-size: 11px; padding: 2px 10px; border-radius: 99px; font-weight: 500; }
+.pillActive  { background: var(--green-100); color: var(--green-700); font-size: 11px; padding: 2px 10px; border-radius: 99px; font-weight: 500; }
+.pillPending { background: var(--gold-100); color: #7A5A1A; font-size: 11px; padding: 2px 10px; border-radius: 99px; font-weight: 500; }
+.pillConfirm { background: var(--gold-100); color: #7A5A1A; font-size: 11px; padding: 2px 10px; border-radius: 99px; font-weight: 500; }
+
+/* ─── BUTTONS ───────────────────────────────────────── */
+.btnSm {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--neutral-200);
+  background: var(--white);
+  color: var(--neutral-700);
+  transition: border-color .15s, background .15s;
+}
+
+.btnSm:hover {
+  border-color: var(--green-500);
+  color: var(--green-600);
+}
+
+.btnBlock {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, var(--green-500), var(--green-700));
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  transition: opacity .15s;
+}
+
+.btnBlock:hover { opacity: .88; }
+
+.btnOutline {
+  width: 100%;
+  padding: 10px;
+  background: var(--white);
+  color: var(--green-600);
+  border: 1px solid var(--green-400);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  transition: background .15s;
+}
+
+.btnOutline:hover { background: var(--green-50); }
+
+/* ─── DISTRIBUTION CHART ────────────────────────────── */
+.chartWrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 72px;
+  padding: 12px 18px 0;
+}
+
+.bar {
+  flex: 1;
+  background: var(--green-400);
+  border-radius: 3px 3px 0 0;
+  min-height: 6px;
+  opacity: 0.7;
+}
+
+.bar:last-child { opacity: 1; }
+
+.chartLabels {
+  display: flex;
+  gap: 6px;
+  padding: 5px 18px 12px;
+  border-bottom: 1px solid var(--neutral-100);
+}
+
+.chartLabels span {
+  flex: 1;
+  font-size: 10px;
+  color: var(--neutral-400);
+  text-align: center;
+}
+
+.distMeta { padding: 14px 18px; }
+
+.distRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.distRow:last-child { margin-bottom: 0; }
+
+.distLabel { color: var(--neutral-500); }
+
+.distVal {
+  font-weight: 500;
+  color: var(--neutral-800);
+}
+
+/* ─── GLANCE ────────────────────────────────────────── */
+.glanceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--neutral-100);
+  font-size: 13px;
+}
+
+.glanceRow:last-child { border-bottom: none; }
+
+.glanceLabel { color: var(--neutral-500); }
+
+.glanceVal {
+  font-weight: 600;
+  color: var(--neutral-800);
+}
+
+/* ─── INVESTORS ─────────────────────────────────────── */
+.invRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--neutral-100);
+}
+
+.invRow:last-of-type { border-bottom: none; }
+
+.invLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.invAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.av0 { background: #EEEDFE; color: #534AB7; }
+.av1 { background: var(--green-100); color: var(--green-700); }
+.av2 { background: #E6F1FB; color: #185FA5; }
+.av3 { background: var(--gold-100); color: #7A5A1A; }
+.av4 { background: #FBEAF0; color: #993556; }
+
+.invName {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--neutral-800);
+}
+
+.invSub {
+  font-size: 11px;
+  color: var(--neutral-500);
+}
+
+.invRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ─── ACTIVITY FEED ─────────────────────────────────── */
+.feedItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--neutral-100);
+}
+
+.feedItem:last-child { border-bottom: none; }
+
+.feedDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.feedText {
+  font-size: 13px;
+  color: var(--neutral-700);
+  line-height: 1.5;
+}
+
+.feedTime {
+  font-size: 11px;
+  color: var(--neutral-400);
+  margin-top: 2px;
+}
