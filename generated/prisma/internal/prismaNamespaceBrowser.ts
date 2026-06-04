@@ -52,7 +52,16 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Post: 'Post'
+  InvestorProfile: 'InvestorProfile',
+  Property: 'Property',
+  Pledge: 'Pledge',
+  Payment: 'Payment',
+  Document: 'Document',
+  Distribution: 'Distribution',
+  DistributionLine: 'DistributionLine',
+  Invitation: 'Invitation',
+  Notification: 'Notification',
+  AuditLog: 'AuditLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -74,23 +83,185 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
-  name: 'name',
+  passwordHash: 'passwordHash',
+  fullName: 'fullName',
+  phone: 'phone',
+  role: 'role',
+  kycStatus: 'kycStatus',
+  kycVerifiedAt: 'kycVerifiedAt',
+  isActive: 'isActive',
   createdAt: 'createdAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const PostScalarFieldEnum = {
+export const InvestorProfileScalarFieldEnum = {
   id: 'id',
+  userId: 'userId',
+  idNumber: 'idNumber',
+  idType: 'idType',
+  taxNumber: 'taxNumber',
+  bankName: 'bankName',
+  bankAccountNumber: 'bankAccountNumber',
+  bankBranchCode: 'bankBranchCode',
+  addressLine1: 'addressLine1',
+  city: 'city',
+  province: 'province',
+  postalCode: 'postalCode'
+} as const
+
+export type InvestorProfileScalarFieldEnum = (typeof InvestorProfileScalarFieldEnum)[keyof typeof InvestorProfileScalarFieldEnum]
+
+
+export const PropertyScalarFieldEnum = {
+  id: 'id',
+  createdBy: 'createdBy',
   title: 'title',
-  content: 'content',
-  published: 'published',
-  authorId: 'authorId',
+  propertyType: 'propertyType',
+  address: 'address',
+  province: 'province',
+  purchasePrice: 'purchasePrice',
+  targetRaise: 'targetRaise',
+  minimumPledge: 'minimumPledge',
+  fundedAmount: 'fundedAmount',
+  grossMonthlyRent: 'grossMonthlyRent',
+  operatingExpensesMonthly: 'operatingExpensesMonthly',
+  netMonthlyRent: 'netMonthlyRent',
+  projectedYieldPct: 'projectedYieldPct',
+  loanAmount: 'loanAmount',
+  loanInterestRate: 'loanInterestRate',
+  loanTermMonths: 'loanTermMonths',
+  status: 'status',
+  fundingCloseDate: 'fundingCloseDate',
   createdAt: 'createdAt'
 } as const
 
-export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
+export type PropertyScalarFieldEnum = (typeof PropertyScalarFieldEnum)[keyof typeof PropertyScalarFieldEnum]
+
+
+export const PledgeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  propertyId: 'propertyId',
+  amount: 'amount',
+  status: 'status',
+  adminNote: 'adminNote',
+  confirmedAt: 'confirmedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type PledgeScalarFieldEnum = (typeof PledgeScalarFieldEnum)[keyof typeof PledgeScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  pledgeId: 'pledgeId',
+  userId: 'userId',
+  provider: 'provider',
+  providerRef: 'providerRef',
+  amount: 'amount',
+  type: 'type',
+  status: 'status',
+  failureReason: 'failureReason',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const DocumentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  propertyId: 'propertyId',
+  pledgeId: 'pledgeId',
+  docType: 'docType',
+  fileName: 'fileName',
+  s3Key: 's3Key',
+  mimeType: 'mimeType',
+  signingStatus: 'signingStatus',
+  docusignEnvelopeId: 'docusignEnvelopeId',
+  signedAt: 'signedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
+
+
+export const DistributionScalarFieldEnum = {
+  id: 'id',
+  propertyId: 'propertyId',
+  createdBy: 'createdBy',
+  totalAmount: 'totalAmount',
+  periodLabel: 'periodLabel',
+  status: 'status',
+  notes: 'notes',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type DistributionScalarFieldEnum = (typeof DistributionScalarFieldEnum)[keyof typeof DistributionScalarFieldEnum]
+
+
+export const DistributionLineScalarFieldEnum = {
+  id: 'id',
+  distributionId: 'distributionId',
+  userId: 'userId',
+  pledgeId: 'pledgeId',
+  grossAmount: 'grossAmount',
+  withholdingTax: 'withholdingTax',
+  netAmount: 'netAmount',
+  paymentStatus: 'paymentStatus',
+  providerRef: 'providerRef',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt'
+} as const
+
+export type DistributionLineScalarFieldEnum = (typeof DistributionLineScalarFieldEnum)[keyof typeof DistributionLineScalarFieldEnum]
+
+
+export const InvitationScalarFieldEnum = {
+  id: 'id',
+  createdBy: 'createdBy',
+  email: 'email',
+  token: 'token',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  acceptedAt: 'acceptedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type InvitationScalarFieldEnum = (typeof InvitationScalarFieldEnum)[keyof typeof InvitationScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  channel: 'channel',
+  type: 'type',
+  subject: 'subject',
+  status: 'status',
+  providerRef: 'providerRef',
+  sentAt: 'sentAt',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const AuditLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  action: 'action',
+  payload: 'payload',
+  ipAddress: 'ipAddress',
+  createdAt: 'createdAt'
+} as const
+
+export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -99,6 +270,14 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -115,4 +294,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

@@ -1,0 +1,1721 @@
+import type * as runtime from "@prisma/client/runtime/client";
+import type * as $Enums from "../enums.ts";
+import type * as Prisma from "../internal/prismaNamespace.ts";
+/**
+ * Model DistributionLine
+ *
+ */
+export type DistributionLineModel = runtime.Types.Result.DefaultSelection<Prisma.$DistributionLinePayload>;
+export type AggregateDistributionLine = {
+    _count: DistributionLineCountAggregateOutputType | null;
+    _avg: DistributionLineAvgAggregateOutputType | null;
+    _sum: DistributionLineSumAggregateOutputType | null;
+    _min: DistributionLineMinAggregateOutputType | null;
+    _max: DistributionLineMaxAggregateOutputType | null;
+};
+export type DistributionLineAvgAggregateOutputType = {
+    grossAmount: runtime.Decimal | null;
+    withholdingTax: runtime.Decimal | null;
+    netAmount: runtime.Decimal | null;
+};
+export type DistributionLineSumAggregateOutputType = {
+    grossAmount: runtime.Decimal | null;
+    withholdingTax: runtime.Decimal | null;
+    netAmount: runtime.Decimal | null;
+};
+export type DistributionLineMinAggregateOutputType = {
+    id: string | null;
+    distributionId: string | null;
+    userId: string | null;
+    pledgeId: string | null;
+    grossAmount: runtime.Decimal | null;
+    withholdingTax: runtime.Decimal | null;
+    netAmount: runtime.Decimal | null;
+    paymentStatus: $Enums.DistributionPaymentStatus | null;
+    providerRef: string | null;
+    paidAt: Date | null;
+    createdAt: Date | null;
+};
+export type DistributionLineMaxAggregateOutputType = {
+    id: string | null;
+    distributionId: string | null;
+    userId: string | null;
+    pledgeId: string | null;
+    grossAmount: runtime.Decimal | null;
+    withholdingTax: runtime.Decimal | null;
+    netAmount: runtime.Decimal | null;
+    paymentStatus: $Enums.DistributionPaymentStatus | null;
+    providerRef: string | null;
+    paidAt: Date | null;
+    createdAt: Date | null;
+};
+export type DistributionLineCountAggregateOutputType = {
+    id: number;
+    distributionId: number;
+    userId: number;
+    pledgeId: number;
+    grossAmount: number;
+    withholdingTax: number;
+    netAmount: number;
+    paymentStatus: number;
+    providerRef: number;
+    paidAt: number;
+    createdAt: number;
+    _all: number;
+};
+export type DistributionLineAvgAggregateInputType = {
+    grossAmount?: true;
+    withholdingTax?: true;
+    netAmount?: true;
+};
+export type DistributionLineSumAggregateInputType = {
+    grossAmount?: true;
+    withholdingTax?: true;
+    netAmount?: true;
+};
+export type DistributionLineMinAggregateInputType = {
+    id?: true;
+    distributionId?: true;
+    userId?: true;
+    pledgeId?: true;
+    grossAmount?: true;
+    withholdingTax?: true;
+    netAmount?: true;
+    paymentStatus?: true;
+    providerRef?: true;
+    paidAt?: true;
+    createdAt?: true;
+};
+export type DistributionLineMaxAggregateInputType = {
+    id?: true;
+    distributionId?: true;
+    userId?: true;
+    pledgeId?: true;
+    grossAmount?: true;
+    withholdingTax?: true;
+    netAmount?: true;
+    paymentStatus?: true;
+    providerRef?: true;
+    paidAt?: true;
+    createdAt?: true;
+};
+export type DistributionLineCountAggregateInputType = {
+    id?: true;
+    distributionId?: true;
+    userId?: true;
+    pledgeId?: true;
+    grossAmount?: true;
+    withholdingTax?: true;
+    netAmount?: true;
+    paymentStatus?: true;
+    providerRef?: true;
+    paidAt?: true;
+    createdAt?: true;
+    _all?: true;
+};
+export type DistributionLineAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which DistributionLine to aggregate.
+     */
+    where?: Prisma.DistributionLineWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of DistributionLines to fetch.
+     */
+    orderBy?: Prisma.DistributionLineOrderByWithRelationInput | Prisma.DistributionLineOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.DistributionLineWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` DistributionLines from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` DistributionLines.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned DistributionLines
+    **/
+    _count?: true | DistributionLineCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: DistributionLineAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: DistributionLineSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: DistributionLineMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: DistributionLineMaxAggregateInputType;
+};
+export type GetDistributionLineAggregateType<T extends DistributionLineAggregateArgs> = {
+    [P in keyof T & keyof AggregateDistributionLine]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateDistributionLine[P]> : Prisma.GetScalarType<T[P], AggregateDistributionLine[P]>;
+};
+export type DistributionLineGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.DistributionLineWhereInput;
+    orderBy?: Prisma.DistributionLineOrderByWithAggregationInput | Prisma.DistributionLineOrderByWithAggregationInput[];
+    by: Prisma.DistributionLineScalarFieldEnum[] | Prisma.DistributionLineScalarFieldEnum;
+    having?: Prisma.DistributionLineScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: DistributionLineCountAggregateInputType | true;
+    _avg?: DistributionLineAvgAggregateInputType;
+    _sum?: DistributionLineSumAggregateInputType;
+    _min?: DistributionLineMinAggregateInputType;
+    _max?: DistributionLineMaxAggregateInputType;
+};
+export type DistributionLineGroupByOutputType = {
+    id: string;
+    distributionId: string;
+    userId: string;
+    pledgeId: string;
+    grossAmount: runtime.Decimal;
+    withholdingTax: runtime.Decimal;
+    netAmount: runtime.Decimal;
+    paymentStatus: $Enums.DistributionPaymentStatus;
+    providerRef: string | null;
+    paidAt: Date | null;
+    createdAt: Date;
+    _count: DistributionLineCountAggregateOutputType | null;
+    _avg: DistributionLineAvgAggregateOutputType | null;
+    _sum: DistributionLineSumAggregateOutputType | null;
+    _min: DistributionLineMinAggregateOutputType | null;
+    _max: DistributionLineMaxAggregateOutputType | null;
+};
+export type GetDistributionLineGroupByPayload<T extends DistributionLineGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<DistributionLineGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof DistributionLineGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], DistributionLineGroupByOutputType[P]> : Prisma.GetScalarType<T[P], DistributionLineGroupByOutputType[P]>;
+}>>;
+export type DistributionLineWhereInput = {
+    AND?: Prisma.DistributionLineWhereInput | Prisma.DistributionLineWhereInput[];
+    OR?: Prisma.DistributionLineWhereInput[];
+    NOT?: Prisma.DistributionLineWhereInput | Prisma.DistributionLineWhereInput[];
+    id?: Prisma.UuidFilter<"DistributionLine"> | string;
+    distributionId?: Prisma.UuidFilter<"DistributionLine"> | string;
+    userId?: Prisma.UuidFilter<"DistributionLine"> | string;
+    pledgeId?: Prisma.UuidFilter<"DistributionLine"> | string;
+    grossAmount?: Prisma.DecimalFilter<"DistributionLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalFilter<"DistributionLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalFilter<"DistributionLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusFilter<"DistributionLine"> | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.StringNullableFilter<"DistributionLine"> | string | null;
+    paidAt?: Prisma.DateTimeNullableFilter<"DistributionLine"> | Date | string | null;
+    createdAt?: Prisma.DateTimeFilter<"DistributionLine"> | Date | string;
+    distribution?: Prisma.XOR<Prisma.DistributionScalarRelationFilter, Prisma.DistributionWhereInput>;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
+    pledge?: Prisma.XOR<Prisma.PledgeScalarRelationFilter, Prisma.PledgeWhereInput>;
+};
+export type DistributionLineOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    distributionId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    pledgeId?: Prisma.SortOrder;
+    grossAmount?: Prisma.SortOrder;
+    withholdingTax?: Prisma.SortOrder;
+    netAmount?: Prisma.SortOrder;
+    paymentStatus?: Prisma.SortOrder;
+    providerRef?: Prisma.SortOrderInput | Prisma.SortOrder;
+    paidAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    distribution?: Prisma.DistributionOrderByWithRelationInput;
+    user?: Prisma.UserOrderByWithRelationInput;
+    pledge?: Prisma.PledgeOrderByWithRelationInput;
+};
+export type DistributionLineWhereUniqueInput = Prisma.AtLeast<{
+    id?: string;
+    AND?: Prisma.DistributionLineWhereInput | Prisma.DistributionLineWhereInput[];
+    OR?: Prisma.DistributionLineWhereInput[];
+    NOT?: Prisma.DistributionLineWhereInput | Prisma.DistributionLineWhereInput[];
+    distributionId?: Prisma.UuidFilter<"DistributionLine"> | string;
+    userId?: Prisma.UuidFilter<"DistributionLine"> | string;
+    pledgeId?: Prisma.UuidFilter<"DistributionLine"> | string;
+    grossAmount?: Prisma.DecimalFilter<"DistributionLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalFilter<"DistributionLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalFilter<"DistributionLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusFilter<"DistributionLine"> | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.StringNullableFilter<"DistributionLine"> | string | null;
+    paidAt?: Prisma.DateTimeNullableFilter<"DistributionLine"> | Date | string | null;
+    createdAt?: Prisma.DateTimeFilter<"DistributionLine"> | Date | string;
+    distribution?: Prisma.XOR<Prisma.DistributionScalarRelationFilter, Prisma.DistributionWhereInput>;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
+    pledge?: Prisma.XOR<Prisma.PledgeScalarRelationFilter, Prisma.PledgeWhereInput>;
+}, "id">;
+export type DistributionLineOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    distributionId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    pledgeId?: Prisma.SortOrder;
+    grossAmount?: Prisma.SortOrder;
+    withholdingTax?: Prisma.SortOrder;
+    netAmount?: Prisma.SortOrder;
+    paymentStatus?: Prisma.SortOrder;
+    providerRef?: Prisma.SortOrderInput | Prisma.SortOrder;
+    paidAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    _count?: Prisma.DistributionLineCountOrderByAggregateInput;
+    _avg?: Prisma.DistributionLineAvgOrderByAggregateInput;
+    _max?: Prisma.DistributionLineMaxOrderByAggregateInput;
+    _min?: Prisma.DistributionLineMinOrderByAggregateInput;
+    _sum?: Prisma.DistributionLineSumOrderByAggregateInput;
+};
+export type DistributionLineScalarWhereWithAggregatesInput = {
+    AND?: Prisma.DistributionLineScalarWhereWithAggregatesInput | Prisma.DistributionLineScalarWhereWithAggregatesInput[];
+    OR?: Prisma.DistributionLineScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.DistributionLineScalarWhereWithAggregatesInput | Prisma.DistributionLineScalarWhereWithAggregatesInput[];
+    id?: Prisma.UuidWithAggregatesFilter<"DistributionLine"> | string;
+    distributionId?: Prisma.UuidWithAggregatesFilter<"DistributionLine"> | string;
+    userId?: Prisma.UuidWithAggregatesFilter<"DistributionLine"> | string;
+    pledgeId?: Prisma.UuidWithAggregatesFilter<"DistributionLine"> | string;
+    grossAmount?: Prisma.DecimalWithAggregatesFilter<"DistributionLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalWithAggregatesFilter<"DistributionLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalWithAggregatesFilter<"DistributionLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusWithAggregatesFilter<"DistributionLine"> | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.StringNullableWithAggregatesFilter<"DistributionLine"> | string | null;
+    paidAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DistributionLine"> | Date | string | null;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"DistributionLine"> | Date | string;
+};
+export type DistributionLineCreateInput = {
+    id?: string;
+    grossAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: $Enums.DistributionPaymentStatus;
+    providerRef?: string | null;
+    paidAt?: Date | string | null;
+    createdAt?: Date | string;
+    distribution: Prisma.DistributionCreateNestedOneWithoutLinesInput;
+    user: Prisma.UserCreateNestedOneWithoutDistributionLinesInput;
+    pledge: Prisma.PledgeCreateNestedOneWithoutDistributionLinesInput;
+};
+export type DistributionLineUncheckedCreateInput = {
+    id?: string;
+    distributionId: string;
+    userId: string;
+    pledgeId: string;
+    grossAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: $Enums.DistributionPaymentStatus;
+    providerRef?: string | null;
+    paidAt?: Date | string | null;
+    createdAt?: Date | string;
+};
+export type DistributionLineUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    grossAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusFieldUpdateOperationsInput | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    distribution?: Prisma.DistributionUpdateOneRequiredWithoutLinesNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutDistributionLinesNestedInput;
+    pledge?: Prisma.PledgeUpdateOneRequiredWithoutDistributionLinesNestedInput;
+};
+export type DistributionLineUncheckedUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    distributionId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    pledgeId?: Prisma.StringFieldUpdateOperationsInput | string;
+    grossAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusFieldUpdateOperationsInput | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type DistributionLineCreateManyInput = {
+    id?: string;
+    distributionId: string;
+    userId: string;
+    pledgeId: string;
+    grossAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: $Enums.DistributionPaymentStatus;
+    providerRef?: string | null;
+    paidAt?: Date | string | null;
+    createdAt?: Date | string;
+};
+export type DistributionLineUpdateManyMutationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    grossAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusFieldUpdateOperationsInput | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type DistributionLineUncheckedUpdateManyInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    distributionId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    pledgeId?: Prisma.StringFieldUpdateOperationsInput | string;
+    grossAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusFieldUpdateOperationsInput | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type DistributionLineListRelationFilter = {
+    every?: Prisma.DistributionLineWhereInput;
+    some?: Prisma.DistributionLineWhereInput;
+    none?: Prisma.DistributionLineWhereInput;
+};
+export type DistributionLineOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type DistributionLineCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    distributionId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    pledgeId?: Prisma.SortOrder;
+    grossAmount?: Prisma.SortOrder;
+    withholdingTax?: Prisma.SortOrder;
+    netAmount?: Prisma.SortOrder;
+    paymentStatus?: Prisma.SortOrder;
+    providerRef?: Prisma.SortOrder;
+    paidAt?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+};
+export type DistributionLineAvgOrderByAggregateInput = {
+    grossAmount?: Prisma.SortOrder;
+    withholdingTax?: Prisma.SortOrder;
+    netAmount?: Prisma.SortOrder;
+};
+export type DistributionLineMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    distributionId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    pledgeId?: Prisma.SortOrder;
+    grossAmount?: Prisma.SortOrder;
+    withholdingTax?: Prisma.SortOrder;
+    netAmount?: Prisma.SortOrder;
+    paymentStatus?: Prisma.SortOrder;
+    providerRef?: Prisma.SortOrder;
+    paidAt?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+};
+export type DistributionLineMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    distributionId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    pledgeId?: Prisma.SortOrder;
+    grossAmount?: Prisma.SortOrder;
+    withholdingTax?: Prisma.SortOrder;
+    netAmount?: Prisma.SortOrder;
+    paymentStatus?: Prisma.SortOrder;
+    providerRef?: Prisma.SortOrder;
+    paidAt?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+};
+export type DistributionLineSumOrderByAggregateInput = {
+    grossAmount?: Prisma.SortOrder;
+    withholdingTax?: Prisma.SortOrder;
+    netAmount?: Prisma.SortOrder;
+};
+export type DistributionLineCreateNestedManyWithoutUserInput = {
+    create?: Prisma.XOR<Prisma.DistributionLineCreateWithoutUserInput, Prisma.DistributionLineUncheckedCreateWithoutUserInput> | Prisma.DistributionLineCreateWithoutUserInput[] | Prisma.DistributionLineUncheckedCreateWithoutUserInput[];
+    connectOrCreate?: Prisma.DistributionLineCreateOrConnectWithoutUserInput | Prisma.DistributionLineCreateOrConnectWithoutUserInput[];
+    createMany?: Prisma.DistributionLineCreateManyUserInputEnvelope;
+    connect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+};
+export type DistributionLineUncheckedCreateNestedManyWithoutUserInput = {
+    create?: Prisma.XOR<Prisma.DistributionLineCreateWithoutUserInput, Prisma.DistributionLineUncheckedCreateWithoutUserInput> | Prisma.DistributionLineCreateWithoutUserInput[] | Prisma.DistributionLineUncheckedCreateWithoutUserInput[];
+    connectOrCreate?: Prisma.DistributionLineCreateOrConnectWithoutUserInput | Prisma.DistributionLineCreateOrConnectWithoutUserInput[];
+    createMany?: Prisma.DistributionLineCreateManyUserInputEnvelope;
+    connect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+};
+export type DistributionLineUpdateManyWithoutUserNestedInput = {
+    create?: Prisma.XOR<Prisma.DistributionLineCreateWithoutUserInput, Prisma.DistributionLineUncheckedCreateWithoutUserInput> | Prisma.DistributionLineCreateWithoutUserInput[] | Prisma.DistributionLineUncheckedCreateWithoutUserInput[];
+    connectOrCreate?: Prisma.DistributionLineCreateOrConnectWithoutUserInput | Prisma.DistributionLineCreateOrConnectWithoutUserInput[];
+    upsert?: Prisma.DistributionLineUpsertWithWhereUniqueWithoutUserInput | Prisma.DistributionLineUpsertWithWhereUniqueWithoutUserInput[];
+    createMany?: Prisma.DistributionLineCreateManyUserInputEnvelope;
+    set?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    disconnect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    delete?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    connect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    update?: Prisma.DistributionLineUpdateWithWhereUniqueWithoutUserInput | Prisma.DistributionLineUpdateWithWhereUniqueWithoutUserInput[];
+    updateMany?: Prisma.DistributionLineUpdateManyWithWhereWithoutUserInput | Prisma.DistributionLineUpdateManyWithWhereWithoutUserInput[];
+    deleteMany?: Prisma.DistributionLineScalarWhereInput | Prisma.DistributionLineScalarWhereInput[];
+};
+export type DistributionLineUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: Prisma.XOR<Prisma.DistributionLineCreateWithoutUserInput, Prisma.DistributionLineUncheckedCreateWithoutUserInput> | Prisma.DistributionLineCreateWithoutUserInput[] | Prisma.DistributionLineUncheckedCreateWithoutUserInput[];
+    connectOrCreate?: Prisma.DistributionLineCreateOrConnectWithoutUserInput | Prisma.DistributionLineCreateOrConnectWithoutUserInput[];
+    upsert?: Prisma.DistributionLineUpsertWithWhereUniqueWithoutUserInput | Prisma.DistributionLineUpsertWithWhereUniqueWithoutUserInput[];
+    createMany?: Prisma.DistributionLineCreateManyUserInputEnvelope;
+    set?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    disconnect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    delete?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    connect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    update?: Prisma.DistributionLineUpdateWithWhereUniqueWithoutUserInput | Prisma.DistributionLineUpdateWithWhereUniqueWithoutUserInput[];
+    updateMany?: Prisma.DistributionLineUpdateManyWithWhereWithoutUserInput | Prisma.DistributionLineUpdateManyWithWhereWithoutUserInput[];
+    deleteMany?: Prisma.DistributionLineScalarWhereInput | Prisma.DistributionLineScalarWhereInput[];
+};
+export type DistributionLineCreateNestedManyWithoutPledgeInput = {
+    create?: Prisma.XOR<Prisma.DistributionLineCreateWithoutPledgeInput, Prisma.DistributionLineUncheckedCreateWithoutPledgeInput> | Prisma.DistributionLineCreateWithoutPledgeInput[] | Prisma.DistributionLineUncheckedCreateWithoutPledgeInput[];
+    connectOrCreate?: Prisma.DistributionLineCreateOrConnectWithoutPledgeInput | Prisma.DistributionLineCreateOrConnectWithoutPledgeInput[];
+    createMany?: Prisma.DistributionLineCreateManyPledgeInputEnvelope;
+    connect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+};
+export type DistributionLineUncheckedCreateNestedManyWithoutPledgeInput = {
+    create?: Prisma.XOR<Prisma.DistributionLineCreateWithoutPledgeInput, Prisma.DistributionLineUncheckedCreateWithoutPledgeInput> | Prisma.DistributionLineCreateWithoutPledgeInput[] | Prisma.DistributionLineUncheckedCreateWithoutPledgeInput[];
+    connectOrCreate?: Prisma.DistributionLineCreateOrConnectWithoutPledgeInput | Prisma.DistributionLineCreateOrConnectWithoutPledgeInput[];
+    createMany?: Prisma.DistributionLineCreateManyPledgeInputEnvelope;
+    connect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+};
+export type DistributionLineUpdateManyWithoutPledgeNestedInput = {
+    create?: Prisma.XOR<Prisma.DistributionLineCreateWithoutPledgeInput, Prisma.DistributionLineUncheckedCreateWithoutPledgeInput> | Prisma.DistributionLineCreateWithoutPledgeInput[] | Prisma.DistributionLineUncheckedCreateWithoutPledgeInput[];
+    connectOrCreate?: Prisma.DistributionLineCreateOrConnectWithoutPledgeInput | Prisma.DistributionLineCreateOrConnectWithoutPledgeInput[];
+    upsert?: Prisma.DistributionLineUpsertWithWhereUniqueWithoutPledgeInput | Prisma.DistributionLineUpsertWithWhereUniqueWithoutPledgeInput[];
+    createMany?: Prisma.DistributionLineCreateManyPledgeInputEnvelope;
+    set?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    disconnect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    delete?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    connect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    update?: Prisma.DistributionLineUpdateWithWhereUniqueWithoutPledgeInput | Prisma.DistributionLineUpdateWithWhereUniqueWithoutPledgeInput[];
+    updateMany?: Prisma.DistributionLineUpdateManyWithWhereWithoutPledgeInput | Prisma.DistributionLineUpdateManyWithWhereWithoutPledgeInput[];
+    deleteMany?: Prisma.DistributionLineScalarWhereInput | Prisma.DistributionLineScalarWhereInput[];
+};
+export type DistributionLineUncheckedUpdateManyWithoutPledgeNestedInput = {
+    create?: Prisma.XOR<Prisma.DistributionLineCreateWithoutPledgeInput, Prisma.DistributionLineUncheckedCreateWithoutPledgeInput> | Prisma.DistributionLineCreateWithoutPledgeInput[] | Prisma.DistributionLineUncheckedCreateWithoutPledgeInput[];
+    connectOrCreate?: Prisma.DistributionLineCreateOrConnectWithoutPledgeInput | Prisma.DistributionLineCreateOrConnectWithoutPledgeInput[];
+    upsert?: Prisma.DistributionLineUpsertWithWhereUniqueWithoutPledgeInput | Prisma.DistributionLineUpsertWithWhereUniqueWithoutPledgeInput[];
+    createMany?: Prisma.DistributionLineCreateManyPledgeInputEnvelope;
+    set?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    disconnect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    delete?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    connect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    update?: Prisma.DistributionLineUpdateWithWhereUniqueWithoutPledgeInput | Prisma.DistributionLineUpdateWithWhereUniqueWithoutPledgeInput[];
+    updateMany?: Prisma.DistributionLineUpdateManyWithWhereWithoutPledgeInput | Prisma.DistributionLineUpdateManyWithWhereWithoutPledgeInput[];
+    deleteMany?: Prisma.DistributionLineScalarWhereInput | Prisma.DistributionLineScalarWhereInput[];
+};
+export type DistributionLineCreateNestedManyWithoutDistributionInput = {
+    create?: Prisma.XOR<Prisma.DistributionLineCreateWithoutDistributionInput, Prisma.DistributionLineUncheckedCreateWithoutDistributionInput> | Prisma.DistributionLineCreateWithoutDistributionInput[] | Prisma.DistributionLineUncheckedCreateWithoutDistributionInput[];
+    connectOrCreate?: Prisma.DistributionLineCreateOrConnectWithoutDistributionInput | Prisma.DistributionLineCreateOrConnectWithoutDistributionInput[];
+    createMany?: Prisma.DistributionLineCreateManyDistributionInputEnvelope;
+    connect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+};
+export type DistributionLineUncheckedCreateNestedManyWithoutDistributionInput = {
+    create?: Prisma.XOR<Prisma.DistributionLineCreateWithoutDistributionInput, Prisma.DistributionLineUncheckedCreateWithoutDistributionInput> | Prisma.DistributionLineCreateWithoutDistributionInput[] | Prisma.DistributionLineUncheckedCreateWithoutDistributionInput[];
+    connectOrCreate?: Prisma.DistributionLineCreateOrConnectWithoutDistributionInput | Prisma.DistributionLineCreateOrConnectWithoutDistributionInput[];
+    createMany?: Prisma.DistributionLineCreateManyDistributionInputEnvelope;
+    connect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+};
+export type DistributionLineUpdateManyWithoutDistributionNestedInput = {
+    create?: Prisma.XOR<Prisma.DistributionLineCreateWithoutDistributionInput, Prisma.DistributionLineUncheckedCreateWithoutDistributionInput> | Prisma.DistributionLineCreateWithoutDistributionInput[] | Prisma.DistributionLineUncheckedCreateWithoutDistributionInput[];
+    connectOrCreate?: Prisma.DistributionLineCreateOrConnectWithoutDistributionInput | Prisma.DistributionLineCreateOrConnectWithoutDistributionInput[];
+    upsert?: Prisma.DistributionLineUpsertWithWhereUniqueWithoutDistributionInput | Prisma.DistributionLineUpsertWithWhereUniqueWithoutDistributionInput[];
+    createMany?: Prisma.DistributionLineCreateManyDistributionInputEnvelope;
+    set?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    disconnect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    delete?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    connect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    update?: Prisma.DistributionLineUpdateWithWhereUniqueWithoutDistributionInput | Prisma.DistributionLineUpdateWithWhereUniqueWithoutDistributionInput[];
+    updateMany?: Prisma.DistributionLineUpdateManyWithWhereWithoutDistributionInput | Prisma.DistributionLineUpdateManyWithWhereWithoutDistributionInput[];
+    deleteMany?: Prisma.DistributionLineScalarWhereInput | Prisma.DistributionLineScalarWhereInput[];
+};
+export type DistributionLineUncheckedUpdateManyWithoutDistributionNestedInput = {
+    create?: Prisma.XOR<Prisma.DistributionLineCreateWithoutDistributionInput, Prisma.DistributionLineUncheckedCreateWithoutDistributionInput> | Prisma.DistributionLineCreateWithoutDistributionInput[] | Prisma.DistributionLineUncheckedCreateWithoutDistributionInput[];
+    connectOrCreate?: Prisma.DistributionLineCreateOrConnectWithoutDistributionInput | Prisma.DistributionLineCreateOrConnectWithoutDistributionInput[];
+    upsert?: Prisma.DistributionLineUpsertWithWhereUniqueWithoutDistributionInput | Prisma.DistributionLineUpsertWithWhereUniqueWithoutDistributionInput[];
+    createMany?: Prisma.DistributionLineCreateManyDistributionInputEnvelope;
+    set?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    disconnect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    delete?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    connect?: Prisma.DistributionLineWhereUniqueInput | Prisma.DistributionLineWhereUniqueInput[];
+    update?: Prisma.DistributionLineUpdateWithWhereUniqueWithoutDistributionInput | Prisma.DistributionLineUpdateWithWhereUniqueWithoutDistributionInput[];
+    updateMany?: Prisma.DistributionLineUpdateManyWithWhereWithoutDistributionInput | Prisma.DistributionLineUpdateManyWithWhereWithoutDistributionInput[];
+    deleteMany?: Prisma.DistributionLineScalarWhereInput | Prisma.DistributionLineScalarWhereInput[];
+};
+export type EnumDistributionPaymentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DistributionPaymentStatus;
+};
+export type DistributionLineCreateWithoutUserInput = {
+    id?: string;
+    grossAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: $Enums.DistributionPaymentStatus;
+    providerRef?: string | null;
+    paidAt?: Date | string | null;
+    createdAt?: Date | string;
+    distribution: Prisma.DistributionCreateNestedOneWithoutLinesInput;
+    pledge: Prisma.PledgeCreateNestedOneWithoutDistributionLinesInput;
+};
+export type DistributionLineUncheckedCreateWithoutUserInput = {
+    id?: string;
+    distributionId: string;
+    pledgeId: string;
+    grossAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: $Enums.DistributionPaymentStatus;
+    providerRef?: string | null;
+    paidAt?: Date | string | null;
+    createdAt?: Date | string;
+};
+export type DistributionLineCreateOrConnectWithoutUserInput = {
+    where: Prisma.DistributionLineWhereUniqueInput;
+    create: Prisma.XOR<Prisma.DistributionLineCreateWithoutUserInput, Prisma.DistributionLineUncheckedCreateWithoutUserInput>;
+};
+export type DistributionLineCreateManyUserInputEnvelope = {
+    data: Prisma.DistributionLineCreateManyUserInput | Prisma.DistributionLineCreateManyUserInput[];
+    skipDuplicates?: boolean;
+};
+export type DistributionLineUpsertWithWhereUniqueWithoutUserInput = {
+    where: Prisma.DistributionLineWhereUniqueInput;
+    update: Prisma.XOR<Prisma.DistributionLineUpdateWithoutUserInput, Prisma.DistributionLineUncheckedUpdateWithoutUserInput>;
+    create: Prisma.XOR<Prisma.DistributionLineCreateWithoutUserInput, Prisma.DistributionLineUncheckedCreateWithoutUserInput>;
+};
+export type DistributionLineUpdateWithWhereUniqueWithoutUserInput = {
+    where: Prisma.DistributionLineWhereUniqueInput;
+    data: Prisma.XOR<Prisma.DistributionLineUpdateWithoutUserInput, Prisma.DistributionLineUncheckedUpdateWithoutUserInput>;
+};
+export type DistributionLineUpdateManyWithWhereWithoutUserInput = {
+    where: Prisma.DistributionLineScalarWhereInput;
+    data: Prisma.XOR<Prisma.DistributionLineUpdateManyMutationInput, Prisma.DistributionLineUncheckedUpdateManyWithoutUserInput>;
+};
+export type DistributionLineScalarWhereInput = {
+    AND?: Prisma.DistributionLineScalarWhereInput | Prisma.DistributionLineScalarWhereInput[];
+    OR?: Prisma.DistributionLineScalarWhereInput[];
+    NOT?: Prisma.DistributionLineScalarWhereInput | Prisma.DistributionLineScalarWhereInput[];
+    id?: Prisma.UuidFilter<"DistributionLine"> | string;
+    distributionId?: Prisma.UuidFilter<"DistributionLine"> | string;
+    userId?: Prisma.UuidFilter<"DistributionLine"> | string;
+    pledgeId?: Prisma.UuidFilter<"DistributionLine"> | string;
+    grossAmount?: Prisma.DecimalFilter<"DistributionLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalFilter<"DistributionLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalFilter<"DistributionLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusFilter<"DistributionLine"> | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.StringNullableFilter<"DistributionLine"> | string | null;
+    paidAt?: Prisma.DateTimeNullableFilter<"DistributionLine"> | Date | string | null;
+    createdAt?: Prisma.DateTimeFilter<"DistributionLine"> | Date | string;
+};
+export type DistributionLineCreateWithoutPledgeInput = {
+    id?: string;
+    grossAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: $Enums.DistributionPaymentStatus;
+    providerRef?: string | null;
+    paidAt?: Date | string | null;
+    createdAt?: Date | string;
+    distribution: Prisma.DistributionCreateNestedOneWithoutLinesInput;
+    user: Prisma.UserCreateNestedOneWithoutDistributionLinesInput;
+};
+export type DistributionLineUncheckedCreateWithoutPledgeInput = {
+    id?: string;
+    distributionId: string;
+    userId: string;
+    grossAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: $Enums.DistributionPaymentStatus;
+    providerRef?: string | null;
+    paidAt?: Date | string | null;
+    createdAt?: Date | string;
+};
+export type DistributionLineCreateOrConnectWithoutPledgeInput = {
+    where: Prisma.DistributionLineWhereUniqueInput;
+    create: Prisma.XOR<Prisma.DistributionLineCreateWithoutPledgeInput, Prisma.DistributionLineUncheckedCreateWithoutPledgeInput>;
+};
+export type DistributionLineCreateManyPledgeInputEnvelope = {
+    data: Prisma.DistributionLineCreateManyPledgeInput | Prisma.DistributionLineCreateManyPledgeInput[];
+    skipDuplicates?: boolean;
+};
+export type DistributionLineUpsertWithWhereUniqueWithoutPledgeInput = {
+    where: Prisma.DistributionLineWhereUniqueInput;
+    update: Prisma.XOR<Prisma.DistributionLineUpdateWithoutPledgeInput, Prisma.DistributionLineUncheckedUpdateWithoutPledgeInput>;
+    create: Prisma.XOR<Prisma.DistributionLineCreateWithoutPledgeInput, Prisma.DistributionLineUncheckedCreateWithoutPledgeInput>;
+};
+export type DistributionLineUpdateWithWhereUniqueWithoutPledgeInput = {
+    where: Prisma.DistributionLineWhereUniqueInput;
+    data: Prisma.XOR<Prisma.DistributionLineUpdateWithoutPledgeInput, Prisma.DistributionLineUncheckedUpdateWithoutPledgeInput>;
+};
+export type DistributionLineUpdateManyWithWhereWithoutPledgeInput = {
+    where: Prisma.DistributionLineScalarWhereInput;
+    data: Prisma.XOR<Prisma.DistributionLineUpdateManyMutationInput, Prisma.DistributionLineUncheckedUpdateManyWithoutPledgeInput>;
+};
+export type DistributionLineCreateWithoutDistributionInput = {
+    id?: string;
+    grossAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: $Enums.DistributionPaymentStatus;
+    providerRef?: string | null;
+    paidAt?: Date | string | null;
+    createdAt?: Date | string;
+    user: Prisma.UserCreateNestedOneWithoutDistributionLinesInput;
+    pledge: Prisma.PledgeCreateNestedOneWithoutDistributionLinesInput;
+};
+export type DistributionLineUncheckedCreateWithoutDistributionInput = {
+    id?: string;
+    userId: string;
+    pledgeId: string;
+    grossAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: $Enums.DistributionPaymentStatus;
+    providerRef?: string | null;
+    paidAt?: Date | string | null;
+    createdAt?: Date | string;
+};
+export type DistributionLineCreateOrConnectWithoutDistributionInput = {
+    where: Prisma.DistributionLineWhereUniqueInput;
+    create: Prisma.XOR<Prisma.DistributionLineCreateWithoutDistributionInput, Prisma.DistributionLineUncheckedCreateWithoutDistributionInput>;
+};
+export type DistributionLineCreateManyDistributionInputEnvelope = {
+    data: Prisma.DistributionLineCreateManyDistributionInput | Prisma.DistributionLineCreateManyDistributionInput[];
+    skipDuplicates?: boolean;
+};
+export type DistributionLineUpsertWithWhereUniqueWithoutDistributionInput = {
+    where: Prisma.DistributionLineWhereUniqueInput;
+    update: Prisma.XOR<Prisma.DistributionLineUpdateWithoutDistributionInput, Prisma.DistributionLineUncheckedUpdateWithoutDistributionInput>;
+    create: Prisma.XOR<Prisma.DistributionLineCreateWithoutDistributionInput, Prisma.DistributionLineUncheckedCreateWithoutDistributionInput>;
+};
+export type DistributionLineUpdateWithWhereUniqueWithoutDistributionInput = {
+    where: Prisma.DistributionLineWhereUniqueInput;
+    data: Prisma.XOR<Prisma.DistributionLineUpdateWithoutDistributionInput, Prisma.DistributionLineUncheckedUpdateWithoutDistributionInput>;
+};
+export type DistributionLineUpdateManyWithWhereWithoutDistributionInput = {
+    where: Prisma.DistributionLineScalarWhereInput;
+    data: Prisma.XOR<Prisma.DistributionLineUpdateManyMutationInput, Prisma.DistributionLineUncheckedUpdateManyWithoutDistributionInput>;
+};
+export type DistributionLineCreateManyUserInput = {
+    id?: string;
+    distributionId: string;
+    pledgeId: string;
+    grossAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: $Enums.DistributionPaymentStatus;
+    providerRef?: string | null;
+    paidAt?: Date | string | null;
+    createdAt?: Date | string;
+};
+export type DistributionLineUpdateWithoutUserInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    grossAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusFieldUpdateOperationsInput | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    distribution?: Prisma.DistributionUpdateOneRequiredWithoutLinesNestedInput;
+    pledge?: Prisma.PledgeUpdateOneRequiredWithoutDistributionLinesNestedInput;
+};
+export type DistributionLineUncheckedUpdateWithoutUserInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    distributionId?: Prisma.StringFieldUpdateOperationsInput | string;
+    pledgeId?: Prisma.StringFieldUpdateOperationsInput | string;
+    grossAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusFieldUpdateOperationsInput | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type DistributionLineUncheckedUpdateManyWithoutUserInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    distributionId?: Prisma.StringFieldUpdateOperationsInput | string;
+    pledgeId?: Prisma.StringFieldUpdateOperationsInput | string;
+    grossAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusFieldUpdateOperationsInput | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type DistributionLineCreateManyPledgeInput = {
+    id?: string;
+    distributionId: string;
+    userId: string;
+    grossAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: $Enums.DistributionPaymentStatus;
+    providerRef?: string | null;
+    paidAt?: Date | string | null;
+    createdAt?: Date | string;
+};
+export type DistributionLineUpdateWithoutPledgeInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    grossAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusFieldUpdateOperationsInput | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    distribution?: Prisma.DistributionUpdateOneRequiredWithoutLinesNestedInput;
+    user?: Prisma.UserUpdateOneRequiredWithoutDistributionLinesNestedInput;
+};
+export type DistributionLineUncheckedUpdateWithoutPledgeInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    distributionId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    grossAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusFieldUpdateOperationsInput | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type DistributionLineUncheckedUpdateManyWithoutPledgeInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    distributionId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    grossAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusFieldUpdateOperationsInput | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type DistributionLineCreateManyDistributionInput = {
+    id?: string;
+    userId: string;
+    pledgeId: string;
+    grossAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: $Enums.DistributionPaymentStatus;
+    providerRef?: string | null;
+    paidAt?: Date | string | null;
+    createdAt?: Date | string;
+};
+export type DistributionLineUpdateWithoutDistributionInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    grossAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusFieldUpdateOperationsInput | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    user?: Prisma.UserUpdateOneRequiredWithoutDistributionLinesNestedInput;
+    pledge?: Prisma.PledgeUpdateOneRequiredWithoutDistributionLinesNestedInput;
+};
+export type DistributionLineUncheckedUpdateWithoutDistributionInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    pledgeId?: Prisma.StringFieldUpdateOperationsInput | string;
+    grossAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusFieldUpdateOperationsInput | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type DistributionLineUncheckedUpdateManyWithoutDistributionInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    pledgeId?: Prisma.StringFieldUpdateOperationsInput | string;
+    grossAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    withholdingTax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentStatus?: Prisma.EnumDistributionPaymentStatusFieldUpdateOperationsInput | $Enums.DistributionPaymentStatus;
+    providerRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type DistributionLineSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    distributionId?: boolean;
+    userId?: boolean;
+    pledgeId?: boolean;
+    grossAmount?: boolean;
+    withholdingTax?: boolean;
+    netAmount?: boolean;
+    paymentStatus?: boolean;
+    providerRef?: boolean;
+    paidAt?: boolean;
+    createdAt?: boolean;
+    distribution?: boolean | Prisma.DistributionDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    pledge?: boolean | Prisma.PledgeDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["distributionLine"]>;
+export type DistributionLineSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    distributionId?: boolean;
+    userId?: boolean;
+    pledgeId?: boolean;
+    grossAmount?: boolean;
+    withholdingTax?: boolean;
+    netAmount?: boolean;
+    paymentStatus?: boolean;
+    providerRef?: boolean;
+    paidAt?: boolean;
+    createdAt?: boolean;
+    distribution?: boolean | Prisma.DistributionDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    pledge?: boolean | Prisma.PledgeDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["distributionLine"]>;
+export type DistributionLineSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    distributionId?: boolean;
+    userId?: boolean;
+    pledgeId?: boolean;
+    grossAmount?: boolean;
+    withholdingTax?: boolean;
+    netAmount?: boolean;
+    paymentStatus?: boolean;
+    providerRef?: boolean;
+    paidAt?: boolean;
+    createdAt?: boolean;
+    distribution?: boolean | Prisma.DistributionDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    pledge?: boolean | Prisma.PledgeDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["distributionLine"]>;
+export type DistributionLineSelectScalar = {
+    id?: boolean;
+    distributionId?: boolean;
+    userId?: boolean;
+    pledgeId?: boolean;
+    grossAmount?: boolean;
+    withholdingTax?: boolean;
+    netAmount?: boolean;
+    paymentStatus?: boolean;
+    providerRef?: boolean;
+    paidAt?: boolean;
+    createdAt?: boolean;
+};
+export type DistributionLineOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "distributionId" | "userId" | "pledgeId" | "grossAmount" | "withholdingTax" | "netAmount" | "paymentStatus" | "providerRef" | "paidAt" | "createdAt", ExtArgs["result"]["distributionLine"]>;
+export type DistributionLineInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    distribution?: boolean | Prisma.DistributionDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    pledge?: boolean | Prisma.PledgeDefaultArgs<ExtArgs>;
+};
+export type DistributionLineIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    distribution?: boolean | Prisma.DistributionDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    pledge?: boolean | Prisma.PledgeDefaultArgs<ExtArgs>;
+};
+export type DistributionLineIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    distribution?: boolean | Prisma.DistributionDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    pledge?: boolean | Prisma.PledgeDefaultArgs<ExtArgs>;
+};
+export type $DistributionLinePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "DistributionLine";
+    objects: {
+        distribution: Prisma.$DistributionPayload<ExtArgs>;
+        user: Prisma.$UserPayload<ExtArgs>;
+        pledge: Prisma.$PledgePayload<ExtArgs>;
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: string;
+        distributionId: string;
+        userId: string;
+        pledgeId: string;
+        grossAmount: runtime.Decimal;
+        withholdingTax: runtime.Decimal;
+        netAmount: runtime.Decimal;
+        paymentStatus: $Enums.DistributionPaymentStatus;
+        providerRef: string | null;
+        paidAt: Date | null;
+        createdAt: Date;
+    }, ExtArgs["result"]["distributionLine"]>;
+    composites: {};
+};
+export type DistributionLineGetPayload<S extends boolean | null | undefined | DistributionLineDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$DistributionLinePayload, S>;
+export type DistributionLineCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<DistributionLineFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: DistributionLineCountAggregateInputType | true;
+};
+export interface DistributionLineDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['DistributionLine'];
+        meta: {
+            name: 'DistributionLine';
+        };
+    };
+    /**
+     * Find zero or one DistributionLine that matches the filter.
+     * @param {DistributionLineFindUniqueArgs} args - Arguments to find a DistributionLine
+     * @example
+     * // Get one DistributionLine
+     * const distributionLine = await prisma.distributionLine.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DistributionLineFindUniqueArgs>(args: Prisma.SelectSubset<T, DistributionLineFindUniqueArgs<ExtArgs>>): Prisma.Prisma__DistributionLineClient<runtime.Types.Result.GetResult<Prisma.$DistributionLinePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one DistributionLine that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DistributionLineFindUniqueOrThrowArgs} args - Arguments to find a DistributionLine
+     * @example
+     * // Get one DistributionLine
+     * const distributionLine = await prisma.distributionLine.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DistributionLineFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, DistributionLineFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__DistributionLineClient<runtime.Types.Result.GetResult<Prisma.$DistributionLinePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first DistributionLine that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DistributionLineFindFirstArgs} args - Arguments to find a DistributionLine
+     * @example
+     * // Get one DistributionLine
+     * const distributionLine = await prisma.distributionLine.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DistributionLineFindFirstArgs>(args?: Prisma.SelectSubset<T, DistributionLineFindFirstArgs<ExtArgs>>): Prisma.Prisma__DistributionLineClient<runtime.Types.Result.GetResult<Prisma.$DistributionLinePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first DistributionLine that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DistributionLineFindFirstOrThrowArgs} args - Arguments to find a DistributionLine
+     * @example
+     * // Get one DistributionLine
+     * const distributionLine = await prisma.distributionLine.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DistributionLineFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, DistributionLineFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__DistributionLineClient<runtime.Types.Result.GetResult<Prisma.$DistributionLinePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more DistributionLines that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DistributionLineFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DistributionLines
+     * const distributionLines = await prisma.distributionLine.findMany()
+     *
+     * // Get first 10 DistributionLines
+     * const distributionLines = await prisma.distributionLine.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const distributionLineWithIdOnly = await prisma.distributionLine.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends DistributionLineFindManyArgs>(args?: Prisma.SelectSubset<T, DistributionLineFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DistributionLinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a DistributionLine.
+     * @param {DistributionLineCreateArgs} args - Arguments to create a DistributionLine.
+     * @example
+     * // Create one DistributionLine
+     * const DistributionLine = await prisma.distributionLine.create({
+     *   data: {
+     *     // ... data to create a DistributionLine
+     *   }
+     * })
+     *
+     */
+    create<T extends DistributionLineCreateArgs>(args: Prisma.SelectSubset<T, DistributionLineCreateArgs<ExtArgs>>): Prisma.Prisma__DistributionLineClient<runtime.Types.Result.GetResult<Prisma.$DistributionLinePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many DistributionLines.
+     * @param {DistributionLineCreateManyArgs} args - Arguments to create many DistributionLines.
+     * @example
+     * // Create many DistributionLines
+     * const distributionLine = await prisma.distributionLine.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends DistributionLineCreateManyArgs>(args?: Prisma.SelectSubset<T, DistributionLineCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many DistributionLines and returns the data saved in the database.
+     * @param {DistributionLineCreateManyAndReturnArgs} args - Arguments to create many DistributionLines.
+     * @example
+     * // Create many DistributionLines
+     * const distributionLine = await prisma.distributionLine.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many DistributionLines and only return the `id`
+     * const distributionLineWithIdOnly = await prisma.distributionLine.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends DistributionLineCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, DistributionLineCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DistributionLinePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a DistributionLine.
+     * @param {DistributionLineDeleteArgs} args - Arguments to delete one DistributionLine.
+     * @example
+     * // Delete one DistributionLine
+     * const DistributionLine = await prisma.distributionLine.delete({
+     *   where: {
+     *     // ... filter to delete one DistributionLine
+     *   }
+     * })
+     *
+     */
+    delete<T extends DistributionLineDeleteArgs>(args: Prisma.SelectSubset<T, DistributionLineDeleteArgs<ExtArgs>>): Prisma.Prisma__DistributionLineClient<runtime.Types.Result.GetResult<Prisma.$DistributionLinePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one DistributionLine.
+     * @param {DistributionLineUpdateArgs} args - Arguments to update one DistributionLine.
+     * @example
+     * // Update one DistributionLine
+     * const distributionLine = await prisma.distributionLine.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends DistributionLineUpdateArgs>(args: Prisma.SelectSubset<T, DistributionLineUpdateArgs<ExtArgs>>): Prisma.Prisma__DistributionLineClient<runtime.Types.Result.GetResult<Prisma.$DistributionLinePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more DistributionLines.
+     * @param {DistributionLineDeleteManyArgs} args - Arguments to filter DistributionLines to delete.
+     * @example
+     * // Delete a few DistributionLines
+     * const { count } = await prisma.distributionLine.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends DistributionLineDeleteManyArgs>(args?: Prisma.SelectSubset<T, DistributionLineDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more DistributionLines.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DistributionLineUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DistributionLines
+     * const distributionLine = await prisma.distributionLine.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends DistributionLineUpdateManyArgs>(args: Prisma.SelectSubset<T, DistributionLineUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more DistributionLines and returns the data updated in the database.
+     * @param {DistributionLineUpdateManyAndReturnArgs} args - Arguments to update many DistributionLines.
+     * @example
+     * // Update many DistributionLines
+     * const distributionLine = await prisma.distributionLine.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more DistributionLines and only return the `id`
+     * const distributionLineWithIdOnly = await prisma.distributionLine.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends DistributionLineUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, DistributionLineUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DistributionLinePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one DistributionLine.
+     * @param {DistributionLineUpsertArgs} args - Arguments to update or create a DistributionLine.
+     * @example
+     * // Update or create a DistributionLine
+     * const distributionLine = await prisma.distributionLine.upsert({
+     *   create: {
+     *     // ... data to create a DistributionLine
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DistributionLine we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DistributionLineUpsertArgs>(args: Prisma.SelectSubset<T, DistributionLineUpsertArgs<ExtArgs>>): Prisma.Prisma__DistributionLineClient<runtime.Types.Result.GetResult<Prisma.$DistributionLinePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of DistributionLines.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DistributionLineCountArgs} args - Arguments to filter DistributionLines to count.
+     * @example
+     * // Count the number of DistributionLines
+     * const count = await prisma.distributionLine.count({
+     *   where: {
+     *     // ... the filter for the DistributionLines we want to count
+     *   }
+     * })
+    **/
+    count<T extends DistributionLineCountArgs>(args?: Prisma.Subset<T, DistributionLineCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], DistributionLineCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a DistributionLine.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DistributionLineAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DistributionLineAggregateArgs>(args: Prisma.Subset<T, DistributionLineAggregateArgs>): Prisma.PrismaPromise<GetDistributionLineAggregateType<T>>;
+    /**
+     * Group by DistributionLine.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DistributionLineGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends DistributionLineGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: DistributionLineGroupByArgs['orderBy'];
+    } : {
+        orderBy?: DistributionLineGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, DistributionLineGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDistributionLineGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the DistributionLine model
+     */
+    readonly fields: DistributionLineFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for DistributionLine.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__DistributionLineClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    distribution<T extends Prisma.DistributionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DistributionDefaultArgs<ExtArgs>>): Prisma.Prisma__DistributionClient<runtime.Types.Result.GetResult<Prisma.$DistributionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    pledge<T extends Prisma.PledgeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PledgeDefaultArgs<ExtArgs>>): Prisma.Prisma__PledgeClient<runtime.Types.Result.GetResult<Prisma.$PledgePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the DistributionLine model
+ */
+export interface DistributionLineFieldRefs {
+    readonly id: Prisma.FieldRef<"DistributionLine", 'String'>;
+    readonly distributionId: Prisma.FieldRef<"DistributionLine", 'String'>;
+    readonly userId: Prisma.FieldRef<"DistributionLine", 'String'>;
+    readonly pledgeId: Prisma.FieldRef<"DistributionLine", 'String'>;
+    readonly grossAmount: Prisma.FieldRef<"DistributionLine", 'Decimal'>;
+    readonly withholdingTax: Prisma.FieldRef<"DistributionLine", 'Decimal'>;
+    readonly netAmount: Prisma.FieldRef<"DistributionLine", 'Decimal'>;
+    readonly paymentStatus: Prisma.FieldRef<"DistributionLine", 'DistributionPaymentStatus'>;
+    readonly providerRef: Prisma.FieldRef<"DistributionLine", 'String'>;
+    readonly paidAt: Prisma.FieldRef<"DistributionLine", 'DateTime'>;
+    readonly createdAt: Prisma.FieldRef<"DistributionLine", 'DateTime'>;
+}
+/**
+ * DistributionLine findUnique
+ */
+export type DistributionLineFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DistributionLine
+     */
+    select?: Prisma.DistributionLineSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DistributionLine
+     */
+    omit?: Prisma.DistributionLineOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.DistributionLineInclude<ExtArgs> | null;
+    /**
+     * Filter, which DistributionLine to fetch.
+     */
+    where: Prisma.DistributionLineWhereUniqueInput;
+};
+/**
+ * DistributionLine findUniqueOrThrow
+ */
+export type DistributionLineFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DistributionLine
+     */
+    select?: Prisma.DistributionLineSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DistributionLine
+     */
+    omit?: Prisma.DistributionLineOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.DistributionLineInclude<ExtArgs> | null;
+    /**
+     * Filter, which DistributionLine to fetch.
+     */
+    where: Prisma.DistributionLineWhereUniqueInput;
+};
+/**
+ * DistributionLine findFirst
+ */
+export type DistributionLineFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DistributionLine
+     */
+    select?: Prisma.DistributionLineSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DistributionLine
+     */
+    omit?: Prisma.DistributionLineOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.DistributionLineInclude<ExtArgs> | null;
+    /**
+     * Filter, which DistributionLine to fetch.
+     */
+    where?: Prisma.DistributionLineWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of DistributionLines to fetch.
+     */
+    orderBy?: Prisma.DistributionLineOrderByWithRelationInput | Prisma.DistributionLineOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for DistributionLines.
+     */
+    cursor?: Prisma.DistributionLineWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` DistributionLines from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` DistributionLines.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of DistributionLines.
+     */
+    distinct?: Prisma.DistributionLineScalarFieldEnum | Prisma.DistributionLineScalarFieldEnum[];
+};
+/**
+ * DistributionLine findFirstOrThrow
+ */
+export type DistributionLineFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DistributionLine
+     */
+    select?: Prisma.DistributionLineSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DistributionLine
+     */
+    omit?: Prisma.DistributionLineOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.DistributionLineInclude<ExtArgs> | null;
+    /**
+     * Filter, which DistributionLine to fetch.
+     */
+    where?: Prisma.DistributionLineWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of DistributionLines to fetch.
+     */
+    orderBy?: Prisma.DistributionLineOrderByWithRelationInput | Prisma.DistributionLineOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for DistributionLines.
+     */
+    cursor?: Prisma.DistributionLineWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` DistributionLines from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` DistributionLines.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of DistributionLines.
+     */
+    distinct?: Prisma.DistributionLineScalarFieldEnum | Prisma.DistributionLineScalarFieldEnum[];
+};
+/**
+ * DistributionLine findMany
+ */
+export type DistributionLineFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DistributionLine
+     */
+    select?: Prisma.DistributionLineSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DistributionLine
+     */
+    omit?: Prisma.DistributionLineOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.DistributionLineInclude<ExtArgs> | null;
+    /**
+     * Filter, which DistributionLines to fetch.
+     */
+    where?: Prisma.DistributionLineWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of DistributionLines to fetch.
+     */
+    orderBy?: Prisma.DistributionLineOrderByWithRelationInput | Prisma.DistributionLineOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing DistributionLines.
+     */
+    cursor?: Prisma.DistributionLineWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` DistributionLines from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` DistributionLines.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of DistributionLines.
+     */
+    distinct?: Prisma.DistributionLineScalarFieldEnum | Prisma.DistributionLineScalarFieldEnum[];
+};
+/**
+ * DistributionLine create
+ */
+export type DistributionLineCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DistributionLine
+     */
+    select?: Prisma.DistributionLineSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DistributionLine
+     */
+    omit?: Prisma.DistributionLineOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.DistributionLineInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a DistributionLine.
+     */
+    data: Prisma.XOR<Prisma.DistributionLineCreateInput, Prisma.DistributionLineUncheckedCreateInput>;
+};
+/**
+ * DistributionLine createMany
+ */
+export type DistributionLineCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DistributionLines.
+     */
+    data: Prisma.DistributionLineCreateManyInput | Prisma.DistributionLineCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * DistributionLine createManyAndReturn
+ */
+export type DistributionLineCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DistributionLine
+     */
+    select?: Prisma.DistributionLineSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DistributionLine
+     */
+    omit?: Prisma.DistributionLineOmit<ExtArgs> | null;
+    /**
+     * The data used to create many DistributionLines.
+     */
+    data: Prisma.DistributionLineCreateManyInput | Prisma.DistributionLineCreateManyInput[];
+    skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.DistributionLineIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * DistributionLine update
+ */
+export type DistributionLineUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DistributionLine
+     */
+    select?: Prisma.DistributionLineSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DistributionLine
+     */
+    omit?: Prisma.DistributionLineOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.DistributionLineInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a DistributionLine.
+     */
+    data: Prisma.XOR<Prisma.DistributionLineUpdateInput, Prisma.DistributionLineUncheckedUpdateInput>;
+    /**
+     * Choose, which DistributionLine to update.
+     */
+    where: Prisma.DistributionLineWhereUniqueInput;
+};
+/**
+ * DistributionLine updateMany
+ */
+export type DistributionLineUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DistributionLines.
+     */
+    data: Prisma.XOR<Prisma.DistributionLineUpdateManyMutationInput, Prisma.DistributionLineUncheckedUpdateManyInput>;
+    /**
+     * Filter which DistributionLines to update
+     */
+    where?: Prisma.DistributionLineWhereInput;
+    /**
+     * Limit how many DistributionLines to update.
+     */
+    limit?: number;
+};
+/**
+ * DistributionLine updateManyAndReturn
+ */
+export type DistributionLineUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DistributionLine
+     */
+    select?: Prisma.DistributionLineSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DistributionLine
+     */
+    omit?: Prisma.DistributionLineOmit<ExtArgs> | null;
+    /**
+     * The data used to update DistributionLines.
+     */
+    data: Prisma.XOR<Prisma.DistributionLineUpdateManyMutationInput, Prisma.DistributionLineUncheckedUpdateManyInput>;
+    /**
+     * Filter which DistributionLines to update
+     */
+    where?: Prisma.DistributionLineWhereInput;
+    /**
+     * Limit how many DistributionLines to update.
+     */
+    limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.DistributionLineIncludeUpdateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * DistributionLine upsert
+ */
+export type DistributionLineUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DistributionLine
+     */
+    select?: Prisma.DistributionLineSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DistributionLine
+     */
+    omit?: Prisma.DistributionLineOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.DistributionLineInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the DistributionLine to update in case it exists.
+     */
+    where: Prisma.DistributionLineWhereUniqueInput;
+    /**
+     * In case the DistributionLine found by the `where` argument doesn't exist, create a new DistributionLine with this data.
+     */
+    create: Prisma.XOR<Prisma.DistributionLineCreateInput, Prisma.DistributionLineUncheckedCreateInput>;
+    /**
+     * In case the DistributionLine was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.DistributionLineUpdateInput, Prisma.DistributionLineUncheckedUpdateInput>;
+};
+/**
+ * DistributionLine delete
+ */
+export type DistributionLineDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DistributionLine
+     */
+    select?: Prisma.DistributionLineSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DistributionLine
+     */
+    omit?: Prisma.DistributionLineOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.DistributionLineInclude<ExtArgs> | null;
+    /**
+     * Filter which DistributionLine to delete.
+     */
+    where: Prisma.DistributionLineWhereUniqueInput;
+};
+/**
+ * DistributionLine deleteMany
+ */
+export type DistributionLineDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which DistributionLines to delete
+     */
+    where?: Prisma.DistributionLineWhereInput;
+    /**
+     * Limit how many DistributionLines to delete.
+     */
+    limit?: number;
+};
+/**
+ * DistributionLine without action
+ */
+export type DistributionLineDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DistributionLine
+     */
+    select?: Prisma.DistributionLineSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DistributionLine
+     */
+    omit?: Prisma.DistributionLineOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.DistributionLineInclude<ExtArgs> | null;
+};
