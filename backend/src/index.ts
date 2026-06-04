@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import { HEALTH_OK } from '@mbuma/shared';
-import authRouter       from './routes/auth.js';
+import authRouter        from './routes/auth.js';
+import investorsRouter   from './routes/investors.js';
+import invitationsRouter from './routes/invitations.js';
 import propertiesRouter from './routes/properties.js';
 
 const app = express();
@@ -13,7 +15,9 @@ app.get('/health', (_req, res) => {
 });
 
 app.use('/api/auth',       authRouter);
-app.use('/api/properties', propertiesRouter);
+app.use('/api/properties',  propertiesRouter);
+app.use('/api/investors',   investorsRouter);
+app.use('/api/invitations', invitationsRouter);
 
 const PORT = Number(process.env.PORT) || 4000;
 app.listen(PORT, () => {

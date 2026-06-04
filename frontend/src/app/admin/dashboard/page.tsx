@@ -1,6 +1,26 @@
 import s from './page.module.css';
+import { apiFetch } from '@/lib/api';
 
-/* ── Mock data ─────────────────────────────────────────────── */
+/* ── Types ─────────────────────────────────────────────────────── */
+interface Property {
+  id: string;
+  title: string;
+  propertyType: string;
+  status: string;
+  targetRaise: string;
+  fundedAmount: string;
+  projectedYieldPct: string;
+}
+
+interface Investor {
+  id: string;
+  fullName: string;
+  kycStatus: string;
+  totalInvested: number;
+  propertyCount: number;
+}
+
+/* ── Static mock data (not yet from DB) ─────────────────────────── */
 const STATS = [
   { label: 'Total raised',          value: 'R6.7M',   sub: '4 properties',  accent: false },
   { label: 'Active investors',       value: '14',      sub: '3 pending',     accent: false },
@@ -9,65 +29,86 @@ const STATS = [
 ];
 
 const QUICK_ACTIONS = [
-  { icon: '👤', label: 'Invite investor',  color: 'purple' },
-  { icon: '💸', label: 'Run distribution', color: 'green'  },
-  { icon: '📢', label: 'Send update',      color: 'gold'   },
-  { icon: '📤', label: 'Export report',    color: 'blue'   },
+  { icon: '👤', label: 'Invite investor',  color: 'purple', href: '/admin/investors/invite' },
+  { icon: '💸', label: 'Run distribution', color: 'green',  href: '/admin/distributions'    },
+  { icon: '📢', label: 'Send update',      color: 'gold',   href: '#'                       },
+  { icon: '📤', label: 'Export report',    color: 'blue',   href: '#'                       },
 ];
 
 const PENDING = [
-  { name: 'Verify investor — R. Dlamini',   sub: 'Submitted ID · waiting approval',   action: 'Verify',    dot: 'orange' },
-  { name: 'Confirm pledge — P. Sithole',    sub: 'R75,000 · Shop 4, Kyalami',         action: 'Confirm',   dot: 'green'  },
-  { name: 'Agreement unsigned — N. Mokoena',sub: 'Fern Close · sent 3 days ago',      action: 'Follow up', dot: 'gray'   },
-  { name: 'Missing bank details — N. Mokoena', sub: 'Cannot distribute until resolved', action: 'Chase',   dot: 'orange' },
+  { name: 'Verify investor — R. Dlamini',      sub: 'Submitted ID · waiting approval',   action: 'Verify',    dot: 'orange' },
+  { name: 'Confirm pledge — P. Sithole',       sub: 'R75,000 · Shop 4, Kyalami',         action: 'Confirm',   dot: 'green'  },
+  { name: 'Agreement unsigned — N. Mokoena',  sub: 'Fern Close · sent 3 days ago',      action: 'Follow up', dot: 'gray'   },
+  { name: 'Missing bank details — N. Mokoena',sub: 'Cannot distribute until resolved',   action: 'Chase',     dot: 'orange' },
 ];
 
-const PROPERTIES = [
-  { icon: '🏘', name: '14 Fern Close, Fourways',  sub: 'Residential · 6 investors',         pct: 72,  status: 'Open',   cta: 'Edit'  },
-  { icon: '🏢', name: 'Shop 4, Kyalami Corner',   sub: 'Commercial · 4 investors',           pct: 38,  status: 'Open',   cta: 'Edit'  },
-  { icon: '🏘', name: 'Unit 7, Sandton Gardens',  sub: 'Residential · 8 investors · tenanted', pct: 100, status: 'Funded', cta: 'View' },
-  { icon: '📋', name: 'New listing — Bryanston',  sub: 'Not yet published',                  pct: 0,   status: 'Draft',  cta: 'Edit'  },
-];
-
-const DIST_BARS = [35, 45, 55, 72, 90, 100];
+const DIST_BARS   = [35, 45, 55, 72, 90, 100];
 const DIST_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
 
 const GLANCE = [
-  { label: 'Total properties',    value: '4',        accent: false },
-  { label: 'Open raises',         value: '2',        accent: false },
-  { label: 'Fully funded',        value: '1',        accent: false },
-  { label: 'Drafts',              value: '1',        accent: false },
-  { label: 'Total investors',     value: '14',       accent: false },
-  { label: 'Total distributed YTD', value: 'R236,000', accent: true },
-];
-
-const INVESTORS = [
-  { initials: 'SK', name: 'S. Khumalo',  sub: '2 properties · R350,000 invested', status: 'Active',  cta: 'View'   },
-  { initials: 'PN', name: 'P. Nkosi',    sub: '1 property · R150,000 invested',   status: 'Active',  cta: 'View'   },
-  { initials: 'AM', name: 'A. Molefe',   sub: '2 properties · R300,000 invested', status: 'Active',  cta: 'View'   },
-  { initials: 'RD', name: 'R. Dlamini',  sub: 'ID submitted · not yet verified',  status: 'Pending', cta: 'Verify' },
-  { initials: 'PS', name: 'P. Sithole',  sub: 'Pledge submitted · funds pending', status: 'Confirm', cta: 'Confirm'},
+  { label: 'Total properties',     value: '3',        accent: false },
+  { label: 'Open raises',          value: '2',        accent: false },
+  { label: 'Fully funded',         value: '1',        accent: false },
+  { label: 'Total investors',      value: '3',        accent: false },
+  { label: 'Total distributed YTD', value: 'R0',     accent: true  },
 ];
 
 const FEED = [
-  { dot: 'green',  text: 'P. Nkosi pledged R150k on Fern Close',    time: '2 hours ago'   },
-  { dot: 'gold',   text: 'R. Dlamini completed registration',        time: 'Yesterday'     },
-  { dot: 'blue',   text: 'R47,200 distribution sent · 8 investors',  time: '1 Jun 2025'    },
-  { dot: 'green',  text: 'Kyalami Corner published',                  time: '28 May 2025'   },
+  { dot: 'green', text: 'Andile Molefe pledged on Kyalami Corner', time: 'Today'       },
+  { dot: 'green', text: 'Precious Nkosi pledged on Fern Close',    time: 'Today'       },
+  { dot: 'green', text: 'Sipho Khumalo pledged on Sandton Gardens', time: 'Today'      },
+  { dot: 'blue',  text: 'Database seeded with 3 properties',        time: 'Today'      },
 ];
 
-/* ── Helpers ───────────────────────────────────────────────── */
+/* ── Helpers ────────────────────────────────────────────────────── */
+function propertyIcon(type: string) {
+  if (type === 'commercial') return '🏢';
+  if (type === 'mixed_use')  return '🏗';
+  return '🏘';
+}
+
+function pct(funded: string, target: string) {
+  const t = Number(target);
+  if (!t) return 0;
+  return Math.round((Number(funded) / t) * 100);
+}
+
+function fmtRand(n: number) {
+  if (!n) return '—';
+  return 'R' + n.toLocaleString('en-ZA');
+}
+
+function initials(name: string) {
+  return name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase();
+}
+
 function statusClass(status: string, styles: Record<string, string>) {
-  if (status === 'Open')    return styles.pillOpen;
-  if (status === 'Funded')  return styles.pillFunded;
-  if (status === 'Active')  return styles.pillActive;
-  if (status === 'Pending') return styles.pillPending;
+  if (status === 'open')    return styles.pillOpen;
+  if (status === 'funded')  return styles.pillFunded;
+  if (status === 'approved') return styles.pillActive;
+  if (status === 'pending') return styles.pillPending;
   if (status === 'Confirm') return styles.pillConfirm;
   return styles.pillDraft;
 }
 
-/* ── Page ──────────────────────────────────────────────────── */
-export default function AdminDashboard() {
+const AVATAR_COLORS = ['av0', 'av1', 'av2', 'av3', 'av4'];
+
+/* ── Page (Server Component) ────────────────────────────────────── */
+export default async function AdminDashboard() {
+  let properties: Property[] = [];
+  let investors:  Investor[]  = [];
+
+  try {
+    const [propsRes, invRes] = await Promise.all([
+      apiFetch<{ data: Property[] }>('/api/properties'),
+      apiFetch<{ data: Investor[]  }>('/api/investors'),
+    ]);
+    properties = propsRes.data.slice(0, 4);
+    investors  = invRes.data.slice(0, 5);
+  } catch {
+    // Backend not running — fall through with empty arrays
+  }
+
   return (
     <div className={s.page}>
 
@@ -96,16 +137,15 @@ export default function AdminDashboard() {
       {/* Quick actions */}
       <div className={s.quickActions}>
         {QUICK_ACTIONS.map((qa) => (
-          <button key={qa.label} className={s.qaBtn}>
+          <a key={qa.label} href={qa.href} className={s.qaBtn}>
             <span className={[s.qaIcon, s[`qaIcon_${qa.color}`]].join(' ')}>{qa.icon}</span>
             <span>{qa.label}</span>
-          </button>
+          </a>
         ))}
       </div>
 
       {/* Main grid */}
       <div className={s.mainGrid}>
-        {/* Left column */}
         <div className={s.leftCol}>
 
           {/* Pending actions */}
@@ -128,40 +168,49 @@ export default function AdminDashboard() {
             ))}
           </div>
 
-          {/* Properties */}
+          {/* Properties — LIVE from DB */}
           <div className={s.panel}>
             <div className={s.panelHead}>
               <span className={s.panelTitle}>Properties</span>
               <a href="/admin/properties" className={s.panelLink}>View all →</a>
             </div>
-            {PROPERTIES.map((p) => (
-              <div key={p.name} className={s.propRow}>
-                <div className={s.propLeft}>
-                  <span className={s.propIcon}>{p.icon}</span>
-                  <div>
-                    <div className={s.propName}>{p.name}</div>
-                    <div className={s.propSub}>{p.sub}</div>
+            {properties.length === 0 ? (
+              <div className={s.emptyState}>No properties found — run the seed script</div>
+            ) : properties.map((p) => {
+              const fundedPct = pct(p.fundedAmount, p.targetRaise);
+              const statusLabel = p.status.charAt(0).toUpperCase() + p.status.slice(1);
+              return (
+                <div key={p.id} className={s.propRow}>
+                  <div className={s.propLeft}>
+                    <span className={s.propIcon}>{propertyIcon(p.propertyType)}</span>
+                    <div>
+                      <div className={s.propName}>{p.title}</div>
+                      <div className={s.propSub}>
+                        {p.propertyType.replace('_', ' ')} · {Number(p.projectedYieldPct).toFixed(1)}% yield
+                      </div>
+                    </div>
+                  </div>
+                  <div className={s.propRight}>
+                    {p.status !== 'draft' && (
+                      <>
+                        <div className={s.progTrack}>
+                          <div className={s.progFill} style={{ width: `${fundedPct}%` }} />
+                        </div>
+                        <span className={s.propPct}>{fundedPct}%</span>
+                      </>
+                    )}
+                    <span className={statusClass(p.status, s)}>{statusLabel}</span>
+                    <a href={`/admin/properties/${p.id}`}>
+                      <button className={s.btnSm}>{p.status === 'draft' ? 'Edit' : 'View'}</button>
+                    </a>
                   </div>
                 </div>
-                <div className={s.propRight}>
-                  {p.status !== 'Draft' && (
-                    <>
-                      <div className={s.progTrack}>
-                        <div className={s.progFill} style={{ width: `${p.pct}%` }} />
-                      </div>
-                      <span className={s.propPct}>{p.pct}%</span>
-                    </>
-                  )}
-                  <span className={statusClass(p.status, s)}>{p.status}</span>
-                  <button className={s.btnSm}>{p.cta}</button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
         </div>
 
-        {/* Right column */}
         <div className={s.rightCol}>
 
           {/* Distribution summary */}
@@ -183,7 +232,7 @@ export default function AdminDashboard() {
               <div className={s.distRow}><span className={s.distLabel}>Next run</span><span className={s.distVal}>1 Jul 2025</span></div>
             </div>
             <div className={s.panelFooter}>
-              <button className={s.btnBlock}>Run distribution →</button>
+              <a href="/admin/distributions"><button className={s.btnBlock}>Run distribution →</button></a>
             </div>
           </div>
 
@@ -208,29 +257,41 @@ export default function AdminDashboard() {
       {/* Bottom grid */}
       <div className={s.botGrid}>
 
-        {/* Investors */}
+        {/* Investors — LIVE from DB */}
         <div className={s.panel}>
           <div className={s.panelHead}>
             <span className={s.panelTitle}>Investors</span>
             <a href="/admin/investors" className={s.panelLink}>View all →</a>
           </div>
-          {INVESTORS.map((inv, i) => (
-            <div key={inv.name} className={s.invRow}>
+          {investors.length === 0 ? (
+            <div className={s.emptyState}>No investors found — run the seed script</div>
+          ) : investors.map((inv, i) => (
+            <div key={inv.id} className={s.invRow}>
               <div className={s.invLeft}>
-                <div className={[s.invAvatar, s[`av${i}`]].join(' ')}>{inv.initials}</div>
+                <div className={[s.invAvatar, s[AVATAR_COLORS[i % AVATAR_COLORS.length]]].join(' ')}>
+                  {initials(inv.fullName)}
+                </div>
                 <div>
-                  <div className={s.invName}>{inv.name}</div>
-                  <div className={s.invSub}>{inv.sub}</div>
+                  <div className={s.invName}>{inv.fullName}</div>
+                  <div className={s.invSub}>
+                    {inv.propertyCount} {inv.propertyCount === 1 ? 'property' : 'properties'} · {fmtRand(inv.totalInvested)} invested
+                  </div>
                 </div>
               </div>
               <div className={s.invRight}>
-                <span className={statusClass(inv.status, s)}>{inv.status}</span>
-                <button className={s.btnSm}>{inv.cta}</button>
+                <span className={statusClass(inv.kycStatus, s)}>
+                  {inv.kycStatus === 'approved' ? 'Active' : 'Pending'}
+                </span>
+                <a href={`/admin/investors/${inv.id}`}>
+                  <button className={s.btnSm}>View</button>
+                </a>
               </div>
             </div>
           ))}
           <div className={s.panelFooter}>
-            <button className={s.btnOutline}>＋ Invite new investor</button>
+            <a href="/admin/investors/invite">
+              <button className={s.btnOutline}>＋ Invite new investor</button>
+            </a>
           </div>
         </div>
 
