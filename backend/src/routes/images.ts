@@ -1,7 +1,7 @@
 import { Router, type Response } from 'express';
 import { randomUUID } from 'crypto';
 import { prisma }        from '../lib/prisma.js';
-import { presignUpload, publicUrl, deleteObject } from '../lib/storage.js';
+import { presignUpload, publicUrl, presignDownload, deleteObject } from '../lib/storage.js';
 import { requireAuth, requireRole, type AuthRequest } from '../middleware/auth.js';
 
 const router = Router({ mergeParams: true }); // inherits :propertyId
@@ -46,7 +46,8 @@ router.post(
       uploadUrl:  url,
       fields,
       s3Key,
-      publicImageUrl: publicUrl(s3Key),
+      // Bucket is private — hand back a signed URL the browser can display once uploaded
+      publicImageUrl: await presignDownload(s3Key),
     });
   }
 );
@@ -88,12 +89,16 @@ router.post(
 );
 
 /* ── GET /api/properties/:propertyId/images ──────────────────────────── */
-router.get('/', async (req, res: Response) => {
+router.get('/', async (req: AuthRequest, res: Response) => {
   const images = await prisma.propertyImage.findMany({
     where:   { propertyId: req.params.propertyId },
     orderBy: [{ position: 'asc' }, { createdAt: 'asc' }],
   });
-  res.json({ data: images });
+  // Re-issue a signed read URL per image — the stored `url` points at a private object
+  const data = await Promise.all(
+    images.map(async (img) => ({ ...img, url: await presignDownload(img.s3Key) }))
+  );
+  res.json({ data });
 });
 
 /* ── PATCH /api/properties/:propertyId/images/reorder ────────────────

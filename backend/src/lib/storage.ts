@@ -1,5 +1,6 @@
-import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 /**
  * S3-compatible storage client.
@@ -31,6 +32,16 @@ export const BUCKET = process.env.STORAGE_BUCKET ?? 'mbuma-propvest';
 export function publicUrl(s3Key: string): string {
   const base = (process.env.STORAGE_PUBLIC_URL ?? '').replace(/\/$/, '');
   return `${base}/${s3Key}`;
+}
+
+/**
+ * Generate a presigned GET URL for reading a private object.
+ * The Railway/Tigris bucket does not allow anonymous public reads, so every
+ * image must be served through a short-lived signed URL re-issued on read.
+ */
+export async function presignDownload(s3Key: string, expiresIn = 60 * 60 * 24): Promise<string> {
+  const client = getS3Client();
+  return getSignedUrl(client, new GetObjectCommand({ Bucket: BUCKET, Key: s3Key }), { expiresIn });
 }
 
 /** Generate a presigned POST — browser uploads directly, no proxy through server */

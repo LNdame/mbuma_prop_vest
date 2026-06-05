@@ -3,7 +3,7 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import s from './form.module.css';
-import ImageUploader, { type UploadedImage } from '../../../../components/ImageUploader';
+import ImageUploader, { commitQueuedImages, type UploadedImage } from '../../../../components/ImageUploader';
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
@@ -78,18 +78,39 @@ export default function NewPropertyPage() {
       fundingCloseDate:         form.fundingCloseDate || null,
     };
 
+    // Reuse an already-created property on retry so we never create duplicates
+    let propertyId = savedId;
     try {
-      const res = await fetch(`${API}/api/properties`, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body:    JSON.stringify(payload),
-      });
-      const data = await res.json();
-      if (!res.ok) { setError(data.error ?? 'Failed to save property'); return; }
-      setSavedId(data.data.id);
+      if (!propertyId) {
+        const res = await fetch(`${API}/api/properties`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body:    JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (!res.ok) { setError(data.error ?? 'Failed to save property'); return; }
+        propertyId = data.data.id as string;
+        setSavedId(propertyId);
+      }
+
+      // Flush any images queued locally before the property existed.
+      // Mark each as committed so a retry won't re-upload it.
+      if (images.some((i) => i.s3Key.startsWith('local:'))) {
+        await commitQueuedImages(propertyId, images, token, (preview, saved) =>
+          setImages((prev) => prev.map((im) =>
+            im.preview === preview
+              ? { ...im, id: saved.id, s3Key: saved.s3Key, url: saved.url, status: 'done' }
+              : im
+          ))
+        );
+      }
+
       router.push('/admin/properties');
-    } catch {
-      setError('Unable to reach the server. Please try again.');
+    } catch (err) {
+      // If the property was created, the failure is image-side; otherwise it's the save.
+      setError(propertyId
+        ? `Property saved, but image upload failed: ${(err as Error).message}. Press save again to retry the images.`
+        : 'Unable to reach the server. Please try again.');
     } finally {
       setSaving(false);
     }

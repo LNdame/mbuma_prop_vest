@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback, type DragEvent, type ChangeEvent } from 'react';
+import { useState, useRef, useCallback, type DragEvent, type ChangeEvent, type Dispatch, type SetStateAction } from 'react';
 import s from './ImageUploader.module.css';
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
@@ -22,7 +22,74 @@ export interface UploadedImage {
 interface Props {
   propertyId: string | null;  // null = new property (images queued until save)
   images: UploadedImage[];
-  onChange: (images: UploadedImage[]) => void;
+  onChange: Dispatch<SetStateAction<UploadedImage[]>>;
+}
+
+/**
+ * Upload a single file to a property: presign → POST to bucket → register in DB.
+ * Returns the persisted image's id, s3Key and (signed) display URL.
+ */
+export async function uploadImageFile(
+  propertyId: string,
+  file: File,
+  position: number,
+  token: string | null,
+): Promise<{ id: string; s3Key: string; url: string }> {
+  // 1 — request presigned POST from backend
+  const presignRes = await fetch(`${API}/api/properties/${propertyId}/images/presign`, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body:    JSON.stringify({ fileName: file.name, mimeType: file.type, sizeBytes: file.size }),
+  });
+  const presign = await presignRes.json();
+  if (!presignRes.ok) throw new Error(presign.error ?? 'Presign failed');
+
+  // 2 — upload directly to the bucket using the presigned POST
+  const form = new FormData();
+  Object.entries(presign.fields as Record<string, string>).forEach(([k, v]) => form.append(k, v));
+  form.append('file', file);
+  const uploadRes = await fetch(presign.uploadUrl, { method: 'POST', body: form });
+  if (!uploadRes.ok) throw new Error('Upload to bucket failed');
+
+  // 3 — register the image in the database
+  const saveRes = await fetch(`${API}/api/properties/${propertyId}/images`, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body:    JSON.stringify({
+      s3Key:     presign.s3Key,
+      fileName:  file.name,
+      mimeType:  file.type,
+      sizeBytes: file.size,
+      position,
+    }),
+  });
+  const saved = await saveRes.json();
+  if (!saveRes.ok) throw new Error(saved.error ?? 'DB save failed');
+
+  return { id: saved.data.id, s3Key: presign.s3Key, url: presign.publicImageUrl };
+}
+
+/**
+ * Flush images that were queued locally while the property had no id yet
+ * (the `local:` placeholders created on the "new property" screen). Recovers
+ * the bytes from each preview object URL and runs them through the full
+ * upload pipeline. Calls `onUploaded` per image so callers can mark progress
+ * and avoid re-uploading on retry.
+ */
+export async function commitQueuedImages(
+  propertyId: string,
+  images: UploadedImage[],
+  token: string | null,
+  onUploaded?: (preview: string, saved: { id: string; s3Key: string; url: string }) => void,
+): Promise<void> {
+  const queued = images.filter((i) => i.s3Key.startsWith('local:'));
+  for (let i = 0; i < queued.length; i++) {
+    const img  = queued[i];
+    const blob = await fetch(img.preview).then((r) => r.blob());
+    const file = new File([blob], img.fileName, { type: img.mimeType });
+    const saved = await uploadImageFile(propertyId, file, i, token);
+    onUploaded?.(img.preview, saved);
+  }
 }
 
 export default function ImageUploader({ propertyId, images, onChange }: Props) {
@@ -59,41 +126,12 @@ export default function ImageUploader({ propertyId, images, onChange }: Props) {
           continue;
         }
 
-        // 1 — request presigned POST from backend
-        const presignRes = await fetch(`${API}/api/properties/${propertyId}/images/presign`, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-          body:    JSON.stringify({ fileName: file.name, mimeType: file.type, sizeBytes: file.size }),
-        });
-        const presign = await presignRes.json();
-        if (!presignRes.ok) throw new Error(presign.error ?? 'Presign failed');
-
-        // 2 — upload directly to bucket using presigned POST
-        const form = new FormData();
-        Object.entries(presign.fields as Record<string, string>).forEach(([k, v]) => form.append(k, v));
-        form.append('file', file);
-        const uploadRes = await fetch(presign.uploadUrl, { method: 'POST', body: form });
-        if (!uploadRes.ok) throw new Error('Upload to bucket failed');
-
-        // 3 — register the image in the database
-        const saveRes = await fetch(`${API}/api/properties/${propertyId}/images`, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-          body:    JSON.stringify({
-            s3Key:     presign.s3Key,
-            fileName:  file.name,
-            mimeType:  file.type,
-            sizeBytes: file.size,
-            position:  images.length,
-          }),
-        });
-        const saved = await saveRes.json();
-        if (!saveRes.ok) throw new Error(saved.error ?? 'DB save failed');
+        const saved = await uploadImageFile(propertyId, file, images.length, token);
 
         onChange((prev: UploadedImage[]) =>
           prev.map((img) =>
             img.preview === preview
-              ? { ...img, id: saved.data.id, s3Key: presign.s3Key, url: presign.publicImageUrl, status: 'done' }
+              ? { ...img, id: saved.id, s3Key: saved.s3Key, url: saved.url, status: 'done' }
               : img
           )
         );
