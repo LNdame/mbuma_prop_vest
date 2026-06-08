@@ -3,6 +3,7 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import s from './form.module.css';
+import ImageUploader, { commitQueuedImages, type UploadedImage } from '../../../../components/ImageUploader';
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
@@ -39,6 +40,8 @@ const PROVINCES = ['Gauteng','Western Cape','KwaZulu-Natal','Eastern Cape','Limp
 export default function NewPropertyPage() {
   const router = useRouter();
   const [form, setForm]     = useState<FormState>(EMPTY);
+  const [images, setImages] = useState<UploadedImage[]>([]);
+  const [savedId, setSavedId] = useState<string | null>(null);
   const [error, setError]   = useState('');
   const [saving, setSaving] = useState(false);
 
@@ -75,17 +78,39 @@ export default function NewPropertyPage() {
       fundingCloseDate:         form.fundingCloseDate || null,
     };
 
+    // Reuse an already-created property on retry so we never create duplicates
+    let propertyId = savedId;
     try {
-      const res = await fetch(`${API}/api/properties`, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body:    JSON.stringify(payload),
-      });
-      const data = await res.json();
-      if (!res.ok) { setError(data.error ?? 'Failed to save property'); return; }
+      if (!propertyId) {
+        const res = await fetch(`${API}/api/properties`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body:    JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (!res.ok) { setError(data.error ?? 'Failed to save property'); return; }
+        propertyId = data.data.id as string;
+        setSavedId(propertyId);
+      }
+
+      // Flush any images queued locally before the property existed.
+      // Mark each as committed so a retry won't re-upload it.
+      if (images.some((i) => i.s3Key.startsWith('local:'))) {
+        await commitQueuedImages(propertyId, images, token, (preview, saved) =>
+          setImages((prev) => prev.map((im) =>
+            im.preview === preview
+              ? { ...im, id: saved.id, s3Key: saved.s3Key, url: saved.url, status: 'done' }
+              : im
+          ))
+        );
+      }
+
       router.push('/admin/properties');
-    } catch {
-      setError('Unable to reach the server. Please try again.');
+    } catch (err) {
+      // If the property was created, the failure is image-side; otherwise it's the save.
+      setError(propertyId
+        ? `Property saved, but image upload failed: ${(err as Error).message}. Press save again to retry the images.`
+        : 'Unable to reach the server. Please try again.');
     } finally {
       setSaving(false);
     }
@@ -238,6 +263,21 @@ export default function NewPropertyPage() {
               </div>
             </div>
 
+            {/* Property Images */}
+            <div className={s.card}>
+              <div className={s.cardHead}>
+                <span className={s.cardTitle}>Property Images</span>
+                <span className={s.cardHint}>First image becomes the cover · max 10 MB each</span>
+              </div>
+              <div className={s.cardBody}>
+                <ImageUploader
+                  propertyId={savedId}
+                  images={images}
+                  onChange={setImages}
+                />
+              </div>
+            </div>
+
             {/* Loan details (optional) */}
             <div className={s.card}>
               <div className={s.cardHead}>
@@ -356,6 +396,7 @@ export default function NewPropertyPage() {
                   { label: 'Gross monthly rent set',  done: !!form.grossMonthlyRent },
                   { label: 'Projected yield set',     done: !!form.projectedYieldPct },
                   { label: 'Funding close date set',  done: !!form.fundingCloseDate },
+                  { label: 'At least 1 image added',  done: images.some((i) => i.status === 'done') },
                 ].map((c) => (
                   <div key={c.label} className={s.checkItem}>
                     <span className={c.done ? s.checkDone : s.checkPending}>

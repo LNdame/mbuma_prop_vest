@@ -5,6 +5,7 @@ import authRouter        from './routes/auth.js';
 import investorsRouter   from './routes/investors.js';
 import invitationsRouter from './routes/invitations.js';
 import propertiesRouter from './routes/properties.js';
+import imagesRouter     from './routes/images.js';
 
 const app = express();
 app.use(cors());
@@ -16,6 +17,7 @@ app.get('/health', (_req, res) => {
 
 app.use('/api/auth',       authRouter);
 app.use('/api/properties',  propertiesRouter);
+app.use('/api/properties/:propertyId/images', imagesRouter);
 app.use('/api/investors',   investorsRouter);
 app.use('/api/invitations', invitationsRouter);
 

@@ -11,6 +11,7 @@
 export type * from './models/User.js'
 export type * from './models/InvestorProfile.js'
 export type * from './models/Property.js'
+export type * from './models/PropertyImage.js'
 export type * from './models/Pledge.js'
 export type * from './models/Payment.js'
 export type * from './models/Document.js'

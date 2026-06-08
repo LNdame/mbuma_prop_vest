@@ -33,6 +33,11 @@ export type InvestorProfile = Prisma.InvestorProfileModel
  */
 export type Property = Prisma.PropertyModel
 /**
+ * Model PropertyImage
+ * 
+ */
+export type PropertyImage = Prisma.PropertyImageModel
+/**
  * Model Pledge
  * 
  */
