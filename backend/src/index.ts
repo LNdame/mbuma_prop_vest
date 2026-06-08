@@ -23,7 +23,7 @@ app.use('/api/properties/:propertyId/images', imagesRouter);
 app.use('/api/investors',   investorsRouter);
 app.use('/api/invitations', invitationsRouter);
 
-const PORT = Number(process.env.PORT) || 4000;
+const PORT =9090// Number(process.env.PORT) || 4000;
 const HOST = '0.0.0.0'; // bind all interfaces so Railway can reach the container
 app.listen(PORT, HOST, () => {
   console.log(`Backend listening on ${HOST}:${PORT} (PORT env=${process.env.PORT ?? 'unset'})`);
