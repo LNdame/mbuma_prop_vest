@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import s from './page.module.css';
+import NavAuth from '@/components/NavAuth';
 
 const MOCK_PROPERTIES = [
   {
@@ -99,15 +100,12 @@ export default function HomePage() {
           </a>
 
           <ul className={s.navLinks}>
-            <li><a href="#properties">Properties</a></li>
+            <li><a href="/properties">Properties</a></li>
             <li><a href="#how-it-works">How It Works</a></li>
             <li><a href="#about">About</a></li>
           </ul>
 
-          <div className={s.navActions}>
-            <a href="/login" className={s.btnGhost}>Log In</a>
-            <button className={s.btnPrimary}>Request an Invitation</button>
-          </div>
+          <NavAuth />
         </div>
       </nav>
 
@@ -132,7 +130,7 @@ export default function HomePage() {
             </p>
             <div className={s.heroCtas}>
               <button className={s.btnHeroPrimary}>Request an Invitation →</button>
-              <a href="#properties" className={s.btnHeroSecondary}>View Properties</a>
+              <a href="/properties" className={s.btnHeroSecondary}>View Properties</a>
             </div>
             <p className={s.heroNote}>
               Invest from <span>R1 000</span> · FICA-compliant · Registered investors only
@@ -235,7 +233,7 @@ export default function HomePage() {
                 Pledge your share and earn monthly distributions.
               </p>
             </div>
-            <button className={s.btnOutline}>View All Properties →</button>
+            <a href="/properties" className={s.btnOutline}>View All Properties →</a>
           </div>
 
           <div className={s.propertyGrid}>
@@ -445,7 +443,7 @@ export default function HomePage() {
           <div>
             <div className={s.footerHeading}>Platform</div>
             <ul className={s.footerLinks}>
-              <li><a href="#properties">Properties</a></li>
+              <li><a href="/properties">Properties</a></li>
               <li><a href="#how-it-works">How It Works</a></li>
               <li><a href="#about">Request Invitation</a></li>
               <li><a href="/login">Log In</a></li>

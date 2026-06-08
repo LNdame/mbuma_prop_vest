@@ -30,3 +30,13 @@ export async function apiFetch<T>(path: string): Promise<T> {
   }
   return res.json();
 }
+
+/** Unauthenticated fetch for public endpoints (browse properties, public detail). */
+export async function publicFetch<T>(path: string): Promise<T> {
+  const res = await fetch(`${BACKEND}${path}`, { cache: 'no-store' });
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`API ${path} failed: ${res.status} ${body}`);
+  }
+  return res.json();
+}

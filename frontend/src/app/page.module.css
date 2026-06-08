@@ -67,6 +67,106 @@
   align-items: center;
   gap: 12px;
 }
+
+/* ── Logged-in user menu ── */
+.userMenu {
+  position: relative;
+}
+.userTrigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 99px;
+  padding: 5px 12px 5px 6px;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.userTrigger:hover {
+  background: rgba(255, 255, 255, .12);
+  border-color: rgba(255, 255, 255, .28);
+}
+.userAvatar {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green-400), var(--green-600));
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.userText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.15;
+}
+.userName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--white);
+}
+.userRole {
+  font-size: 11px;
+  color: rgba(255, 255, 255, .55);
+}
+.userChevron {
+  font-size: 11px;
+  color: rgba(255, 255, 255, .65);
+  transition: transform .15s ease;
+  margin-left: 2px;
+}
+.userChevronOpen {
+  transform: rotate(180deg);
+}
+.userDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 180px;
+  background: var(--white);
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 50;
+}
+.userDropItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--neutral-700);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .12s;
+}
+.userDropItem:hover {
+  background: var(--neutral-100);
+  color: var(--neutral-900);
+}
+.userDropIcon {
+  font-size: 14px;
+  width: 16px;
+  text-align: center;
+  color: var(--neutral-500);
+}
 .btnGhost {
   font-size: 14px;
   font-weight: 500;

@@ -1,5 +1,6 @@
 import { Router, type Response } from 'express';
 import { prisma } from '../lib/prisma.js';
+import { presignDownload } from '../lib/storage.js';
 import { requireAuth, requireRole, type AuthRequest } from '../middleware/auth.js';
 
 const router = Router();
@@ -9,13 +10,19 @@ router.get('/', async (_req, res: Response) => {
   try {
     const properties = await prisma.property.findMany({
       orderBy: { createdAt: 'desc' },
-      include: { _count: { select: { pledges: true } } },
+      include: {
+        _count: { select: { pledges: true } },
+        images: { take: 1, orderBy: [{ position: 'asc' }, { createdAt: 'asc' }] },
+      },
     });
 
-    const data = properties.map(({ _count, ...p }) => ({
-      ...p,
-      investorCount: _count.pledges,
-    }));
+    const data = await Promise.all(
+      properties.map(async ({ _count, images, ...p }) => ({
+        ...p,
+        investorCount:  _count.pledges,
+        coverImageUrl:  images[0] ? await presignDownload(images[0].s3Key) : null,
+      })),
+    );
 
     res.json({ data });
   } catch (err) {
