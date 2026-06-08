@@ -3,6 +3,16 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import s from '../../new/form.module.css';
+import ImageUploader, { type UploadedImage } from '../../../../../components/ImageUploader';
+
+export interface PropertyImageData {
+  id: string;
+  s3Key: string;
+  url: string;
+  fileName: string;
+  mimeType: string;
+  sizeBytes: number;
+}
 
 export interface PropertyFormData {
   id: string;
@@ -69,9 +79,29 @@ function toFormState(p: PropertyFormData): FormState {
   };
 }
 
-export default function EditPropertyForm({ property }: { property: PropertyFormData }) {
+function toUploadedImage(img: PropertyImageData): UploadedImage {
+  return {
+    id:        img.id,
+    s3Key:     img.s3Key,
+    url:       img.url,
+    fileName:  img.fileName,
+    mimeType:  img.mimeType,
+    sizeBytes: img.sizeBytes,
+    preview:   img.url,   // non-blob; used as React key + display fallback
+    status:    'done',
+  };
+}
+
+export default function EditPropertyForm({
+  property,
+  initialImages = [],
+}: {
+  property: PropertyFormData;
+  initialImages?: PropertyImageData[];
+}) {
   const router = useRouter();
   const [form, setForm]     = useState<FormState>(toFormState(property));
+  const [images, setImages] = useState<UploadedImage[]>(initialImages.map(toUploadedImage));
   const [error, setError]   = useState('');
   const [saving, setSaving] = useState(false);
 
@@ -273,6 +303,21 @@ export default function EditPropertyForm({ property }: { property: PropertyFormD
                   </div>
                 </div>
 
+              </div>
+            </div>
+
+            {/* Property Images */}
+            <div className={s.card}>
+              <div className={s.cardHead}>
+                <span className={s.cardTitle}>Property Images</span>
+                <span className={s.cardHint}>First image becomes the cover · max 10 MB each</span>
+              </div>
+              <div className={s.cardBody}>
+                <ImageUploader
+                  propertyId={property.id}
+                  images={images}
+                  onChange={setImages}
+                />
               </div>
             </div>
 
