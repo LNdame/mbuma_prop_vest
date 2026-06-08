@@ -5,15 +5,6 @@ import s from './page.module.css';
 import PropertyCarousel, { type CarouselImage } from '@/components/PropertyCarousel';
 
 /* ── Types ──────────────────────────────────────────────────────── */
-interface Pledge {
-  id: string;
-  amount: string;
-  status: string;
-  confirmedAt: string | null;
-  createdAt: string;
-  user: { id: string; fullName: string; email: string; kycStatus: string };
-}
-
 interface PropertyDetail {
   id: string;
   title: string;
@@ -29,12 +20,9 @@ interface PropertyDetail {
   operatingExpensesMonthly: string;
   netMonthlyRent: string;
   projectedYieldPct: string;
-  loanAmount: string | null;
-  loanInterestRate: string | null;
-  loanTermMonths: number | null;
   fundingCloseDate: string | null;
   createdAt: string;
-  pledges: Pledge[];
+  pledges: { id: string }[];
 }
 
 /* ── Helpers ────────────────────────────────────────────────────── */
@@ -52,21 +40,13 @@ function pct(funded: string, target: string) {
   if (!t) return 0;
   return Math.min(100, Math.round((Number(funded) / t) * 100));
 }
-function propertyIcon(type: string) {
-  if (type === 'commercial') return '🏢';
-  if (type === 'mixed_use')  return '🏗';
-  return '🏘';
-}
 function typeLabel(type: string) {
   if (type === 'mixed_use') return 'Mixed use';
   return type.charAt(0).toUpperCase() + type.slice(1);
 }
-function initials(name: string) {
-  return name.split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
-}
 
 /* ── Page ───────────────────────────────────────────────────────── */
-export default async function PropertyDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function InvestorPropertyDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   let property: PropertyDetail;
@@ -86,10 +66,8 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
     images = [];
   }
 
-  const fundedPct      = pct(property.fundedAmount, property.targetRaise);
-  const confirmedTotal = property.pledges
-    .filter(p => p.status === 'confirmed')
-    .reduce((sum, p) => sum + Number(p.amount), 0);
+  const fundedPct = pct(property.fundedAmount, property.targetRaise);
+  const isOpen    = property.status === 'open';
 
   const statusCls = property.status === 'open'   ? s.pillOpen
                   : property.status === 'funded' ? s.pillFunded
@@ -99,29 +77,17 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   return (
     <div className={s.page}>
 
-      {/* Header */}
-      <div className={s.pageHeader}>
-        <Link href="/admin/properties" className={s.backLink}>← Properties</Link>
-        <div className={s.headerActions}>
-          <Link href={`/admin/properties/${id}/edit`} className={s.btnSecondary}>Edit property</Link>
-        </div>
-      </div>
+      <Link href="/investor/properties" className={s.backLink}>← Back to properties</Link>
 
       {/* Image carousel */}
       <PropertyCarousel images={images} />
 
-      {/* Hero card */}
+      {/* Hero */}
       <div className={s.heroCard}>
         <div className={s.heroLeft}>
-          <div className={s.propIcon}>{propertyIcon(property.propertyType)}</div>
-          <div>
-            <h1 className={s.propTitle}>{property.title}</h1>
-            <div className={s.propMeta}>
-              <span>{property.address}, {property.province}</span>
-              <span>· {typeLabel(property.propertyType)}</span>
-              <span>· Listed {fmtDate(property.createdAt)}</span>
-            </div>
-          </div>
+          <span className={s.propType}>{typeLabel(property.propertyType)}</span>
+          <h1 className={s.propTitle}>{property.title}</h1>
+          <span className={s.propAddr}>📍 {property.address}, {property.province}</span>
         </div>
         <div className={s.heroRight}>
           <span className={statusCls}>
@@ -136,20 +102,20 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
       {/* Stats row */}
       <div className={s.statsRow}>
         <div className={s.statCard}>
-          <div className={s.statLabel}>Raised</div>
-          <div className={`${s.statValue} ${s.accent}`}>{fmtRand(property.fundedAmount)}</div>
+          <div className={s.statLabel}>Min. pledge</div>
+          <div className={s.statValue}>{fmtRand(property.minimumPledge)}</div>
         </div>
         <div className={s.statCard}>
-          <div className={s.statLabel}>Target</div>
+          <div className={s.statLabel}>Projected yield</div>
+          <div className={`${s.statValue} ${s.accent}`}>{Number(property.projectedYieldPct).toFixed(1)}%</div>
+        </div>
+        <div className={s.statCard}>
+          <div className={s.statLabel}>Target raise</div>
           <div className={s.statValue}>{fmtRand(property.targetRaise)}</div>
         </div>
         <div className={s.statCard}>
           <div className={s.statLabel}>Funded</div>
           <div className={s.statValue}>{fundedPct}%</div>
-        </div>
-        <div className={s.statCard}>
-          <div className={s.statLabel}>Projected yield</div>
-          <div className={s.statValue}>{Number(property.projectedYieldPct).toFixed(1)}%</div>
         </div>
       </div>
 
@@ -171,8 +137,8 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
               </div>
               <div className={s.fundingMeta}>
                 <div className={s.fundMetaItem}>
-                  <span className={s.fundMetaLabel}>Confirmed raised</span>
-                  <span className={s.fundMetaValue}>{fmtRand(confirmedTotal)}</span>
+                  <span className={s.fundMetaLabel}>Raised so far</span>
+                  <span className={s.fundMetaValue}>{fmtRand(property.fundedAmount)}</span>
                 </div>
                 <div className={s.fundMetaItem}>
                   <span className={s.fundMetaLabel}>Target raise</span>
@@ -189,41 +155,6 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
               </div>
             </div>
           </div>
-
-          {/* Investor pledges */}
-          <div className={s.panel}>
-            <div className={s.panelHead}>
-              <span className={s.panelTitle}>Investors</span>
-              <span className={s.badgeCount}>{property.pledges.length}</span>
-            </div>
-            {property.pledges.length === 0 ? (
-              <div className={s.empty}>No investors yet</div>
-            ) : property.pledges.map(pl => (
-              <div key={pl.id} className={s.pledgeRow}>
-                <div className={s.pledgeLeft}>
-                  <div className={s.avatar}>{initials(pl.user.fullName)}</div>
-                  <div>
-                    <Link href={`/admin/investors/${pl.user.id}`} className={s.pledgeName}>
-                      {pl.user.fullName}
-                    </Link>
-                    <div className={s.pledgeEmail}>{pl.user.email}</div>
-                  </div>
-                </div>
-                <div className={s.pledgeRight}>
-                  <span className={s.pledgeAmount}>{fmtRand(pl.amount)}</span>
-                  <span className={pl.status === 'confirmed' ? s.pillConfirmed : s.pillPending}>
-                    {pl.status}
-                  </span>
-                  <span className={s.pledgeDate}>{fmtDate(pl.confirmedAt ?? pl.createdAt)}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
-
-        {/* Right column */}
-        <div className={s.rightCol}>
 
           {/* Property details */}
           <div className={s.panel}>
@@ -245,26 +176,33 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
             </div>
           </div>
 
-          {/* Loan details */}
-          {property.loanAmount && (
-            <div className={s.panel}>
-              <div className={s.panelHead}><span className={s.panelTitle}>Loan details</span></div>
-              <div className={s.detailGrid}>
-                {[
-                  { label: 'Loan amount',    value: fmtRand(property.loanAmount) },
-                  { label: 'Interest rate',  value: property.loanInterestRate ? `${Number(property.loanInterestRate).toFixed(1)}%` : '—' },
-                  { label: 'Term',           value: property.loanTermMonths ? `${property.loanTermMonths} months` : '—' },
-                ].map(f => (
-                  <div key={f.label} className={s.detailField}>
-                    <div className={s.fieldLabel}>{f.label}</div>
-                    <div className={s.fieldValue}>{f.value}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
         </div>
+
+        {/* Right column — pledge CTA */}
+        <div className={s.rightCol}>
+          <div className={s.ctaCard}>
+            <div className={s.ctaTitle}>Invest in this property</div>
+            <div className={s.ctaSub}>
+              Pledge your share and start earning a projected {Number(property.projectedYieldPct).toFixed(1)}% yield.
+            </div>
+            <div className={s.ctaRow}>
+              <span className={s.ctaLabel}>Minimum pledge</span>
+              <span className={s.ctaValue}>{fmtRand(property.minimumPledge)}</span>
+            </div>
+            <div className={s.ctaRow}>
+              <span className={s.ctaLabel}>Projected yield</span>
+              <span className={s.ctaValue}>{Number(property.projectedYieldPct).toFixed(1)}%</span>
+            </div>
+            <button
+              type="button"
+              className={`${s.btnPledge} ${isOpen ? '' : s.btnDisabled}`}
+              disabled={!isOpen}
+            >
+              {isOpen ? 'Pledge Now →' : property.status === 'funded' ? 'Fully funded' : 'Not open for pledges'}
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
   );
