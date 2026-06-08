@@ -24,6 +24,7 @@ app.use('/api/investors',   investorsRouter);
 app.use('/api/invitations', invitationsRouter);
 
 const PORT = Number(process.env.PORT) || 4000;
-app.listen(PORT, () => {
-  console.log(`Backend listening on http://localhost:${PORT}`);
+const HOST = '0.0.0.0'; // bind all interfaces so Railway can reach the container
+app.listen(PORT, HOST, () => {
+  console.log(`Backend listening on ${HOST}:${PORT} (PORT env=${process.env.PORT ?? 'unset'})`);
 });

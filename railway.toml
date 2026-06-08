@@ -1,5 +1,0 @@
-[build]
-buildCommand = "npm run build --workspace=@mbuma/shared && npm run build --workspace=@mbuma/backend"
-
-[deploy]
-startCommand = "npm run start --workspace=@mbuma/backend"
