@@ -364,6 +364,14 @@
   justify-content: center;
   font-size: 40px;
   position: relative;
+  overflow: hidden;
+}
+.heroCardImgPhoto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .heroCardBadge {
   position: absolute;
@@ -510,6 +518,9 @@
   gap: 24px;
 }
 .propertyCard {
+  display: block;
+  text-decoration: none;
+  color: inherit;
   background: var(--white);
   border: 1px solid var(--neutral-200);
   border-radius: var(--radius-md);
@@ -520,6 +531,19 @@
 .propertyCard:hover {
   box-shadow: var(--shadow-md);
   transform: translateY(-3px);
+}
+.propertyEmpty {
+  text-align: center;
+  color: rgba(255,255,255,.65);
+  font-size: 15px;
+  padding: 40px 0;
+}
+.propertyCardImgPhoto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .propertyCardImg {
   height: 180px;

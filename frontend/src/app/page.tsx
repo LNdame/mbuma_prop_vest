@@ -1,57 +1,56 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import s from './page.module.css';
 import NavAuth from '@/components/NavAuth';
+import { publicFetch } from '@/lib/api';
 
-const MOCK_PROPERTIES = [
-  {
-    id: '1',
-    imgClass: '',
-    badge: 'Open',
-    badgeClass: 'statusOpen',
-    type: 'Residential',
-    title: 'Sandown Residential Estate',
-    address: 'Sandton, Gauteng',
-    emoji: '🏘️',
-    minInvestment: 'R1 000',
-    projectedYield: '9.2%',
-    totalValue: 'R4.2M',
-    funded: 68,
-    fundedLabel: '68% funded',
-    raisedLabel: 'R2.86M raised',
-  },
-  {
-    id: '2',
-    imgClass: 'blue',
-    badge: 'Open',
-    badgeClass: 'statusOpen',
-    type: 'Commercial',
-    title: 'Century City Office Park',
-    address: 'Cape Town, Western Cape',
-    emoji: '🏢',
-    minInvestment: 'R2 500',
-    projectedYield: '10.8%',
-    totalValue: 'R8.5M',
-    funded: 43,
-    fundedLabel: '43% funded',
-    raisedLabel: 'R3.66M raised',
-  },
-  {
-    id: '3',
-    imgClass: 'amber',
-    badge: 'Funded',
-    badgeClass: 'statusFunded',
-    type: 'Residential',
-    title: 'Umhlanga Ridge Apartments',
-    address: 'Durban, KwaZulu-Natal',
-    emoji: '🏡',
-    minInvestment: 'R1 500',
-    projectedYield: '8.7%',
-    totalValue: 'R3.1M',
-    funded: 100,
-    fundedLabel: '100% funded',
-    raisedLabel: 'R3.1M raised',
-  },
-];
+interface FeaturedProperty {
+  id: string;
+  title: string;
+  propertyType: 'residential' | 'commercial' | 'mixed_use';
+  address: string;
+  province: string;
+  status: 'draft' | 'open' | 'funded' | 'closed';
+  targetRaise: string;
+  minimumPledge: string;
+  fundedAmount: string;
+  projectedYieldPct: string;
+  coverImageUrl: string | null;
+}
+
+interface PlatformStats {
+  propertiesListed: number;
+  totalRaised: number;
+  avgYieldPct: number;
+  verifiedInvestors: number;
+}
+
+function fmtRand(n: string | number | null) {
+  const v = Number(n);
+  if (!v) return 'R0';
+  return 'R' + v.toLocaleString('en-ZA');
+}
+function fmtRandShort(n: string | number | null) {
+  const v = Number(n);
+  if (!v) return 'R0';
+  if (v >= 1_000_000) return 'R' + (v / 1_000_000).toFixed(v % 1_000_000 === 0 ? 0 : 1) + 'M';
+  if (v >= 1_000)     return 'R' + Math.round(v / 1_000) + 'k';
+  return 'R' + Math.round(v);
+}
+function fundedPct(funded: string, target: string) {
+  const t = Number(target);
+  if (!t) return 0;
+  return Math.min(100, Math.round((Number(funded) / t) * 100));
+}
+function typeLabel(t: string) {
+  if (t === 'mixed_use') return 'Mixed use';
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}
+function propertyEmoji(t: string) {
+  if (t === 'commercial') return '🏢';
+  if (t === 'mixed_use')  return '🏗️';
+  return '🏘️';
+}
 
 const FEATURES = [
   {
@@ -86,7 +85,27 @@ const FEATURES = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Top properties from the DB — open ones first, then most recent. Drafts excluded.
+  let featured: FeaturedProperty[] = [];
+  try {
+    const res = await publicFetch<{ data: FeaturedProperty[] }>('/api/properties');
+    featured = res.data
+      .filter((p) => p.status !== 'draft')
+      .sort((a, b) => Number(b.status === 'open') - Number(a.status === 'open'))
+      .slice(0, 3);
+  } catch {
+    featured = [];
+  }
+
+  // Platform figures for the stats bar
+  let stats: PlatformStats = { propertiesListed: 0, totalRaised: 0, avgYieldPct: 0, verifiedInvestors: 0 };
+  try {
+    stats = await publicFetch<PlatformStats>('/api/stats');
+  } catch {
+    /* keep zeros */
+  }
+
   return (
     <>
       {/* ── NAV ── */}
@@ -137,64 +156,57 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Right — floating property cards */}
+          {/* Right — floating property cards (top properties from the DB) */}
           <div className={s.heroVisual}>
-            <div className={s.heroCard}>
-              <div className={s.heroCardImg}>
-                🏘️
-                <span className={s.heroCardBadge}>Open</span>
-              </div>
-              <div className={s.heroCardBody}>
-                <div className={s.heroCardTitle}>Sandown Residential Estate</div>
-                <div className={s.heroCardSub}>📍 Sandton, Gauteng</div>
-                <div className={s.heroCardStats}>
-                  <div className={s.heroCardStat}>
-                    <span className={s.heroCardStatLabel}>Yield</span>
-                    <span className={s.heroCardStatValue}>9.2%</span>
-                  </div>
-                  <div className={s.heroCardStat}>
-                    <span className={s.heroCardStatLabel}>Min</span>
-                    <span className={s.heroCardStatValue}>R1 000</span>
-                  </div>
-                  <div className={s.heroCardStat}>
-                    <span className={s.heroCardStatLabel}>Funded</span>
-                    <span className={s.heroCardStatValue}>68%</span>
+            {featured.slice(0, 2).map((p, i) => (
+              <a key={p.id} href={`/properties/${p.id}`} className={s.heroCard}>
+                <div className={`${s.heroCardImg} ${i === 1 ? s.blue : ''}`}>
+                  {p.coverImageUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={p.coverImageUrl} alt={p.title} className={s.heroCardImgPhoto} />
+                  ) : (
+                    propertyEmoji(p.propertyType)
+                  )}
+                  <span className={s.heroCardBadge}>
+                    {p.status.charAt(0).toUpperCase() + p.status.slice(1)}
+                  </span>
+                </div>
+                <div className={s.heroCardBody}>
+                  <div className={s.heroCardTitle}>{p.title}</div>
+                  <div className={s.heroCardSub}>📍 {p.address}, {p.province}</div>
+                  <div className={s.heroCardStats}>
+                    <div className={s.heroCardStat}>
+                      <span className={s.heroCardStatLabel}>Yield</span>
+                      <span className={s.heroCardStatValue}>{Number(p.projectedYieldPct).toFixed(1)}%</span>
+                    </div>
+                    <div className={s.heroCardStat}>
+                      <span className={s.heroCardStatLabel}>Min</span>
+                      <span className={s.heroCardStatValue}>{fmtRand(p.minimumPledge)}</span>
+                    </div>
+                    <div className={s.heroCardStat}>
+                      <span className={s.heroCardStatLabel}>Funded</span>
+                      <span className={s.heroCardStatValue}>{fundedPct(p.fundedAmount, p.targetRaise)}%</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </a>
+            ))}
 
-            <div className={s.heroCard}>
-              <div className={`${s.heroCardImg} ${s.blue}`}>
-                🏢
-                <span className={s.heroCardBadge}>Open</span>
-              </div>
-              <div className={s.heroCardBody}>
-                <div className={s.heroCardTitle}>Century City Office Park</div>
-                <div className={s.heroCardSub}>📍 Cape Town, WC</div>
-                <div className={s.heroCardStats}>
-                  <div className={s.heroCardStat}>
-                    <span className={s.heroCardStatLabel}>Yield</span>
-                    <span className={s.heroCardStatValue}>10.8%</span>
-                  </div>
-                  <div className={s.heroCardStat}>
-                    <span className={s.heroCardStatLabel}>Min</span>
-                    <span className={s.heroCardStatValue}>R2 500</span>
-                  </div>
-                  <div className={s.heroCardStat}>
-                    <span className={s.heroCardStatLabel}>Funded</span>
-                    <span className={s.heroCardStatValue}>43%</span>
-                  </div>
+            {featured[2] && (
+              <a href={`/properties/${featured[2].id}`} className={s.heroCard}>
+                <div className={`${s.heroCardImg} ${s.amber}`}>
+                  {featured[2].coverImageUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={featured[2].coverImageUrl} alt={featured[2].title} className={s.heroCardImgPhoto} />
+                  ) : (
+                    propertyEmoji(featured[2].propertyType)
+                  )}
                 </div>
-              </div>
-            </div>
-
-            <div className={s.heroCard}>
-              <div className={`${s.heroCardImg} ${s.amber}`}>🏡</div>
-              <div className={s.heroCardBody}>
-                <div className={s.heroCardTitle}>Umhlanga Ridge Apartments</div>
-              </div>
-            </div>
+                <div className={s.heroCardBody}>
+                  <div className={s.heroCardTitle}>{featured[2].title}</div>
+                </div>
+              </a>
+            )}
           </div>
         </div>
       </section>
@@ -203,19 +215,19 @@ export default function HomePage() {
       <div className={s.statsBar}>
         <div className={s.statsBarInner}>
           <div className={s.statItem}>
-            <div className={s.statValue}>12</div>
+            <div className={s.statValue}>{stats.propertiesListed}</div>
             <div className={s.statLabel}>Properties Listed</div>
           </div>
           <div className={s.statItem}>
-            <div className={s.statValue}>R42M+</div>
+            <div className={s.statValue}>{fmtRandShort(stats.totalRaised)}</div>
             <div className={s.statLabel}>Total Capital Raised</div>
           </div>
           <div className={s.statItem}>
-            <div className={s.statValue}>840+</div>
+            <div className={s.statValue}>{stats.verifiedInvestors}</div>
             <div className={s.statLabel}>Verified Investors</div>
           </div>
           <div className={s.statItem}>
-            <div className={s.statValue}>9.4%</div>
+            <div className={s.statValue}>{stats.avgYieldPct.toFixed(1)}%</div>
             <div className={s.statLabel}>Average Net Yield</div>
           </div>
         </div>
@@ -236,67 +248,69 @@ export default function HomePage() {
             <a href="/properties" className={s.btnOutline}>View All Properties →</a>
           </div>
 
-          <div className={s.propertyGrid}>
-            {MOCK_PROPERTIES.map((p) => (
-              <div key={p.id} className={s.propertyCard}>
-                <div
-                  className={[
-                    s.propertyCardImg,
-                    p.imgClass === 'blue' ? s.blue : '',
-                    p.imgClass === 'amber' ? s.amber : '',
-                  ]
-                    .filter(Boolean)
-                    .join(' ')}
-                >
-                  {p.emoji}
-                  <span
-                    className={[
-                      s.statusBadge,
-                      p.badgeClass === 'statusOpen' ? s.statusOpen : s.statusFunded,
-                    ].join(' ')}
-                  >
-                    {p.badge}
-                  </span>
-                  <div className={s.progressWrap}>
-                    <div className={s.progressBar} style={{ width: `${p.funded}%` }} />
-                  </div>
-                </div>
-
-                <div className={s.propertyCardBody}>
-                  <div className={s.propertyType}>{p.type}</div>
-                  <div className={s.propertyTitle}>{p.title}</div>
-                  <div className={s.propertyAddress}>📍 {p.address}</div>
-
-                  <div className={s.propertyMetrics}>
-                    <div className={s.metricCell}>
-                      <div className={s.metricValue}>{p.minInvestment}</div>
-                      <div className={s.metricLabel}>Min. Pledge</div>
+          {featured.length === 0 ? (
+            <p className={s.propertyEmpty}>Curated properties are coming soon — check back shortly.</p>
+          ) : (
+            <div className={s.propertyGrid}>
+              {featured.map((p) => {
+                const pctVal = fundedPct(p.fundedAmount, p.targetRaise);
+                return (
+                  <Link key={p.id} href={`/properties/${p.id}`} className={s.propertyCard}>
+                    <div className={s.propertyCardImg}>
+                      {p.coverImageUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={p.coverImageUrl} alt={p.title} className={s.propertyCardImgPhoto} />
+                      ) : (
+                        <span>{propertyEmoji(p.propertyType)}</span>
+                      )}
+                      <span
+                        className={[
+                          s.statusBadge,
+                          p.status === 'funded' ? s.statusFunded : s.statusOpen,
+                        ].join(' ')}
+                      >
+                        {p.status.charAt(0).toUpperCase() + p.status.slice(1)}
+                      </span>
+                      <div className={s.progressWrap}>
+                        <div className={s.progressBar} style={{ width: `${pctVal}%` }} />
+                      </div>
                     </div>
-                    <div className={s.metricCell}>
-                      <div className={s.metricValue}>{p.projectedYield}</div>
-                      <div className={s.metricLabel}>Proj. Yield</div>
-                    </div>
-                    <div className={s.metricCell}>
-                      <div className={s.metricValue}>{p.totalValue}</div>
-                      <div className={s.metricLabel}>Total Raise</div>
-                    </div>
-                  </div>
 
-                  <div className={s.fundingRow}>
-                    <span>{p.fundedLabel}</span>
-                    <strong>{p.raisedLabel}</strong>
-                  </div>
-                  <div className={s.fundingBarTrack}>
-                    <div className={s.fundingBarFill} style={{ width: `${p.funded}%` }} />
-                  </div>
+                    <div className={s.propertyCardBody}>
+                      <div className={s.propertyType}>{typeLabel(p.propertyType)}</div>
+                      <div className={s.propertyTitle}>{p.title}</div>
+                      <div className={s.propertyAddress}>📍 {p.address}, {p.province}</div>
 
-                  <button className={s.btnCardCta}>
-                    {p.funded === 100 ? 'View Details' : 'Pledge Now'}
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+                      <div className={s.propertyMetrics}>
+                        <div className={s.metricCell}>
+                          <div className={s.metricValue}>{fmtRand(p.minimumPledge)}</div>
+                          <div className={s.metricLabel}>Min. Pledge</div>
+                        </div>
+                        <div className={s.metricCell}>
+                          <div className={s.metricValue}>{Number(p.projectedYieldPct).toFixed(1)}%</div>
+                          <div className={s.metricLabel}>Proj. Yield</div>
+                        </div>
+                        <div className={s.metricCell}>
+                          <div className={s.metricValue}>{fmtRandShort(p.targetRaise)}</div>
+                          <div className={s.metricLabel}>Total Raise</div>
+                        </div>
+                      </div>
+
+                      <div className={s.fundingRow}>
+                        <span>{pctVal}% funded</span>
+                        <strong>{fmtRandShort(p.fundedAmount)} raised</strong>
+                      </div>
+                      <div className={s.fundingBarTrack}>
+                        <div className={s.fundingBarFill} style={{ width: `${pctVal}%` }} />
+                      </div>
+
+                      <div className={s.btnCardCta}>View Details</div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
