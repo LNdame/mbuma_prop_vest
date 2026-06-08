@@ -2,6 +2,7 @@ import { apiFetch } from '@/lib/api';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import s from './page.module.css';
+import PropertyCarousel, { type CarouselImage } from '@/components/PropertyCarousel';
 
 /* ── Types ──────────────────────────────────────────────────────── */
 interface Pledge {
@@ -76,6 +77,15 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
     notFound();
   }
 
+  // Property images (signed URLs re-issued by the backend on each read)
+  let images: CarouselImage[] = [];
+  try {
+    const imgRes = await apiFetch<{ data: CarouselImage[] }>(`/api/properties/${id}/images`);
+    images = imgRes.data;
+  } catch {
+    images = [];
+  }
+
   const fundedPct      = pct(property.fundedAmount, property.targetRaise);
   const confirmedTotal = property.pledges
     .filter(p => p.status === 'confirmed')
@@ -96,6 +106,9 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
           <Link href={`/admin/properties/${id}/edit`} className={s.btnSecondary}>Edit property</Link>
         </div>
       </div>
+
+      {/* Image carousel */}
+      <PropertyCarousel images={images} />
 
       {/* Hero card */}
       <div className={s.heroCard}>
