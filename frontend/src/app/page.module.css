@@ -34,6 +34,12 @@
   color: var(--white);
   letter-spacing: -1px;
 }
+.logoImg {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+}
 .logoText {
   font-size: 17px;
   font-weight: 700;

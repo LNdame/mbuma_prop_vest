@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import s from './page.module.css';
 
 const MOCK_PROPERTIES = [
@@ -91,7 +92,7 @@ export default function HomePage() {
       <nav className={s.nav}>
         <div className={s.navInner}>
           <a href="/" className={s.logo}>
-            <div className={s.logoMark}>M</div>
+            <Image src="/logo.png" alt="Mbuma PropVest logo" width={40} height={40} className={s.logoImg} priority />
             <span className={s.logoText}>
               Mbuma <span>PropVest</span>
             </span>
@@ -430,7 +431,7 @@ export default function HomePage() {
         <div className={s.footerGrid}>
           <div className={s.footerBrand}>
             <div className={s.logo}>
-              <div className={s.logoMark}>M</div>
+              <Image src="/logo.png" alt="Mbuma PropVest logo" width={40} height={40} className={s.logoImg} />
               <span className={s.logoText}>
                 Mbuma <span>PropVest</span>
               </span>
