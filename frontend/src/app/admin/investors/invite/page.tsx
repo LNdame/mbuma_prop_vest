@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import s from './page.module.css';
 
+const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+
 type Step = 'form' | 'success';
 
 export default function InviteInvestorPage() {
@@ -18,7 +20,7 @@ export default function InviteInvestorPage() {
     if (!email.trim()) { setError('Email is required'); return; }
     setLoading(true);
     try {
-      const res = await fetch('/api/invitations', {
+      const res = await fetch(`${API}/api/invitations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('adminToken') ?? ''}` },
         body: JSON.stringify({ email: email.trim() }),
