@@ -43,6 +43,44 @@ router.get('/', requireAuth, requireRole('admin', 'super_admin'), async (_req, r
   }
 });
 
+/* ── GET /api/investors/me ───────────────────────────────────────────
+   The logged-in investor's own profile, pledges and distributions.
+   Must be declared BEFORE /:id so "me" isn't treated as an id.
+──────────────────────────────────────────────────────────────────────── */
+router.get('/me', requireAuth, async (req: AuthRequest, res: Response) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.sub },
+      include: {
+        investorProfile: true,
+        pledges: {
+          where:   { status: { not: 'cancelled' } },
+          include: {
+            property: { select: { id: true, title: true, propertyType: true, address: true, province: true, status: true, projectedYieldPct: true, targetRaise: true, fundedAmount: true } },
+          },
+          orderBy: { createdAt: 'desc' },
+        },
+        distributionLines: {
+          include: { distribution: { select: { periodLabel: true, processedAt: true, property: { select: { title: true } } } } },
+          orderBy: { createdAt: 'desc' },
+          take: 24,
+        },
+      },
+    });
+
+    if (!user) {
+      res.status(404).json({ error: 'Account not found' });
+      return;
+    }
+
+    const { passwordHash: _omit, ...safe } = user;
+    res.json({ data: safe });
+  } catch (err) {
+    console.error('GET /api/investors/me error:', err);
+    res.status(500).json({ error: 'Failed to fetch account' });
+  }
+});
+
 /* ── GET /api/investors/:id ──────────────────────────────────────── */
 router.get('/:id', requireAuth, requireRole('admin', 'super_admin'), async (req, res: Response) => {
   try {
