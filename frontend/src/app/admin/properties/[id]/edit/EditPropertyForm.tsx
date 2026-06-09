@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import s from '../../new/form.module.css';
 import ImageUploader, { type UploadedImage } from '../../../../../components/ImageUploader';
 
+const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+
 export interface PropertyImageData {
   id: string;
   s3Key: string;
@@ -141,7 +143,7 @@ export default function EditPropertyForm({
     };
 
     try {
-      const res = await fetch(`/api/properties/${property.id}`, {
+      const res = await fetch(`${API}/api/properties/${property.id}`, {
         method:  'PATCH',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body:    JSON.stringify(payload),
