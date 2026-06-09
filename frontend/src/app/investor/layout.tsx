@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import s from './layout.module.css';
+import InvestorSidebarUser from './InvestorSidebarUser';
 
 const NAV_ITEMS = [
   { icon: '⌂', label: 'Dashboard',     href: '/investor/dashboard' },
@@ -35,20 +36,7 @@ export default function InvestorLayout({ children }: { children: ReactNode }) {
         </nav>
 
         <div className={s.sidebarFooter}>
-          <div className={s.kycBanner}>
-            <span className={s.kycDot} />
-            <div>
-              <div className={s.kycLabel}>KYC Verified</div>
-              <div className={s.kycSub}>Account in good standing</div>
-            </div>
-          </div>
-          <div className={s.userRow}>
-            <div className={s.avatar}>SK</div>
-            <div className={s.userInfo}>
-              <div className={s.userName}>S. Khumalo</div>
-              <div className={s.userRole}>Investor</div>
-            </div>
-          </div>
+          <InvestorSidebarUser />
           <a href="/" className={s.logoutLink}>← Back to site</a>
         </div>
       </aside>
