@@ -25,6 +25,7 @@ export interface MePledge {
 }
 export interface MeDistributionLine {
   id: string;
+  pledgeId: string;
   grossAmount: string;
   withholdingTax: string;
   netAmount: string;
@@ -32,6 +33,17 @@ export interface MeDistributionLine {
   paidAt: string | null;
   createdAt: string;
   distribution: { periodLabel: string; processedAt: string | null; property: { title: string } };
+}
+export interface MeDocument {
+  id: string;
+  docType: 'id_document' | 'proof_of_address' | 'investment_agreement' | 'title_deed' | 'other';
+  fileName: string;
+  mimeType: string;
+  signingStatus: 'pending' | 'sent' | 'signed' | 'declined';
+  signedAt: string | null;
+  createdAt: string;
+  downloadUrl: string;
+  property: { title: string } | null;
 }
 export interface MeProfile {
   idNumber: string | null;
@@ -58,6 +70,7 @@ export interface Me {
   investorProfile: MeProfile | null;
   pledges: MePledge[];
   distributionLines: MeDistributionLine[];
+  documents: MeDocument[];
 }
 
 interface State {

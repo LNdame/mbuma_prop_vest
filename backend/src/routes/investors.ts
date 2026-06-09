@@ -1,5 +1,6 @@
 import { Router, type Response } from 'express';
 import { prisma } from '../lib/prisma.js';
+import { presignDownload } from '../lib/storage.js';
 import { requireAuth, requireRole, type AuthRequest } from '../middleware/auth.js';
 
 const router = Router();
@@ -65,6 +66,10 @@ router.get('/me', requireAuth, async (req: AuthRequest, res: Response) => {
           orderBy: { createdAt: 'desc' },
           take: 24,
         },
+        documents: {
+          include: { property: { select: { title: true } } },
+          orderBy: { createdAt: 'desc' },
+        },
       },
     });
 
@@ -73,8 +78,13 @@ router.get('/me', requireAuth, async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    const { passwordHash: _omit, ...safe } = user;
-    res.json({ data: safe });
+    // Sign each document for direct download
+    const documents = await Promise.all(
+      user.documents.map(async (d) => ({ ...d, downloadUrl: await presignDownload(d.s3Key) })),
+    );
+
+    const { passwordHash: _omit, documents: _docs, ...safe } = user;
+    res.json({ data: { ...safe, documents } });
   } catch (err) {
     console.error('GET /api/investors/me error:', err);
     res.status(500).json({ error: 'Failed to fetch account' });
