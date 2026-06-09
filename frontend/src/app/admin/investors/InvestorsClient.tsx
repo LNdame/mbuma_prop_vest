@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import s from './page.module.css';
 
+const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+
 type KycStatus = 'pending' | 'approved' | 'rejected';
 type Filter = 'All' | 'Active' | 'Pending' | 'Verified';
 
@@ -84,7 +86,7 @@ export default function InvestorsClient({ investors }: { investors: Investor[] }
 
   function handleVerify(id: string) {
     const token = localStorage.getItem('adminToken') ?? '';
-    fetch(`/api/investors/${id}/verify`, {
+    fetch(`${API}/api/investors/${id}/verify`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
     }).then(res => {
