@@ -22,6 +22,26 @@ interface Investor {
   propertyCount: number;
 }
 
+interface DashboardData {
+  pendingActions: { name: string; sub: string; action: string; href: string; dot: string }[];
+  pendingTotal: number;
+  distributionSummary: {
+    months: { label: string; amount: number }[];
+    lastRunDate: string | null;
+    lastRunAmount: number;
+    totalNet: number;
+    runCount: number;
+  };
+  activityFeed: { text: string; date: string; dot: string }[];
+}
+
+const EMPTY_DASH: DashboardData = {
+  pendingActions: [],
+  pendingTotal: 0,
+  distributionSummary: { months: [], lastRunDate: null, lastRunAmount: 0, totalNet: 0, runCount: 0 },
+  activityFeed: [],
+};
+
 /* ── Stat helpers ────────────────────────────────────────────────── */
 function fmtRandShort(n: number) {
   if (n >= 1_000_000) return 'R' + (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
@@ -73,19 +93,9 @@ function buildStats(properties: Property[], investors: Investor[]) {
 const QUICK_ACTIONS = [
   { icon: '👤', label: 'Invite investor',  color: 'purple', href: '/admin/investors/invite' },
   { icon: '💸', label: 'Run distribution', color: 'green',  href: '/admin/distributions'    },
-  { icon: '📢', label: 'Send update',      color: 'gold',   href: '#'                       },
-  { icon: '📤', label: 'Export report',    color: 'blue',   href: '#'                       },
+  { icon: '📄', label: 'Agreements',       color: 'gold',   href: '/admin/agreements'       },
+  { icon: '📊', label: 'Reports',          color: 'blue',   href: '/admin/reports'          },
 ];
-
-const PENDING = [
-  { name: 'Verify investor — R. Dlamini',      sub: 'Submitted ID · waiting approval',   action: 'Verify',    dot: 'orange' },
-  { name: 'Confirm pledge — P. Sithole',       sub: 'R75,000 · Shop 4, Kyalami',         action: 'Confirm',   dot: 'green'  },
-  { name: 'Agreement unsigned — N. Mokoena',  sub: 'Fern Close · sent 3 days ago',      action: 'Follow up', dot: 'gray'   },
-  { name: 'Missing bank details — N. Mokoena',sub: 'Cannot distribute until resolved',   action: 'Chase',     dot: 'orange' },
-];
-
-const DIST_BARS   = [35, 45, 55, 72, 90, 100];
-const DIST_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
 
 function buildGlance(properties: Property[], investors: Investor[]) {
   const totalInvested = investors.reduce((s, i) => s + i.totalInvested, 0);
@@ -98,14 +108,24 @@ function buildGlance(properties: Property[], investors: Investor[]) {
   ];
 }
 
-const FEED = [
-  { dot: 'green', text: 'Andile Molefe pledged on Kyalami Corner', time: 'Today'       },
-  { dot: 'green', text: 'Precious Nkosi pledged on Fern Close',    time: 'Today'       },
-  { dot: 'green', text: 'Sipho Khumalo pledged on Sandton Gardens', time: 'Today'      },
-  { dot: 'blue',  text: 'Database seeded with 3 properties',        time: 'Today'      },
-];
-
 /* ── Helpers ────────────────────────────────────────────────────── */
+function timeAgo(iso: string) {
+  const d = new Date(iso);
+  const days = Math.floor((Date.now() - d.getTime()) / 86_400_000);
+  if (days <= 0) return 'Today';
+  if (days === 1) return 'Yesterday';
+  if (days < 7) return `${days} days ago`;
+  return d.toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+function fmtRandShortMeta(n: number) {
+  if (!n) return 'R0';
+  if (n >= 1_000_000) return 'R' + (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+  return 'R' + Math.round(n).toLocaleString('en-ZA');
+}
+function fmtDate(iso: string | null) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
+}
 function propertyIcon(type: string) {
   if (type === 'commercial') return '🏢';
   if (type === 'mixed_use')  return '🏗';
@@ -142,17 +162,22 @@ const AVATAR_COLORS = ['av0', 'av1', 'av2', 'av3', 'av4'];
 export default async function AdminDashboard() {
   let properties: Property[] = [];
   let investors:  Investor[]  = [];
+  let dash: DashboardData = EMPTY_DASH;
 
   try {
-    const [propsRes, invRes] = await Promise.all([
+    const [propsRes, invRes, dashRes] = await Promise.all([
       apiFetch<{ data: Property[] }>('/api/properties'),
       apiFetch<{ data: Investor[]  }>('/api/investors'),
+      apiFetch<DashboardData>('/api/dashboard'),
     ]);
     properties = propsRes.data;
     investors  = invRes.data;
+    dash       = dashRes;
   } catch (err) {
     console.error('[dashboard] apiFetch failed:', err);
   }
+
+  const maxDistMonth = Math.max(1, ...dash.distributionSummary.months.map((m) => m.amount));
 
   const stats  = buildStats(properties, investors);
   const glance = buildGlance(properties, investors);
@@ -200,9 +225,11 @@ export default async function AdminDashboard() {
           <div className={s.panel}>
             <div className={s.panelHead}>
               <span className={s.panelTitle}>Pending actions</span>
-              <span className={s.badgeCount}>{PENDING.length}</span>
+              <span className={s.badgeCount}>{dash.pendingTotal}</span>
             </div>
-            {PENDING.map((p) => (
+            {dash.pendingActions.length === 0 ? (
+              <div className={s.emptyState}>All caught up — no pending actions 🎉</div>
+            ) : dash.pendingActions.map((p) => (
               <div key={p.name} className={s.pendingRow}>
                 <div className={s.pendingInfo}>
                   <span className={[s.dot, s[`dot_${p.dot}`]].join(' ')} />
@@ -211,7 +238,7 @@ export default async function AdminDashboard() {
                     <div className={s.pendingSub}>{p.sub}</div>
                   </div>
                 </div>
-                <button className={s.btnSm}>{p.action}</button>
+                <a href={p.href}><button className={s.btnSm}>{p.action}</button></a>
               </div>
             ))}
           </div>
@@ -267,17 +294,22 @@ export default async function AdminDashboard() {
               <span className={s.panelTitle}>Distribution summary</span>
             </div>
             <div className={s.chartWrap}>
-              {DIST_BARS.map((h, i) => (
-                <div key={i} className={s.bar} style={{ height: `${h}%` }} />
+              {dash.distributionSummary.months.map((m, i) => (
+                <div
+                  key={i}
+                  className={s.bar}
+                  style={{ height: m.amount ? `${Math.max(6, Math.round((m.amount / maxDistMonth) * 100))}%` : '4px', opacity: m.amount ? 1 : 0.25 }}
+                  title={`${m.label}: ${fmtRandShortMeta(m.amount)}`}
+                />
               ))}
             </div>
             <div className={s.chartLabels}>
-              {DIST_LABELS.map((l) => <span key={l}>{l}</span>)}
+              {dash.distributionSummary.months.map((m, i) => <span key={i}>{m.label}</span>)}
             </div>
             <div className={s.distMeta}>
-              <div className={s.distRow}><span className={s.distLabel}>Last run</span><span className={s.distVal}>1 Jun 2025</span></div>
-              <div className={s.distRow}><span className={s.distLabel}>Amount sent</span><span className={[s.distVal, s.accent].join(' ')}>R47,200</span></div>
-              <div className={s.distRow}><span className={s.distLabel}>Next run</span><span className={s.distVal}>1 Jul 2025</span></div>
+              <div className={s.distRow}><span className={s.distLabel}>Last run</span><span className={s.distVal}>{fmtDate(dash.distributionSummary.lastRunDate)}</span></div>
+              <div className={s.distRow}><span className={s.distLabel}>Amount sent</span><span className={[s.distVal, s.accent].join(' ')}>{fmtRandShortMeta(dash.distributionSummary.lastRunAmount)}</span></div>
+              <div className={s.distRow}><span className={s.distLabel}>Total distributed</span><span className={s.distVal}>{fmtRandShortMeta(dash.distributionSummary.totalNet)}</span></div>
             </div>
             <div className={s.panelFooter}>
               <a href="/admin/distributions"><button className={s.btnBlock}>Run distribution →</button></a>
@@ -348,12 +380,14 @@ export default async function AdminDashboard() {
           <div className={s.panelHead}>
             <span className={s.panelTitle}>Activity feed</span>
           </div>
-          {FEED.map((f, i) => (
+          {dash.activityFeed.length === 0 ? (
+            <div className={s.emptyState}>No recent activity</div>
+          ) : dash.activityFeed.map((f, i) => (
             <div key={i} className={s.feedItem}>
               <span className={[s.feedDot, s[`dot_${f.dot}`]].join(' ')} />
               <div>
                 <div className={s.feedText}>{f.text}</div>
-                <div className={s.feedTime}>{f.time}</div>
+                <div className={s.feedTime}>{timeAgo(f.date)}</div>
               </div>
             </div>
           ))}
