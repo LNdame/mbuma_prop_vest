@@ -1,21 +1,39 @@
+'use client';
+
 import s from '../investor.module.css';
+import { useMe, type MeDocument } from '../../../lib/useMe';
 
-const DOCS = [
-  { icon: '📄', name: 'Investment Agreement — Fern Close',   type: 'Investment Agreement', property: '14 Fern Close',    date: '12 Jan 2025', signing: 'Signed',   cta: 'Download' },
-  { icon: '📄', name: 'Investment Agreement — Sandton Gdns', type: 'Investment Agreement', property: 'Sandton Gardens',  date: '3 Mar 2024',  signing: 'Signed',   cta: 'Download' },
-  { icon: '📄', name: 'Investment Agreement — Kyalami',      type: 'Investment Agreement', property: 'Kyalami Corner',   date: '28 May 2025', signing: 'Signed',   cta: 'Download' },
-  { icon: '🪪', name: 'ID Document — S. Khumalo',            type: 'ID Document',          property: '—',               date: '5 Jan 2025',  signing: '—',        cta: 'View'     },
-  { icon: '📋', name: 'Proof of Address',                    type: 'Proof of Address',     property: '—',               date: '5 Jan 2025',  signing: '—',        cta: 'View'     },
-  { icon: '📊', name: 'Tax Certificate IT3(b) — 2024',       type: 'Tax Certificate',      property: 'All properties',   date: '28 Feb 2025', signing: '—',        cta: 'Download' },
-];
-
-function signingPill(status: string, s: Record<string,string>) {
-  if (status === 'Signed')  return s.pillConfirmed;
-  if (status === 'Pending') return s.pillPending;
-  return '';
+function docMeta(t: MeDocument['docType']) {
+  switch (t) {
+    case 'id_document':         return { icon: '🪪', label: 'ID Document' };
+    case 'proof_of_address':    return { icon: '📋', label: 'Proof of Address' };
+    case 'investment_agreement':return { icon: '📄', label: 'Investment Agreement' };
+    case 'title_deed':          return { icon: '📜', label: 'Title Deed' };
+    default:                    return { icon: '📁', label: 'Other' };
+  }
+}
+function fmtDate(d: string) {
+  return new Date(d).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+function signingPill(st: string, cls: Record<string, string>) {
+  if (st === 'signed')   return cls.pillConfirmed;
+  if (st === 'declined') return cls.pillClosed;
+  return cls.pillPending; // pending / sent
+}
+function signingLabel(st: string) {
+  return st.charAt(0).toUpperCase() + st.slice(1);
 }
 
 export default function InvestorDocuments() {
+  const { me, loading, error } = useMe();
+
+  if (loading) return <div className={s.page}><div className={s.emptyState}>Loading documents…</div></div>;
+  if (error === 'unauthenticated') return <div className={s.page}><div className={s.emptyState}>Please <a href="/login" className={s.panelLink}>log in</a> to view documents.</div></div>;
+  if (error || !me) return <div className={s.page}><div className={s.emptyState}>Couldn’t load documents. {error}</div></div>;
+
+  const docs = me.documents;
+  const cols = '2fr 1.2fr 1.2fr 1fr 0.8fr 0.7fr';
+
   return (
     <div className={s.page}>
 
@@ -29,49 +47,46 @@ export default function InvestorDocuments() {
       <div className={s.panel}>
         <div className={s.panelHead}>
           <span className={s.panelTitle}>All Documents</span>
-          <span style={{ fontSize: 12, color: 'var(--neutral-500)' }}>{DOCS.length} files</span>
+          <span style={{ fontSize: 12, color: 'var(--neutral-500)' }}>{docs.length} {docs.length === 1 ? 'file' : 'files'}</span>
         </div>
 
-        {/* Table header */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '2fr 1.2fr 1.2fr 1fr 0.8fr 0.7fr',
-          padding: '8px 18px',
-          background: 'var(--neutral-50)',
-          borderBottom: '1px solid var(--neutral-100)',
-          gap: 8,
-        }}>
-          {['Document','Type','Property','Date','Status',''].map((h, i) => (
-            <span key={i} style={{ fontSize: 11, fontWeight: 600, color: 'var(--neutral-500)', textTransform: 'uppercase', letterSpacing: '.04em' }}>{h}</span>
-          ))}
-        </div>
-
-        {DOCS.map((d) => (
-          <div key={d.name} style={{
-            display: 'grid',
-            gridTemplateColumns: '2fr 1.2fr 1.2fr 1fr 0.8fr 0.7fr',
-            padding: '13px 18px',
-            borderBottom: '1px solid var(--neutral-100)',
-            gap: 8,
-            alignItems: 'center',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span style={{ fontSize: 18 }}>{d.icon}</span>
-              <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--neutral-800)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{d.name}</span>
+        {docs.length === 0 ? (
+          <div className={s.emptyState}>No documents yet. Agreements and certificates will appear here.</div>
+        ) : (
+          <>
+            <div style={{ display: 'grid', gridTemplateColumns: cols, padding: '8px 18px', background: 'var(--neutral-50)', borderBottom: '1px solid var(--neutral-100)', gap: 8 }}>
+              {['Document', 'Type', 'Property', 'Date', 'Status', ''].map((h, i) => (
+                <span key={i} style={{ fontSize: 11, fontWeight: 600, color: 'var(--neutral-500)', textTransform: 'uppercase', letterSpacing: '.04em' }}>{h}</span>
+              ))}
             </div>
-            <span style={{ fontSize: 12, color: 'var(--neutral-500)' }}>{d.type}</span>
-            <span style={{ fontSize: 12, color: 'var(--neutral-600, #4a5a52)' }}>{d.property}</span>
-            <span style={{ fontSize: 12, color: 'var(--neutral-500)' }}>{d.date}</span>
-            <span>
-              {d.signing !== '—' ? (
-                <span className={signingPill(d.signing, s as Record<string,string>)}>{d.signing}</span>
-              ) : (
-                <span style={{ fontSize: 12, color: 'var(--neutral-400)' }}>—</span>
-              )}
-            </span>
-            <button className={s.btnSm}>{d.cta}</button>
-          </div>
-        ))}
+
+            {docs.map((d) => {
+              const meta = docMeta(d.docType);
+              const signable = d.docType === 'investment_agreement';
+              return (
+                <div key={d.id} style={{ display: 'grid', gridTemplateColumns: cols, padding: '13px 18px', borderBottom: '1px solid var(--neutral-100)', gap: 8, alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <span style={{ fontSize: 18 }}>{meta.icon}</span>
+                    <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--neutral-800)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{d.fileName}</span>
+                  </div>
+                  <span style={{ fontSize: 12, color: 'var(--neutral-500)' }}>{meta.label}</span>
+                  <span style={{ fontSize: 12, color: 'var(--neutral-600, #4a5a52)' }}>{d.property?.title ?? '—'}</span>
+                  <span style={{ fontSize: 12, color: 'var(--neutral-500)' }}>{fmtDate(d.createdAt)}</span>
+                  <span>
+                    {signable ? (
+                      <span className={signingPill(d.signingStatus, s as Record<string, string>)}>{signingLabel(d.signingStatus)}</span>
+                    ) : (
+                      <span style={{ fontSize: 12, color: 'var(--neutral-400)' }}>—</span>
+                    )}
+                  </span>
+                  <a href={d.downloadUrl} target="_blank" rel="noopener noreferrer">
+                    <button className={s.btnSm}>{signable ? 'View' : 'Download'}</button>
+                  </a>
+                </div>
+              );
+            })}
+          </>
+        )}
       </div>
     </div>
   );

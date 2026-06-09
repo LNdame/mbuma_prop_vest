@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import s from './layout.module.css';
+import AdminSidebarUser from './AdminSidebarUser';
 
 const NAV_ITEMS = [
   { icon: '⌂', label: 'Dashboard', href: '/admin/dashboard' },
@@ -36,13 +37,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </nav>
 
         <div className={s.sidebarFooter}>
-          <div className={s.userRow}>
-            <div className={s.avatar}>TK</div>
-            <div className={s.userInfo}>
-              <div className={s.userName}>Thabo K.</div>
-              <div className={s.userRole}>Administrator</div>
-            </div>
-          </div>
+          <AdminSidebarUser />
           <a href="/" className={s.logoutLink}>← Back to site</a>
         </div>
       </aside>

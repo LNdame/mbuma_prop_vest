@@ -1,58 +1,89 @@
+'use client';
+
 import s from '../investor.module.css';
+import { useMe } from '../../../lib/useMe';
 
-const DIST_BARS   = [18, 22, 28, 32, 40, 52, 58, 62, 68, 72, 78, 0];
-const DIST_MONTHS = ['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun'];
-
-const DISTRIBUTIONS = [
-  { period: 'June 2025',  property: '14 Fern Close',       gross: 'R1,380', tax: 'R207', net: 'R1,173', status: 'Paid',    date: '1 Jun 2025' },
-  { period: 'June 2025',  property: 'Unit 7, Sandton Gdns', gross: 'R870',  tax: 'R131', net: 'R739',   status: 'Paid',    date: '1 Jun 2025' },
-  { period: 'June 2025',  property: 'Kyalami Corner',       gross: 'R0',    tax: 'R0',   net: 'R0',     status: 'Pending', date: 'Not yet distributed' },
-  { period: 'May 2025',   property: '14 Fern Close',       gross: 'R1,380', tax: 'R207', net: 'R1,173', status: 'Paid',    date: '1 May 2025' },
-  { period: 'May 2025',   property: 'Unit 7, Sandton Gdns', gross: 'R870',  tax: 'R131', net: 'R739',   status: 'Paid',    date: '1 May 2025' },
-  { period: 'April 2025', property: '14 Fern Close',       gross: 'R1,380', tax: 'R207', net: 'R1,173', status: 'Paid',    date: '1 Apr 2025' },
-  { period: 'April 2025', property: 'Unit 7, Sandton Gdns', gross: 'R870',  tax: 'R131', net: 'R739',   status: 'Paid',    date: '1 Apr 2025' },
-];
-
-const TOTALS = [
-  { label: 'Total gross distributions', value: 'R16,820' },
-  { label: 'Total withholding tax',      value: 'R2,524'  },
-  { label: 'Total net received',         value: 'R14,296', accent: true },
-  { label: 'YTD net (2025)',             value: 'R8,736',  accent: true },
-  { label: 'Last payment date',          value: '1 Jun 2025' },
-  { label: 'Next payment date',          value: '1 Jul 2025' },
-];
-
-function statusPill(status: string, s: Record<string,string>) {
-  if (status === 'Paid')    return s.pillPaid;
-  if (status === 'Pending') return s.pillPending;
-  return s.pillClosed;
+function fmtRand(n: number) {
+  if (!n) return 'R0';
+  return 'R' + Math.round(n).toLocaleString('en-ZA');
+}
+function fmtDate(d: string | null) {
+  if (!d) return 'Not yet paid';
+  return new Date(d).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+function statusPill(st: string, cls: Record<string, string>) {
+  if (st === 'paid')    return cls.pillPaid;
+  if (st === 'pending') return cls.pillPending;
+  return cls.pillClosed;
 }
 
 export default function InvestorDistributions() {
+  const { me, loading, error } = useMe();
+
+  if (loading) return <div className={s.page}><div className={s.emptyState}>Loading distributions…</div></div>;
+  if (error === 'unauthenticated') return <div className={s.page}><div className={s.emptyState}>Please <a href="/login" className={s.panelLink}>log in</a> to view distributions.</div></div>;
+  if (error || !me) return <div className={s.page}><div className={s.emptyState}>Couldn’t load distributions. {error}</div></div>;
+
+  const lines = me.distributionLines;
+  const paid  = lines.filter((l) => l.paymentStatus === 'paid');
+
+  const totalGross = lines.reduce((s2, l) => s2 + Number(l.grossAmount), 0);
+  const totalTax   = paid.reduce((s2, l) => s2 + Number(l.withholdingTax), 0);
+  const totalNet   = paid.reduce((s2, l) => s2 + Number(l.netAmount), 0);
+  const year       = new Date().getFullYear();
+  const ytdNet     = paid.filter((l) => l.paidAt && new Date(l.paidAt).getFullYear() === year)
+                         .reduce((s2, l) => s2 + Number(l.netAmount), 0);
+  const lastPaid   = paid.map((l) => l.paidAt).filter(Boolean).sort().slice(-1)[0] ?? null;
+
+  // 12-month trend by paid month
+  const months: { key: string; label: string }[] = [];
+  const now = new Date();
+  for (let i = 11; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    months.push({ key: `${d.getFullYear()}-${d.getMonth()}`, label: d.toLocaleDateString('en-ZA', { month: 'short' }) });
+  }
+  const monthTotals = new Map<string, number>();
+  for (const l of paid) {
+    if (!l.paidAt) continue;
+    const d = new Date(l.paidAt);
+    const k = `${d.getFullYear()}-${d.getMonth()}`;
+    monthTotals.set(k, (monthTotals.get(k) ?? 0) + Number(l.netAmount));
+  }
+  const maxMonth = Math.max(1, ...months.map((m) => monthTotals.get(m.key) ?? 0));
+
+  const STATS = [
+    { label: 'Total received',  value: fmtRand(totalNet), sub: 'net of withholding tax', accent: true  },
+    { label: `YTD ${year}`,     value: fmtRand(ytdNet),   sub: 'this year',              accent: true  },
+    { label: 'Payments',        value: String(paid.length), sub: 'distributions paid',   accent: false },
+    { label: 'Tax withheld',    value: fmtRand(totalTax), sub: 'withholding tax',        accent: false },
+  ];
+
+  const TOTALS = [
+    { label: 'Total gross distributions', value: fmtRand(totalGross) },
+    { label: 'Total withholding tax',     value: fmtRand(totalTax) },
+    { label: 'Total net received',        value: fmtRand(totalNet), accent: true },
+    { label: `YTD net (${year})`,         value: fmtRand(ytdNet),   accent: true },
+    { label: 'Payments received',         value: String(paid.length) },
+    { label: 'Last payment date',         value: fmtDate(lastPaid) },
+  ];
+
+  const cols = '1fr 1.4fr 0.8fr 0.8fr 0.8fr 0.9fr 0.8fr';
+
   return (
     <div className={s.page}>
 
       <div className={s.pageHeader}>
         <div>
           <h1 className={s.pageTitle}>Distributions</h1>
-          <p className={s.pageSub}>Your rental income history and upcoming payments</p>
+          <p className={s.pageSub}>Your rental income history and payments</p>
         </div>
-        <button className={s.btnPrimary}>⬇ Download statement</button>
       </div>
 
-      {/* Stats */}
       <div className={s.statsRow}>
-        {[
-          { label: 'Total received',   value: 'R14,296', sub: 'net of withholding tax', accent: true  },
-          { label: 'YTD 2025',         value: 'R8,736',  sub: 'Jan – Jun 2025',         accent: true  },
-          { label: 'Next payment',     value: 'R2,912',  sub: 'estimated 1 Jul 2025',   accent: false },
-          { label: 'Tax withheld YTD', value: 'R1,310',  sub: '15% withholding tax',    accent: false },
-        ].map((st) => (
+        {STATS.map((st) => (
           <div key={st.label} className={s.statCard}>
             <div className={s.statLabel}>{st.label}</div>
-            <div className={[s.statValue, st.accent ? s.accent : ''].filter(Boolean).join(' ')}>
-              {st.value}
-            </div>
+            <div className={[s.statValue, st.accent ? s.accent : ''].filter(Boolean).join(' ')}>{st.value}</div>
             <div className={s.statSub}>{st.sub}</div>
           </div>
         ))}
@@ -61,97 +92,72 @@ export default function InvestorDistributions() {
       <div className={s.mainGrid}>
         <div className={s.leftCol}>
 
-          {/* Distribution history table */}
+          {/* History table */}
           <div className={s.panel}>
             <div className={s.panelHead}>
               <span className={s.panelTitle}>Distribution History</span>
-              <span style={{ fontSize: 12, color: 'var(--neutral-500)' }}>{DISTRIBUTIONS.length} records</span>
+              <span style={{ fontSize: 12, color: 'var(--neutral-500)' }}>{lines.length} {lines.length === 1 ? 'record' : 'records'}</span>
             </div>
 
-            {/* Table header */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1.4fr 0.8fr 0.8fr 0.8fr 0.9fr 0.8fr',
-              padding: '8px 18px',
-              background: 'var(--neutral-50)',
-              borderBottom: '1px solid var(--neutral-100)',
-              gap: 8,
-            }}>
-              {['Period','Property','Gross','Tax','Net','Date','Status'].map(h => (
-                <span key={h} style={{ fontSize: 11, fontWeight: 600, color: 'var(--neutral-500)', textTransform: 'uppercase', letterSpacing: '.04em' }}>{h}</span>
-              ))}
-            </div>
-
-            {DISTRIBUTIONS.map((d, i) => (
-              <div key={i} style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1.4fr 0.8fr 0.8fr 0.8fr 0.9fr 0.8fr',
-                padding: '12px 18px',
-                borderBottom: '1px solid var(--neutral-100)',
-                gap: 8,
-                alignItems: 'center',
-              }}>
-                <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--neutral-800)' }}>{d.period}</span>
-                <span style={{ fontSize: 12, color: 'var(--neutral-600, #4a5a52)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{d.property}</span>
-                <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--neutral-800)' }}>{d.gross}</span>
-                <span style={{ fontSize: 13, color: 'var(--neutral-500)' }}>{d.tax}</span>
-                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--green-600)' }}>{d.net}</span>
-                <span style={{ fontSize: 11, color: 'var(--neutral-500)' }}>{d.date}</span>
-                <span className={statusPill(d.status, s as Record<string,string>)}>{d.status}</span>
-              </div>
-            ))}
+            {lines.length === 0 ? (
+              <div className={s.emptyState}>No distributions yet. Income appears here once a property pays out.</div>
+            ) : (
+              <>
+                <div style={{ display: 'grid', gridTemplateColumns: cols, padding: '8px 18px', background: 'var(--neutral-50)', borderBottom: '1px solid var(--neutral-100)', gap: 8 }}>
+                  {['Period', 'Property', 'Gross', 'Tax', 'Net', 'Date', 'Status'].map((h) => (
+                    <span key={h} style={{ fontSize: 11, fontWeight: 600, color: 'var(--neutral-500)', textTransform: 'uppercase', letterSpacing: '.04em' }}>{h}</span>
+                  ))}
+                </div>
+                {lines.map((d) => (
+                  <div key={d.id} style={{ display: 'grid', gridTemplateColumns: cols, padding: '12px 18px', borderBottom: '1px solid var(--neutral-100)', gap: 8, alignItems: 'center' }}>
+                    <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--neutral-800)' }}>{d.distribution.periodLabel}</span>
+                    <span style={{ fontSize: 12, color: 'var(--neutral-600, #4a5a52)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{d.distribution.property.title}</span>
+                    <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--neutral-800)' }}>{fmtRand(Number(d.grossAmount))}</span>
+                    <span style={{ fontSize: 13, color: 'var(--neutral-500)' }}>{fmtRand(Number(d.withholdingTax))}</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--green-600)' }}>{fmtRand(Number(d.netAmount))}</span>
+                    <span style={{ fontSize: 11, color: 'var(--neutral-500)' }}>{fmtDate(d.paidAt)}</span>
+                    <span className={statusPill(d.paymentStatus, s as Record<string, string>)} style={{ textTransform: 'capitalize' }}>{d.paymentStatus}</span>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
 
           {/* Chart */}
           <div className={s.panel}>
-            <div className={s.panelHead}>
-              <span className={s.panelTitle}>12-month Distribution Trend</span>
-            </div>
+            <div className={s.panelHead}><span className={s.panelTitle}>12-month Distribution Trend</span></div>
             <div className={s.chartWrap} style={{ height: 96 }}>
-              {DIST_BARS.map((h, i) => (
-                <div key={i} className={s.bar} style={{ height: h ? `${h}%` : '4px', opacity: h ? (i === 11 ? 0.3 : 0.65) : 0.2 }} />
-              ))}
+              {months.map((m, i) => {
+                const v = monthTotals.get(m.key) ?? 0;
+                return <div key={i} className={s.bar} style={{ height: v ? `${Math.max(6, Math.round((v / maxMonth) * 100))}%` : '4px', opacity: v ? 0.7 : 0.2 }} title={`${m.label}: ${fmtRand(v)}`} />;
+              })}
             </div>
             <div className={s.chartLabels}>
-              {DIST_MONTHS.map((l) => <span key={l}>{l}</span>)}
+              {months.map((m, i) => <span key={i}>{m.label}</span>)}
             </div>
           </div>
 
         </div>
 
-        {/* Right — totals */}
+        {/* Totals */}
         <div className={s.rightCol}>
           <div className={s.panel}>
-            <div className={s.panelHead}>
-              <span className={s.panelTitle}>Summary Totals</span>
-            </div>
+            <div className={s.panelHead}><span className={s.panelTitle}>Summary Totals</span></div>
             {TOTALS.map((g) => (
               <div key={g.label} className={s.glanceRow}>
                 <span className={s.glanceLabel}>{g.label}</span>
-                <span className={[s.glanceVal, (g as { accent?: boolean }).accent ? s.accent : ''].filter(Boolean).join(' ')}>
-                  {g.value}
-                </span>
+                <span className={[s.glanceVal, (g as { accent?: boolean }).accent ? s.accent : ''].filter(Boolean).join(' ')}>{g.value}</span>
               </div>
             ))}
           </div>
 
           <div className={s.panel}>
-            <div className={s.panelHead}>
-              <span className={s.panelTitle}>Tax Information</span>
-            </div>
+            <div className={s.panelHead}><span className={s.panelTitle}>Tax Information</span></div>
             <div style={{ padding: '16px 18px', fontSize: 13, color: 'var(--neutral-600, #4a5a52)', lineHeight: 1.65 }}>
               <p style={{ marginBottom: 12 }}>
-                Rental distributions are subject to <strong style={{ color: 'var(--neutral-800)' }}>15% withholding tax</strong> deducted at source before payment.
+                Rental distributions are subject to <strong style={{ color: 'var(--neutral-800)' }}>withholding tax</strong> deducted at source before payment.
               </p>
-              <p style={{ marginBottom: 12 }}>
-                A tax certificate (IT3(b)) will be issued annually for your SARS submission.
-              </p>
-              <p>
-                Contact support if you require a provisional tax statement.
-              </p>
-            </div>
-            <div className={s.panelFooter}>
-              <button className={s.btnOutline}>⬇ Download IT3(b) certificate</button>
+              <p>A tax certificate (IT3(b)) is issued annually for your SARS submission.</p>
             </div>
           </div>
         </div>

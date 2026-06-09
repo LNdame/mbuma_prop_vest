@@ -7,6 +7,10 @@ import invitationsRouter from './routes/invitations.js';
 import propertiesRouter from './routes/properties.js';
 import imagesRouter     from './routes/images.js';
 import statsRouter      from './routes/stats.js';
+import distributionsRouter from './routes/distributions.js';
+import agreementsRouter    from './routes/agreements.js';
+import reportsRouter       from './routes/reports.js';
+import dashboardRouter     from './routes/dashboard.js';
 
 const app = express();
 app.use(cors());
@@ -22,6 +26,10 @@ app.use('/api/properties',  propertiesRouter);
 app.use('/api/properties/:propertyId/images', imagesRouter);
 app.use('/api/investors',   investorsRouter);
 app.use('/api/invitations', invitationsRouter);
+app.use('/api/distributions', distributionsRouter);
+app.use('/api/agreements',    agreementsRouter);
+app.use('/api/reports',       reportsRouter);
+app.use('/api/dashboard',     dashboardRouter);
 
 const PORT = Number(process.env.PORT) || 4000;
 const HOST = '0.0.0.0'; // bind all interfaces so Railway can reach the container
