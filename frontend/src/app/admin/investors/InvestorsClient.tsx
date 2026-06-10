@@ -85,7 +85,7 @@ export default function InvestorsClient({ investors }: { investors: Investor[] }
     });
 
   function handleVerify(id: string) {
-    const token = localStorage.getItem('adminToken') ?? '';
+    const token = localStorage.getItem('token') ?? '';
     fetch(`${API}/api/investors/${id}/verify`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
