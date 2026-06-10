@@ -28,7 +28,7 @@ export default function InviteInvestorPage() {
     try {
       const res = await fetch(`${API}/api/invitations`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('adminToken') ?? ''}` },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token') ?? ''}` },
         body: JSON.stringify({ email: email.trim() }),
       });
       const json = await res.json();
