@@ -132,6 +132,7 @@ model User {
   payments             Payment[]
   documents            Document[]
   distributionLines    DistributionLine[]
+  fundAllocations      FundAllocation[]
   notifications        Notification[]
   auditLogs            AuditLog[]
   createdProperties    Property[]         @relation("CreatedBy")
@@ -329,6 +330,23 @@ model InvitationRequest {
 
   @@index([email])
   @@map("invitation_requests")
+}
+
+/// Funds an admin allocates to an investor's account after receiving their
+/// bank transfer. The investor's "Available Funds" is the sum of these.
+model FundAllocation {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  amount    Decimal  @db.Decimal(14, 2)
+  reference String?
+  note      String?
+  createdBy String   @map("created_by") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("fund_allocations")
 }
 
 model Notification {

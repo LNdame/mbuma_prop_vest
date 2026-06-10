@@ -71,6 +71,16 @@ export interface Me {
   pledges: MePledge[];
   distributionLines: MeDistributionLine[];
   documents: MeDocument[];
+  availableFunds: number;
+  fundAllocations: MeFundAllocation[];
+}
+
+export interface MeFundAllocation {
+  id: string;
+  amount: string;
+  reference: string | null;
+  note: string | null;
+  createdAt: string;
 }
 
 interface State {

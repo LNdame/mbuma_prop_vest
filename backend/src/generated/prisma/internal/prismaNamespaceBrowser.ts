@@ -62,6 +62,7 @@ export const ModelName = {
   DistributionLine: 'DistributionLine',
   Invitation: 'Invitation',
   InvitationRequest: 'InvitationRequest',
+  FundAllocation: 'FundAllocation',
   Notification: 'Notification',
   AuditLog: 'AuditLog'
 } as const
@@ -261,6 +262,19 @@ export const InvitationRequestScalarFieldEnum = {
 } as const
 
 export type InvitationRequestScalarFieldEnum = (typeof InvitationRequestScalarFieldEnum)[keyof typeof InvitationRequestScalarFieldEnum]
+
+
+export const FundAllocationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  amount: 'amount',
+  reference: 'reference',
+  note: 'note',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt'
+} as const
+
+export type FundAllocationScalarFieldEnum = (typeof FundAllocationScalarFieldEnum)[keyof typeof FundAllocationScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {

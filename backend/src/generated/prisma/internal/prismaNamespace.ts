@@ -395,6 +395,7 @@ export const ModelName = {
   DistributionLine: 'DistributionLine',
   Invitation: 'Invitation',
   InvitationRequest: 'InvitationRequest',
+  FundAllocation: 'FundAllocation',
   Notification: 'Notification',
   AuditLog: 'AuditLog'
 } as const
@@ -412,7 +413,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "investorProfile" | "property" | "propertyImage" | "pledge" | "payment" | "document" | "distribution" | "distributionLine" | "invitation" | "invitationRequest" | "notification" | "auditLog"
+    modelProps: "user" | "investorProfile" | "property" | "propertyImage" | "pledge" | "payment" | "document" | "distribution" | "distributionLine" | "invitation" | "invitationRequest" | "fundAllocation" | "notification" | "auditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1230,6 +1231,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    FundAllocation: {
+      payload: Prisma.$FundAllocationPayload<ExtArgs>
+      fields: Prisma.FundAllocationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FundAllocationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundAllocationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FundAllocationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundAllocationPayload>
+        }
+        findFirst: {
+          args: Prisma.FundAllocationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundAllocationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FundAllocationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundAllocationPayload>
+        }
+        findMany: {
+          args: Prisma.FundAllocationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundAllocationPayload>[]
+        }
+        create: {
+          args: Prisma.FundAllocationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundAllocationPayload>
+        }
+        createMany: {
+          args: Prisma.FundAllocationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FundAllocationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundAllocationPayload>[]
+        }
+        delete: {
+          args: Prisma.FundAllocationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundAllocationPayload>
+        }
+        update: {
+          args: Prisma.FundAllocationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundAllocationPayload>
+        }
+        deleteMany: {
+          args: Prisma.FundAllocationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FundAllocationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FundAllocationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundAllocationPayload>[]
+        }
+        upsert: {
+          args: Prisma.FundAllocationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundAllocationPayload>
+        }
+        aggregate: {
+          args: Prisma.FundAllocationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFundAllocation>
+        }
+        groupBy: {
+          args: Prisma.FundAllocationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FundAllocationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FundAllocationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FundAllocationCountAggregateOutputType> | number
+        }
+      }
+    }
     Notification: {
       payload: Prisma.$NotificationPayload<ExtArgs>
       fields: Prisma.NotificationFieldRefs
@@ -1596,6 +1671,19 @@ export const InvitationRequestScalarFieldEnum = {
 } as const
 
 export type InvitationRequestScalarFieldEnum = (typeof InvitationRequestScalarFieldEnum)[keyof typeof InvitationRequestScalarFieldEnum]
+
+
+export const FundAllocationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  amount: 'amount',
+  reference: 'reference',
+  note: 'note',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt'
+} as const
+
+export type FundAllocationScalarFieldEnum = (typeof FundAllocationScalarFieldEnum)[keyof typeof FundAllocationScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {
@@ -2123,6 +2211,7 @@ export type GlobalOmitConfig = {
   distributionLine?: Prisma.DistributionLineOmit
   invitation?: Prisma.InvitationOmit
   invitationRequest?: Prisma.InvitationRequestOmit
+  fundAllocation?: Prisma.FundAllocationOmit
   notification?: Prisma.NotificationOmit
   auditLog?: Prisma.AuditLogOmit
 }
