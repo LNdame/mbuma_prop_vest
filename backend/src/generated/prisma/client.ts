@@ -92,6 +92,11 @@ export type DistributionLine = Prisma.DistributionLineModel
  */
 export type Invitation = Prisma.InvitationModel
 /**
+ * Model InvitationRequest
+ * Public "request an invitation" submissions from the landing page.
+ */
+export type InvitationRequest = Prisma.InvitationRequestModel
+/**
  * Model Notification
  * 
  */

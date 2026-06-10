@@ -531,6 +531,23 @@ export type EnumInvitationStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumInvitationStatusFilter<$PrismaModel>
 }
 
+export type EnumInvitationRequestStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvitationRequestStatus | Prisma.EnumInvitationRequestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.InvitationRequestStatus[] | Prisma.ListEnumInvitationRequestStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvitationRequestStatus[] | Prisma.ListEnumInvitationRequestStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvitationRequestStatusFilter<$PrismaModel> | $Enums.InvitationRequestStatus
+}
+
+export type EnumInvitationRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvitationRequestStatus | Prisma.EnumInvitationRequestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.InvitationRequestStatus[] | Prisma.ListEnumInvitationRequestStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvitationRequestStatus[] | Prisma.ListEnumInvitationRequestStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvitationRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.InvitationRequestStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumInvitationRequestStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumInvitationRequestStatusFilter<$PrismaModel>
+}
+
 export type EnumNotificationChannelFilter<$PrismaModel = never> = {
   equals?: $Enums.NotificationChannel | Prisma.EnumNotificationChannelFieldRefInput<$PrismaModel>
   in?: $Enums.NotificationChannel[] | Prisma.ListEnumNotificationChannelFieldRefInput<$PrismaModel>
@@ -1157,6 +1174,23 @@ export type NestedEnumInvitationStatusWithAggregatesFilter<$PrismaModel = never>
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumInvitationStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumInvitationStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumInvitationRequestStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvitationRequestStatus | Prisma.EnumInvitationRequestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.InvitationRequestStatus[] | Prisma.ListEnumInvitationRequestStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvitationRequestStatus[] | Prisma.ListEnumInvitationRequestStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvitationRequestStatusFilter<$PrismaModel> | $Enums.InvitationRequestStatus
+}
+
+export type NestedEnumInvitationRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvitationRequestStatus | Prisma.EnumInvitationRequestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.InvitationRequestStatus[] | Prisma.ListEnumInvitationRequestStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvitationRequestStatus[] | Prisma.ListEnumInvitationRequestStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvitationRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.InvitationRequestStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumInvitationRequestStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumInvitationRequestStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumNotificationChannelFilter<$PrismaModel = never> = {
