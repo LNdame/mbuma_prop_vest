@@ -73,6 +73,12 @@ export type Invitation = Prisma.InvitationModel
  */
 export type InvitationRequest = Prisma.InvitationRequestModel
 /**
+ * Model FundAllocation
+ * Funds an admin allocates to an investor's account after receiving their
+ * bank transfer. The investor's "Available Funds" is the sum of these.
+ */
+export type FundAllocation = Prisma.FundAllocationModel
+/**
  * Model Notification
  * 
  */

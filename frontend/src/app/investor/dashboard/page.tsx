@@ -71,13 +71,14 @@ export default function InvestorDashboard() {
     .reduce((sum, l) => sum + Number(l.netAmount), 0);
 
   const STATS = [
+    { label: 'Available funds',     value: fmtRand(me.availableFunds), sub: 'ready to invest', accent: true },
     { label: 'Total invested',      value: fmtRand(totalInvested), sub: `${propertyCount} ${propertyCount === 1 ? 'property' : 'properties'}`, accent: false },
-    { label: 'Properties held',     value: String(propertyCount),  sub: 'confirmed holdings', accent: false },
     { label: 'Avg. projected yield',value: `${avgYield.toFixed(1)}%`, sub: 'gross p.a.', accent: false },
-    { label: 'Distributions received', value: fmtRand(totalDist), sub: 'to date', accent: true },
+    { label: 'Distributions received', value: fmtRand(totalDist), sub: 'to date', accent: false },
   ];
 
   const GLANCE = [
+    { label: 'Available funds',     value: fmtRand(me.availableFunds), accent: true },
     { label: 'Properties held',     value: String(propertyCount) },
     { label: 'Confirmed pledges',   value: String(confirmed.length) },
     { label: 'Pending pledges',     value: String(pending.length) },
