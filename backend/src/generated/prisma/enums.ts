@@ -130,6 +130,15 @@ export const InvitationStatus = {
 export type InvitationStatus = (typeof InvitationStatus)[keyof typeof InvitationStatus]
 
 
+export const InvitationRequestStatus = {
+  pending: 'pending',
+  invited: 'invited',
+  declined: 'declined'
+} as const
+
+export type InvitationRequestStatus = (typeof InvitationRequestStatus)[keyof typeof InvitationRequestStatus]
+
+
 export const NotificationChannel = {
   email: 'email',
   sms: 'sms',

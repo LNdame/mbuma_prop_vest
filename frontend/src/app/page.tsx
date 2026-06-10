@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import s from './page.module.css';
 import NavAuth from '@/components/NavAuth';
+import InviteRequestForm from '@/components/InviteRequestForm';
 import { publicFetch } from '@/lib/api';
 
 interface FeaturedProperty {
@@ -148,7 +149,7 @@ export default async function HomePage() {
               distributions — all managed for you.
             </p>
             <div className={s.heroCtas}>
-              <button className={s.btnHeroPrimary}>Request an Invitation →</button>
+              <a href="#about" className={s.btnHeroPrimary}>Request an Invitation →</a>
               <a href="/properties" className={s.btnHeroSecondary}>View Properties</a>
             </div>
             <p className={s.heroNote}>
@@ -424,17 +425,7 @@ export default async function HomePage() {
             Mbuma PropVest is an invite-only platform. Enter your email and
             we&apos;ll reach out when a spot opens up.
           </p>
-          <div className={s.ctaForm}>
-            <input
-              className={s.ctaInput}
-              type="email"
-              placeholder="your@email.com"
-            />
-            <button className={s.btnCtaSubmit}>Request Invitation</button>
-          </div>
-          <p className={s.ctaNote}>
-            No spam. We&apos;ll only contact you with your invitation link.
-          </p>
+          <InviteRequestForm />
         </div>
       </section>
 

@@ -5,6 +5,56 @@ import { requireAuth, requireRole, type AuthRequest } from '../middleware/auth.j
 
 const router = Router();
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/* ── POST /api/invitations/request ───────────────────────────────────
+   PUBLIC — a prospective investor requests an invitation from the
+   landing page. Always responds 200 (no account-enumeration leak).
+──────────────────────────────────────────────────────────────────────── */
+router.post('/request', async (req, res: Response) => {
+  const { email, fullName } = req.body as { email?: string; fullName?: string };
+  if (!email || !EMAIL_RE.test(email)) {
+    res.status(400).json({ error: 'Please enter a valid email address' });
+    return;
+  }
+  const normalized = email.trim().toLowerCase();
+
+  try {
+    const [existingUser, existingRequest] = await Promise.all([
+      prisma.user.findUnique({ where: { email: normalized } }),
+      prisma.invitationRequest.findFirst({ where: { email: normalized, status: 'pending' } }),
+    ]);
+
+    // Only record a new request if there's no account and no pending request already.
+    if (!existingUser && !existingRequest) {
+      await prisma.invitationRequest.create({
+        data: { email: normalized, fullName: fullName?.trim() || null },
+      });
+    }
+
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('POST /api/invitations/request error:', err);
+    res.status(500).json({ error: 'Something went wrong. Please try again.' });
+  }
+});
+
+/* ── GET /api/invitations/requests ──────────────────────────────────
+   Admin — list public invitation requests.
+──────────────────────────────────────────────────────────────────────── */
+router.get(
+  '/requests',
+  requireAuth,
+  requireRole('admin', 'super_admin'),
+  async (_req, res: Response) => {
+    const data = await prisma.invitationRequest.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 100,
+    });
+    res.json({ data });
+  },
+);
+
 /* ── POST /api/invitations ───────────────────────────────────────── */
 router.post(
   '/',
