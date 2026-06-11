@@ -369,7 +369,15 @@ export default async function HomePage() {
             </ul>
           </div>
           <div style={{ position: 'relative' }}>
-            <div className={s.splitVisual}>🏗️</div>
+            <div className={s.splitVisual}>
+              <Image
+                src="/building.png"
+                alt="Property building"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                style={{ objectFit: 'cover' }}
+              />
+            </div>
             <div className={`${s.floatCard} ${s.tl}`}>
               <div className={s.floatCardValue}>R1 000</div>
               <div className={s.floatCardLabel}>Minimum pledge</div>
