@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import s from './page.module.css';
 import AllocateFundsForm from '@/components/AllocateFundsForm';
 import CancelPledgeButton from '@/components/CancelPledgeButton';
+import ConfirmPledgeButton from '@/components/ConfirmPledgeButton';
 
 /* ── Types ──────────────────────────────────────────────────────── */
 interface Pledge {
@@ -195,11 +196,14 @@ export default async function InvestorDetailPage({ params }: { params: Promise<{
                   </span>
                   <span className={s.pledgeDate}>{fmtDate(pl.confirmedAt ?? pl.createdAt)}</span>
                   {pl.status === 'pending' && (
-                    <CancelPledgeButton
-                      pledgeId={pl.id}
-                      canCancel={pl.property.status === 'open'}
-                      disabledReason="Property funding is closed — this pledge can no longer be cancelled."
-                    />
+                    <>
+                      <ConfirmPledgeButton pledgeId={pl.id} />
+                      <CancelPledgeButton
+                        pledgeId={pl.id}
+                        canCancel={pl.property.status === 'open'}
+                        disabledReason="Property funding is closed — this pledge can no longer be cancelled."
+                      />
+                    </>
                   )}
                 </div>
               </div>
