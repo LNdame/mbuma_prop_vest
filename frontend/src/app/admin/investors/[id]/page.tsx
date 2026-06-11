@@ -84,6 +84,7 @@ function propertyIcon(type: string) {
 function kycLabel(status: string) {
   if (status === 'approved') return 'Verified';
   if (status === 'rejected') return 'Rejected';
+  if (status === 'under_review') return 'Under review';
   return 'Pending';
 }
 
@@ -118,7 +119,7 @@ export default async function InvestorDetailPage({ params }: { params: Promise<{
       <div className={s.pageHeader}>
         <a href="/admin/investors" className={s.backLink}>← Investors</a>
         <div className={s.headerActions}>
-          {investor.kycStatus === 'pending' && (
+          {(investor.kycStatus === 'pending' || investor.kycStatus === 'under_review') && (
             <button className={s.btnVerify}>Verify investor</button>
           )}
           <button className={s.btnSecondary}>Send message</button>

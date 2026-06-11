@@ -49,7 +49,10 @@ export default function InvestorProfile() {
   const activePledges = me.pledges.filter((pl) => pl.status !== 'cancelled').length;
 
   const kycVerified = me.kycStatus === 'approved';
-  const kycLabel = kycVerified ? 'Verified' : me.kycStatus === 'rejected' ? 'Rejected' : 'Pending';
+  const kycLabel = kycVerified ? 'Verified'
+                 : me.kycStatus === 'rejected'     ? 'Rejected'
+                 : me.kycStatus === 'under_review' ? 'Under review'
+                 : 'Pending';
 
   return (
     <div className={s.page}>
@@ -74,7 +77,9 @@ export default function InvestorProfile() {
             </div>
           </div>
         </div>
-        <button className={s.btnKycAction}>View Documents →</button>
+        <a href={kycVerified ? '/investor/documents' : '/investor/kyc'} className={s.btnKycAction}>
+          {kycVerified ? 'View Documents →' : 'Complete verification →'}
+        </a>
       </div>
 
       <div className={s.mainGrid}>

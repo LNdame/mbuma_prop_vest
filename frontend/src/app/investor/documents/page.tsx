@@ -6,7 +6,8 @@ import { useMe, type MeDocument } from '../../../lib/useMe';
 function docMeta(t: MeDocument['docType']) {
   switch (t) {
     case 'id_document':         return { icon: '🪪', label: 'ID Document' };
-    case 'proof_of_address':    return { icon: '📋', label: 'Proof of Address' };
+    case 'selfie_with_id':      return { icon: '🤳', label: 'Selfie with ID' };
+    case 'proof_of_address':    return { icon: '📋', label: 'Proof of Residence' };
     case 'investment_agreement':return { icon: '📄', label: 'Investment Agreement' };
     case 'title_deed':          return { icon: '📜', label: 'Title Deed' };
     default:                    return { icon: '📁', label: 'Other' };

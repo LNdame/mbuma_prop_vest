@@ -17,6 +17,7 @@ enum KycStatus {
   pending
   approved
   rejected
+  under_review
 }
 
 enum IdType {
@@ -62,6 +63,7 @@ enum DocType {
   investment_agreement
   title_deed
   other
+  selfie_with_id
 }
 
 enum SigningStatus {
