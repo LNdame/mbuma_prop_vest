@@ -1,6 +1,6 @@
 import { Router, type Response } from 'express';
 import { prisma } from '../lib/prisma.js';
-import { requireAuth, type AuthRequest } from '../middleware/auth.js';
+import { requireAuth, requireRole, type AuthRequest } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -54,6 +54,33 @@ router.post('/:id/cancel', requireAuth, async (req: AuthRequest, res: Response) 
   const availableFunds = Number(allocAgg._sum.amount ?? 0) - Number(pledgeAgg._sum.amount ?? 0);
 
   res.json({ data: { id: pledge.id, status: 'cancelled', availableFunds } });
+});
+
+/* ── POST /api/pledges/:id/confirm ────────────────────────────────────
+   Admin confirms a pending pledge (e.g. once the investor's funds are
+   reconciled). Sets the status to 'confirmed' and stamps confirmedAt.
+   Funds were already reserved at pledge time, so no balance changes here.
+──────────────────────────────────────────────────────────────────────── */
+router.post('/:id/confirm', requireAuth, requireRole('admin', 'super_admin'), async (req: AuthRequest, res: Response) => {
+  const pledge = await prisma.pledge.findUnique({
+    where:  { id: req.params.id },
+    select: { id: true, status: true },
+  });
+  if (!pledge) {
+    res.status(404).json({ error: 'Pledge not found' });
+    return;
+  }
+  if (pledge.status !== 'pending') {
+    res.status(409).json({ error: `Only pending pledges can be confirmed (this pledge is ${pledge.status})` });
+    return;
+  }
+
+  const updated = await prisma.pledge.update({
+    where: { id: pledge.id },
+    data:  { status: 'confirmed', confirmedAt: new Date() },
+  });
+
+  res.json({ data: { id: updated.id, status: updated.status, confirmedAt: updated.confirmedAt } });
 });
 
 export default router;
