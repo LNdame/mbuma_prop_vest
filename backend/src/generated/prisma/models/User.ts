@@ -227,6 +227,7 @@ export type UserWhereInput = {
   payments?: Prisma.PaymentListRelationFilter
   documents?: Prisma.DocumentListRelationFilter
   distributionLines?: Prisma.DistributionLineListRelationFilter
+  fundAllocations?: Prisma.FundAllocationListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
   createdProperties?: Prisma.PropertyListRelationFilter
@@ -250,6 +251,7 @@ export type UserOrderByWithRelationInput = {
   payments?: Prisma.PaymentOrderByRelationAggregateInput
   documents?: Prisma.DocumentOrderByRelationAggregateInput
   distributionLines?: Prisma.DistributionLineOrderByRelationAggregateInput
+  fundAllocations?: Prisma.FundAllocationOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
   createdProperties?: Prisma.PropertyOrderByRelationAggregateInput
@@ -276,6 +278,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   payments?: Prisma.PaymentListRelationFilter
   documents?: Prisma.DocumentListRelationFilter
   distributionLines?: Prisma.DistributionLineListRelationFilter
+  fundAllocations?: Prisma.FundAllocationListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
   createdProperties?: Prisma.PropertyListRelationFilter
@@ -331,6 +334,7 @@ export type UserCreateInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
@@ -354,6 +358,7 @@ export type UserUncheckedCreateInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineUncheckedCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
@@ -377,6 +382,7 @@ export type UserUpdateInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
@@ -400,6 +406,7 @@ export type UserUncheckedUpdateInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUncheckedUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
@@ -635,6 +642,20 @@ export type UserUpdateOneRequiredWithoutCreatedInvitationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedInvitationsInput, Prisma.UserUpdateWithoutCreatedInvitationsInput>, Prisma.UserUncheckedUpdateWithoutCreatedInvitationsInput>
 }
 
+export type UserCreateNestedOneWithoutFundAllocationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFundAllocationsInput, Prisma.UserUncheckedCreateWithoutFundAllocationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFundAllocationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutFundAllocationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFundAllocationsInput, Prisma.UserUncheckedCreateWithoutFundAllocationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFundAllocationsInput
+  upsert?: Prisma.UserUpsertWithoutFundAllocationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFundAllocationsInput, Prisma.UserUpdateWithoutFundAllocationsInput>, Prisma.UserUncheckedUpdateWithoutFundAllocationsInput>
+}
+
 export type UserCreateNestedOneWithoutNotificationsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
@@ -680,6 +701,7 @@ export type UserCreateWithoutInvestorProfileInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
@@ -702,6 +724,7 @@ export type UserUncheckedCreateWithoutInvestorProfileInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineUncheckedCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
@@ -740,6 +763,7 @@ export type UserUpdateWithoutInvestorProfileInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
@@ -762,6 +786,7 @@ export type UserUncheckedUpdateWithoutInvestorProfileInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUncheckedUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
@@ -785,6 +810,7 @@ export type UserCreateWithoutCreatedPropertiesInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   createdDistributions?: Prisma.DistributionCreateNestedManyWithoutCreatorInput
@@ -807,6 +833,7 @@ export type UserUncheckedCreateWithoutCreatedPropertiesInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineUncheckedCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   createdDistributions?: Prisma.DistributionUncheckedCreateNestedManyWithoutCreatorInput
@@ -845,6 +872,7 @@ export type UserUpdateWithoutCreatedPropertiesInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   createdDistributions?: Prisma.DistributionUpdateManyWithoutCreatorNestedInput
@@ -867,6 +895,7 @@ export type UserUncheckedUpdateWithoutCreatedPropertiesInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUncheckedUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
@@ -888,6 +917,7 @@ export type UserCreateWithoutPledgesInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
@@ -910,6 +940,7 @@ export type UserUncheckedCreateWithoutPledgesInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineUncheckedCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
@@ -948,6 +979,7 @@ export type UserUpdateWithoutPledgesInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
@@ -970,6 +1002,7 @@ export type UserUncheckedUpdateWithoutPledgesInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUncheckedUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
@@ -992,6 +1025,7 @@ export type UserCreateWithoutPaymentsInput = {
   pledges?: Prisma.PledgeCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
@@ -1014,6 +1048,7 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   pledges?: Prisma.PledgeUncheckedCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineUncheckedCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
@@ -1052,6 +1087,7 @@ export type UserUpdateWithoutPaymentsInput = {
   pledges?: Prisma.PledgeUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
@@ -1074,6 +1110,7 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   pledges?: Prisma.PledgeUncheckedUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUncheckedUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
@@ -1096,6 +1133,7 @@ export type UserCreateWithoutDocumentsInput = {
   pledges?: Prisma.PledgeCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
@@ -1118,6 +1156,7 @@ export type UserUncheckedCreateWithoutDocumentsInput = {
   pledges?: Prisma.PledgeUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineUncheckedCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
@@ -1156,6 +1195,7 @@ export type UserUpdateWithoutDocumentsInput = {
   pledges?: Prisma.PledgeUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
@@ -1178,6 +1218,7 @@ export type UserUncheckedUpdateWithoutDocumentsInput = {
   pledges?: Prisma.PledgeUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUncheckedUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
@@ -1201,6 +1242,7 @@ export type UserCreateWithoutCreatedDistributionsInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
@@ -1223,6 +1265,7 @@ export type UserUncheckedCreateWithoutCreatedDistributionsInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineUncheckedCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
@@ -1261,6 +1304,7 @@ export type UserUpdateWithoutCreatedDistributionsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
@@ -1283,6 +1327,7 @@ export type UserUncheckedUpdateWithoutCreatedDistributionsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUncheckedUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
@@ -1304,6 +1349,7 @@ export type UserCreateWithoutDistributionLinesInput = {
   pledges?: Prisma.PledgeCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
@@ -1326,6 +1372,7 @@ export type UserUncheckedCreateWithoutDistributionLinesInput = {
   pledges?: Prisma.PledgeUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
@@ -1364,6 +1411,7 @@ export type UserUpdateWithoutDistributionLinesInput = {
   pledges?: Prisma.PledgeUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
@@ -1386,6 +1434,7 @@ export type UserUncheckedUpdateWithoutDistributionLinesInput = {
   pledges?: Prisma.PledgeUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
@@ -1409,6 +1458,7 @@ export type UserCreateWithoutCreatedInvitationsInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
@@ -1431,6 +1481,7 @@ export type UserUncheckedCreateWithoutCreatedInvitationsInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineUncheckedCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
@@ -1469,6 +1520,7 @@ export type UserUpdateWithoutCreatedInvitationsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
@@ -1491,10 +1543,119 @@ export type UserUncheckedUpdateWithoutCreatedInvitationsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUncheckedUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
+}
+
+export type UserCreateWithoutFundAllocationsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  fullName: string
+  phone?: string | null
+  role?: $Enums.UserRole
+  kycStatus?: $Enums.KycStatus
+  kycVerifiedAt?: Date | string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  investorProfile?: Prisma.InvestorProfileCreateNestedOneWithoutUserInput
+  pledges?: Prisma.PledgeCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
+  distributionLines?: Prisma.DistributionLineCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
+  createdDistributions?: Prisma.DistributionCreateNestedManyWithoutCreatorInput
+  createdInvitations?: Prisma.InvitationCreateNestedManyWithoutCreatorInput
+}
+
+export type UserUncheckedCreateWithoutFundAllocationsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  fullName: string
+  phone?: string | null
+  role?: $Enums.UserRole
+  kycStatus?: $Enums.KycStatus
+  kycVerifiedAt?: Date | string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  investorProfile?: Prisma.InvestorProfileUncheckedCreateNestedOneWithoutUserInput
+  pledges?: Prisma.PledgeUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
+  distributionLines?: Prisma.DistributionLineUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
+  createdDistributions?: Prisma.DistributionUncheckedCreateNestedManyWithoutCreatorInput
+  createdInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatorInput
+}
+
+export type UserCreateOrConnectWithoutFundAllocationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFundAllocationsInput, Prisma.UserUncheckedCreateWithoutFundAllocationsInput>
+}
+
+export type UserUpsertWithoutFundAllocationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFundAllocationsInput, Prisma.UserUncheckedUpdateWithoutFundAllocationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFundAllocationsInput, Prisma.UserUncheckedCreateWithoutFundAllocationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFundAllocationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFundAllocationsInput, Prisma.UserUncheckedUpdateWithoutFundAllocationsInput>
+}
+
+export type UserUpdateWithoutFundAllocationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+  kycVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  investorProfile?: Prisma.InvestorProfileUpdateOneWithoutUserNestedInput
+  pledges?: Prisma.PledgeUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
+  distributionLines?: Prisma.DistributionLineUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
+  createdDistributions?: Prisma.DistributionUpdateManyWithoutCreatorNestedInput
+  createdInvitations?: Prisma.InvitationUpdateManyWithoutCreatorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFundAllocationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+  kycVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  investorProfile?: Prisma.InvestorProfileUncheckedUpdateOneWithoutUserNestedInput
+  pledges?: Prisma.PledgeUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
+  distributionLines?: Prisma.DistributionLineUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
+  createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
+  createdInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -1513,6 +1674,7 @@ export type UserCreateWithoutNotificationsInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionCreateNestedManyWithoutCreatorInput
@@ -1535,6 +1697,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineUncheckedCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionUncheckedCreateNestedManyWithoutCreatorInput
@@ -1573,6 +1736,7 @@ export type UserUpdateWithoutNotificationsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUpdateManyWithoutCreatorNestedInput
@@ -1595,6 +1759,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUncheckedUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
@@ -1617,6 +1782,7 @@ export type UserCreateWithoutAuditLogsInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionCreateNestedManyWithoutCreatorInput
@@ -1639,6 +1805,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   distributionLines?: Prisma.DistributionLineUncheckedCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionUncheckedCreateNestedManyWithoutCreatorInput
@@ -1677,6 +1844,7 @@ export type UserUpdateWithoutAuditLogsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUpdateManyWithoutCreatorNestedInput
@@ -1699,6 +1867,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   distributionLines?: Prisma.DistributionLineUncheckedUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
@@ -1715,6 +1884,7 @@ export type UserCountOutputType = {
   payments: number
   documents: number
   distributionLines: number
+  fundAllocations: number
   notifications: number
   auditLogs: number
   createdProperties: number
@@ -1727,6 +1897,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   payments?: boolean | UserCountOutputTypeCountPaymentsArgs
   documents?: boolean | UserCountOutputTypeCountDocumentsArgs
   distributionLines?: boolean | UserCountOutputTypeCountDistributionLinesArgs
+  fundAllocations?: boolean | UserCountOutputTypeCountFundAllocationsArgs
   notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
   createdProperties?: boolean | UserCountOutputTypeCountCreatedPropertiesArgs
@@ -1770,6 +1941,13 @@ export type UserCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Types.
  */
 export type UserCountOutputTypeCountDistributionLinesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.DistributionLineWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFundAllocationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FundAllocationWhereInput
 }
 
 /**
@@ -1824,6 +2002,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
   documents?: boolean | Prisma.User$documentsArgs<ExtArgs>
   distributionLines?: boolean | Prisma.User$distributionLinesArgs<ExtArgs>
+  fundAllocations?: boolean | Prisma.User$fundAllocationsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   createdProperties?: boolean | Prisma.User$createdPropertiesArgs<ExtArgs>
@@ -1878,6 +2057,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
   documents?: boolean | Prisma.User$documentsArgs<ExtArgs>
   distributionLines?: boolean | Prisma.User$distributionLinesArgs<ExtArgs>
+  fundAllocations?: boolean | Prisma.User$fundAllocationsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   createdProperties?: boolean | Prisma.User$createdPropertiesArgs<ExtArgs>
@@ -1896,6 +2076,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     payments: Prisma.$PaymentPayload<ExtArgs>[]
     documents: Prisma.$DocumentPayload<ExtArgs>[]
     distributionLines: Prisma.$DistributionLinePayload<ExtArgs>[]
+    fundAllocations: Prisma.$FundAllocationPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
     createdProperties: Prisma.$PropertyPayload<ExtArgs>[]
@@ -2312,6 +2493,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   payments<T extends Prisma.User$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documents<T extends Prisma.User$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   distributionLines<T extends Prisma.User$distributionLinesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$distributionLinesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DistributionLinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  fundAllocations<T extends Prisma.User$fundAllocationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$fundAllocationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FundAllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdProperties<T extends Prisma.User$createdPropertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdPropertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2861,6 +3043,30 @@ export type User$distributionLinesArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.DistributionLineScalarFieldEnum | Prisma.DistributionLineScalarFieldEnum[]
+}
+
+/**
+ * User.fundAllocations
+ */
+export type User$fundAllocationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FundAllocation
+   */
+  select?: Prisma.FundAllocationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FundAllocation
+   */
+  omit?: Prisma.FundAllocationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FundAllocationInclude<ExtArgs> | null
+  where?: Prisma.FundAllocationWhereInput
+  orderBy?: Prisma.FundAllocationOrderByWithRelationInput | Prisma.FundAllocationOrderByWithRelationInput[]
+  cursor?: Prisma.FundAllocationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FundAllocationScalarFieldEnum | Prisma.FundAllocationScalarFieldEnum[]
 }
 
 /**

@@ -67,7 +67,7 @@ export default function NavAuth() {
     return (
       <div className={s.navActions}>
         <a href="/login" className={s.btnGhost}>Log In</a>
-        <button className={s.btnPrimary}>Request an Invitation</button>
+        <a href="/#about" className={s.btnPrimary}>Request an Invitation</a>
       </div>
     );
   }

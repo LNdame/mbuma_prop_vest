@@ -17,6 +17,7 @@ router.get('/', requireAuth, requireRole('admin', 'super_admin'), async (_req, r
           where: { status: { not: 'cancelled' } },
           include: { property: { select: { id: true, title: true, status: true } } },
         },
+        fundAllocations: { select: { amount: true } },
       },
     });
 
@@ -35,6 +36,9 @@ router.get('/', requireAuth, requireRole('admin', 'super_admin'), async (_req, r
         .filter((p) => p.status === 'confirmed')
         .reduce((sum, p) => sum + Number(p.amount), 0),
       propertyCount: new Set(u.pledges.map((p) => p.propertyId)).size,
+      // Available funds = allocations received − amount reserved by active (pending/confirmed) pledges.
+      availableFunds: u.fundAllocations.reduce((sum, a) => sum + Number(a.amount), 0)
+                    - u.pledges.reduce((sum, p) => sum + Number(p.amount), 0),
     }));
 
     res.json({ data });
@@ -70,6 +74,7 @@ router.get('/me', requireAuth, async (req: AuthRequest, res: Response) => {
           include: { property: { select: { title: true } } },
           orderBy: { createdAt: 'desc' },
         },
+        fundAllocations: { orderBy: { createdAt: 'desc' } },
       },
     });
 
@@ -83,8 +88,13 @@ router.get('/me', requireAuth, async (req: AuthRequest, res: Response) => {
       user.documents.map(async (d) => ({ ...d, downloadUrl: await presignDownload(d.s3Key) })),
     );
 
+    // Available funds = allocations received − amount reserved by active (pending/confirmed) pledges.
+    // user.pledges is already filtered to status != 'cancelled' above.
+    const availableFunds = user.fundAllocations.reduce((s, a) => s + Number(a.amount), 0)
+                         - user.pledges.reduce((s, p) => s + Number(p.amount), 0);
+
     const { passwordHash: _omit, documents: _docs, ...safe } = user;
-    res.json({ data: { ...safe, documents } });
+    res.json({ data: { ...safe, documents, availableFunds } });
   } catch (err) {
     console.error('GET /api/investors/me error:', err);
     res.status(500).json({ error: 'Failed to fetch account' });
@@ -109,6 +119,7 @@ router.get('/:id', requireAuth, requireRole('admin', 'super_admin'), async (req,
           orderBy: { createdAt: 'desc' },
           take: 12,
         },
+        fundAllocations: { orderBy: { createdAt: 'desc' } },
       },
     });
 
@@ -117,12 +128,57 @@ router.get('/:id', requireAuth, requireRole('admin', 'super_admin'), async (req,
       return;
     }
 
-    res.json({ data: user });
+    // Available funds = allocations received − amount reserved by active (pending/confirmed) pledges.
+    const availableFunds = user.fundAllocations.reduce((s, a) => s + Number(a.amount), 0)
+                         - user.pledges.filter((p) => p.status !== 'cancelled').reduce((s, p) => s + Number(p.amount), 0);
+    res.json({ data: { ...user, availableFunds } });
   } catch (err) {
     console.error('GET /api/investors/:id error:', err);
     res.status(500).json({ error: 'Failed to fetch investor' });
   }
 });
+
+/* ── POST /api/investors/:id/allocate ───────────────────────────────
+   Admin records funds received from an investor and credits their
+   account. Available funds = sum of allocations.
+──────────────────────────────────────────────────────────────────────── */
+router.post(
+  '/:id/allocate',
+  requireAuth,
+  requireRole('admin', 'super_admin'),
+  async (req: AuthRequest, res: Response) => {
+    const { amount, reference, note } = req.body as { amount?: number | string; reference?: string; note?: string };
+    const amt = Number(amount);
+    if (!amt || amt <= 0) {
+      res.status(400).json({ error: 'A positive amount is required' });
+      return;
+    }
+
+    const user = await prisma.user.findUnique({ where: { id: req.params.id }, select: { id: true, role: true } });
+    if (!user || user.role !== 'investor') {
+      res.status(404).json({ error: 'Investor not found' });
+      return;
+    }
+
+    const allocation = await prisma.fundAllocation.create({
+      data: {
+        userId:    user.id,
+        amount:    amt,
+        reference: reference?.trim() || null,
+        note:      note?.trim() || null,
+        createdBy: req.user!.sub,
+      },
+    });
+
+    // Available funds = allocations received − amount reserved by active (pending/confirmed) pledges.
+    const [allocAgg, pledgeAgg] = await Promise.all([
+      prisma.fundAllocation.aggregate({ where: { userId: user.id }, _sum: { amount: true } }),
+      prisma.pledge.aggregate({ where: { userId: user.id, status: { not: 'cancelled' } }, _sum: { amount: true } }),
+    ]);
+    const availableFunds = Number(allocAgg._sum.amount ?? 0) - Number(pledgeAgg._sum.amount ?? 0);
+    res.status(201).json({ data: { allocation, availableFunds } });
+  },
+);
 
 /* ── POST /api/investors/:id/verify ─────────────────────────────── */
 router.post(

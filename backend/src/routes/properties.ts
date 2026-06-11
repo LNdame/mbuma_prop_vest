@@ -123,4 +123,78 @@ router.patch(
   }
 );
 
+/* ── POST /api/properties/:id/pledges ────────────────────────────────
+   An investor pledges into an open property. The pledge is created as
+   'pending' and reserves the investor's available funds (allocations −
+   active pledges). Funds and validation are checked in one transaction.
+──────────────────────────────────────────────────────────────────────── */
+router.post(
+  '/:id/pledges',
+  requireAuth,
+  requireRole('investor'),
+  async (req: AuthRequest, res: Response) => {
+    const rand = (n: number) => 'R' + n.toLocaleString('en-ZA');
+
+    const amount = Number((req.body as { amount?: number | string }).amount);
+    if (!Number.isFinite(amount) || amount <= 0) {
+      res.status(400).json({ error: 'A positive pledge amount is required' });
+      return;
+    }
+
+    const property = await prisma.property.findUnique({
+      where:  { id: req.params.id },
+      select: { id: true, status: true, minimumPledge: true, targetRaise: true, fundedAmount: true },
+    });
+    if (!property) {
+      res.status(404).json({ error: 'Property not found' });
+      return;
+    }
+    if (property.status !== 'open') {
+      res.status(409).json({ error: 'This property is not open for pledges' });
+      return;
+    }
+
+    const minPledge = Number(property.minimumPledge);
+    if (amount < minPledge) {
+      res.status(400).json({ error: `The minimum pledge for this property is ${rand(minPledge)}` });
+      return;
+    }
+
+    const remaining = Number(property.targetRaise) - Number(property.fundedAmount);
+    if (amount > remaining) {
+      res.status(400).json({ error: `Only ${rand(remaining)} remaining on this property's target raise` });
+      return;
+    }
+
+    // Available funds = allocations received − amount reserved by active (pending/confirmed) pledges.
+    const [allocAgg, pledgeAgg] = await Promise.all([
+      prisma.fundAllocation.aggregate({ where: { userId: req.user!.sub }, _sum: { amount: true } }),
+      prisma.pledge.aggregate({ where: { userId: req.user!.sub, status: { not: 'cancelled' } }, _sum: { amount: true } }),
+    ]);
+    const availableFunds = Number(allocAgg._sum.amount ?? 0) - Number(pledgeAgg._sum.amount ?? 0);
+    if (amount > availableFunds) {
+      res.status(400).json({ error: `Insufficient available funds — you have ${rand(availableFunds)} available` });
+      return;
+    }
+
+    const pledge = await prisma.$transaction(async (tx) => {
+      const created = await tx.pledge.create({
+        data: { userId: req.user!.sub, propertyId: property.id, amount, status: 'pending' },
+      });
+      const newFunded = Number(property.fundedAmount) + amount;
+      await tx.property.update({
+        where: { id: property.id },
+        data: {
+          fundedAmount: newFunded,
+          // Auto-close the raise once the target is reached.
+          ...(newFunded >= Number(property.targetRaise) ? { status: 'funded' as const } : {}),
+        },
+      });
+      return created;
+    });
+
+    res.status(201).json({ data: { pledge, availableFunds: availableFunds - amount } });
+  }
+);
+
 export default router;

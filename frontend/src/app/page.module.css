@@ -891,6 +891,32 @@
   color: rgba(255,255,255,.45);
 }
 
+.ctaSuccess {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 auto;
+  background: rgba(52, 211, 153, .12);
+  border: 1px solid rgba(52, 211, 153, .35);
+  border-radius: 12px;
+  padding: 14px 22px;
+  text-align: left;
+}
+.ctaSuccessIcon {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #34d399;
+  color: #06281c;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ctaSuccessTitle { font-size: 15px; font-weight: 700; color: #fff; }
+.ctaSuccessSub   { font-size: 13px; color: rgba(255,255,255,.7); }
+
 /* ─── FOOTER ──────────────────────────────────────────────── */
 .footer {
   background: var(--neutral-900);

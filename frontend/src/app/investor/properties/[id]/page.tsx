@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import s from './page.module.css';
 import PropertyCarousel, { type CarouselImage } from '@/components/PropertyCarousel';
+import PledgePanel from './PledgePanel';
 
 /* ── Types ──────────────────────────────────────────────────────── */
 interface PropertyDetail {
@@ -67,7 +68,6 @@ export default async function InvestorPropertyDetailPage({ params }: { params: P
   }
 
   const fundedPct = pct(property.fundedAmount, property.targetRaise);
-  const isOpen    = property.status === 'open';
 
   const statusCls = property.status === 'open'   ? s.pillOpen
                   : property.status === 'funded' ? s.pillFunded
@@ -180,27 +180,14 @@ export default async function InvestorPropertyDetailPage({ params }: { params: P
 
         {/* Right column — pledge CTA */}
         <div className={s.rightCol}>
-          <div className={s.ctaCard}>
-            <div className={s.ctaTitle}>Invest in this property</div>
-            <div className={s.ctaSub}>
-              Pledge your share and start earning a projected {Number(property.projectedYieldPct).toFixed(1)}% yield.
-            </div>
-            <div className={s.ctaRow}>
-              <span className={s.ctaLabel}>Minimum pledge</span>
-              <span className={s.ctaValue}>{fmtRand(property.minimumPledge)}</span>
-            </div>
-            <div className={s.ctaRow}>
-              <span className={s.ctaLabel}>Projected yield</span>
-              <span className={s.ctaValue}>{Number(property.projectedYieldPct).toFixed(1)}%</span>
-            </div>
-            <button
-              type="button"
-              className={`${s.btnPledge} ${isOpen ? '' : s.btnDisabled}`}
-              disabled={!isOpen}
-            >
-              {isOpen ? 'Pledge Now →' : property.status === 'funded' ? 'Fully funded' : 'Not open for pledges'}
-            </button>
-          </div>
+          <PledgePanel
+            propertyId={property.id}
+            status={property.status}
+            minimumPledge={property.minimumPledge}
+            projectedYieldPct={property.projectedYieldPct}
+            targetRaise={property.targetRaise}
+            fundedAmount={property.fundedAmount}
+          />
         </div>
 
       </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import s from './page.module.css';
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
@@ -14,6 +14,12 @@ export default function InviteInvestorPage() {
   const [step, setStep]       = useState<Step>('form');
   const [result, setResult]   = useState<{ email: string; inviteLink: string; expiresAt: string } | null>(null);
 
+  // Prefill the email when arriving from a dashboard "Invitation request" action.
+  useEffect(() => {
+    const prefill = new URLSearchParams(window.location.search).get('email');
+    if (prefill) setEmail(prefill);
+  }, []);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
@@ -22,7 +28,7 @@ export default function InviteInvestorPage() {
     try {
       const res = await fetch(`${API}/api/invitations`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('adminToken') ?? ''}` },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token') ?? ''}` },
         body: JSON.stringify({ email: email.trim() }),
       });
       const json = await res.json();

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import s from './page.module.css';
 import NavAuth from '@/components/NavAuth';
+import InviteRequestForm from '@/components/InviteRequestForm';
 import { publicFetch } from '@/lib/api';
 
 interface FeaturedProperty {
@@ -148,7 +149,7 @@ export default async function HomePage() {
               distributions — all managed for you.
             </p>
             <div className={s.heroCtas}>
-              <button className={s.btnHeroPrimary}>Request an Invitation →</button>
+              <a href="#about" className={s.btnHeroPrimary}>Request an Invitation →</a>
               <a href="/properties" className={s.btnHeroSecondary}>View Properties</a>
             </div>
             <p className={s.heroNote}>
@@ -368,7 +369,15 @@ export default async function HomePage() {
             </ul>
           </div>
           <div style={{ position: 'relative' }}>
-            <div className={s.splitVisual}>🏗️</div>
+            <div className={s.splitVisual}>
+              <Image
+                src="/building.png"
+                alt="Property building"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                style={{ objectFit: 'cover' }}
+              />
+            </div>
             <div className={`${s.floatCard} ${s.tl}`}>
               <div className={s.floatCardValue}>R1 000</div>
               <div className={s.floatCardLabel}>Minimum pledge</div>
@@ -424,17 +433,7 @@ export default async function HomePage() {
             Mbuma PropVest is an invite-only platform. Enter your email and
             we&apos;ll reach out when a spot opens up.
           </p>
-          <div className={s.ctaForm}>
-            <input
-              className={s.ctaInput}
-              type="email"
-              placeholder="your@email.com"
-            />
-            <button className={s.btnCtaSubmit}>Request Invitation</button>
-          </div>
-          <p className={s.ctaNote}>
-            No spam. We&apos;ll only contact you with your invitation link.
-          </p>
+          <InviteRequestForm />
         </div>
       </section>
 

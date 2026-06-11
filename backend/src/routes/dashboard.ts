@@ -14,8 +14,13 @@ function fmtRand(n: number) {
 ──────────────────────────────────────────────────────────────────────── */
 router.get('/', requireAuth, requireRole('admin', 'super_admin'), async (_req, res: Response) => {
   try {
-    const [pendingKyc, pendingPledges, unsignedAgreements, missingBank, distributions, recentPledges, recentKyc] =
+    const [invitationRequests, pendingKyc, pendingPledges, unsignedAgreements, missingBank, distributions, recentPledges, recentKyc] =
       await Promise.all([
+        prisma.invitationRequest.findMany({
+          where:   { status: 'pending' },
+          select:  { id: true, email: true, fullName: true },
+          orderBy: { createdAt: 'desc' },
+        }),
         prisma.user.findMany({
           where:   { role: 'investor', kycStatus: 'pending' },
           select:  { id: true, fullName: true },
@@ -59,6 +64,15 @@ router.get('/', requireAuth, requireRole('admin', 'super_admin'), async (_req, r
     /* ── Pending actions ── */
     type Action = { name: string; sub: string; action: string; href: string; dot: 'orange' | 'green' | 'gray' };
     const pendingActions: Action[] = [];
+    for (const r of invitationRequests) {
+      pendingActions.push({
+        name: `Invitation request — ${r.fullName ?? r.email}`,
+        sub: `${r.email} · wants to join`,
+        action: 'Invite',
+        href: `/admin/investors/invite?email=${encodeURIComponent(r.email)}`,
+        dot: 'orange',
+      });
+    }
     for (const u of pendingKyc) {
       pendingActions.push({ name: `Verify investor — ${u.fullName}`, sub: 'KYC submitted · awaiting approval', action: 'Verify', href: `/admin/investors/${u.id}`, dot: 'orange' });
     }

@@ -1,6 +1,8 @@
 import { apiFetch } from '@/lib/api';
 import { notFound } from 'next/navigation';
 import s from './page.module.css';
+import AllocateFundsForm from '@/components/AllocateFundsForm';
+import CancelPledgeButton from '@/components/CancelPledgeButton';
 
 /* ── Types ──────────────────────────────────────────────────────── */
 interface Pledge {
@@ -49,6 +51,16 @@ interface InvestorDetail {
   investorProfile: InvestorProfile | null;
   pledges: Pledge[];
   distributionLines: DistributionLine[];
+  availableFunds: number;
+  fundAllocations: FundAllocation[];
+}
+
+interface FundAllocation {
+  id: string;
+  amount: string;
+  reference: string | null;
+  note: string | null;
+  createdAt: string;
 }
 
 /* ── Helpers ────────────────────────────────────────────────────── */
@@ -137,12 +149,12 @@ export default async function InvestorDetailPage({ params }: { params: Promise<{
       {/* Stats row */}
       <div className={s.statsRow}>
         <div className={s.statCard}>
-          <div className={s.statLabel}>Total invested</div>
-          <div className={`${s.statValue} ${s.accent}`}>{fmtRand(totalInvested)}</div>
+          <div className={s.statLabel}>Available funds</div>
+          <div className={`${s.statValue} ${s.accent}`}>{fmtRand(investor.availableFunds) || 'R0'}</div>
         </div>
         <div className={s.statCard}>
-          <div className={s.statLabel}>Properties</div>
-          <div className={s.statValue}>{new Set(investor.pledges.map((p) => p.property.id)).size}</div>
+          <div className={s.statLabel}>Total invested</div>
+          <div className={s.statValue}>{fmtRand(totalInvested)}</div>
         </div>
         <div className={s.statCard}>
           <div className={s.statLabel}>Total received</div>
@@ -181,6 +193,13 @@ export default async function InvestorDetailPage({ params }: { params: Promise<{
                     {pl.status}
                   </span>
                   <span className={s.pledgeDate}>{fmtDate(pl.confirmedAt ?? pl.createdAt)}</span>
+                  {pl.status === 'pending' && (
+                    <CancelPledgeButton
+                      pledgeId={pl.id}
+                      canCancel={pl.property.status === 'open'}
+                      disabledReason="Property funding is closed — this pledge can no longer be cancelled."
+                    />
+                  )}
                 </div>
               </div>
             ))}
@@ -209,8 +228,42 @@ export default async function InvestorDetailPage({ params }: { params: Promise<{
 
         </div>
 
-        {/* Right column — profile details */}
+        {/* Right column */}
         <div className={s.rightCol}>
+
+          {/* Funds / wallet */}
+          <div className={s.panel}>
+            <div className={s.panelHead}><span className={s.panelTitle}>Available funds</span></div>
+            <div style={{ padding: '16px 18px', borderBottom: '1px solid var(--neutral-100)' }}>
+              <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--green-600)', letterSpacing: '-0.5px' }}>
+                {fmtRand(investor.availableFunds) || 'R0'}
+              </div>
+              <div style={{ fontSize: 12, color: 'var(--neutral-500)', marginTop: 2 }}>
+                Allocated after receiving the investor&apos;s bank transfer
+              </div>
+            </div>
+
+            {/* Allocate funds */}
+            <AllocateFundsForm investorId={investor.id} />
+
+            {/* Allocation history */}
+            {investor.fundAllocations.length > 0 && (
+              <div style={{ borderTop: '1px solid var(--neutral-100)' }}>
+                {investor.fundAllocations.map((a) => (
+                  <div key={a.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 18px', borderBottom: '1px solid var(--neutral-100)' }}>
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--neutral-800)' }}>{fmtRand(a.amount)}</div>
+                      <div style={{ fontSize: 11, color: 'var(--neutral-500)' }}>
+                        {fmtDate(a.createdAt)}{a.reference ? ` · ${a.reference}` : ''}{a.note ? ` · ${a.note}` : ''}
+                      </div>
+                    </div>
+                    <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--green-700, #15803d)', background: 'var(--green-100)', padding: '3px 9px', borderRadius: 99 }}>Credited</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           <div className={s.panel}>
             <div className={s.panelHead}><span className={s.panelTitle}>Profile details</span></div>
             <div className={s.profileGrid}>
