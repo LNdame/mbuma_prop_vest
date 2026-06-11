@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import s from './page.module.css';
 import AllocateFundsForm from '@/components/AllocateFundsForm';
 import CancelPledgeButton from '@/components/CancelPledgeButton';
+import ConfirmPledgeButton from '@/components/ConfirmPledgeButton';
 
 /* ── Types ──────────────────────────────────────────────────────── */
 interface Pledge {
@@ -195,16 +196,7 @@ export default async function InvestorDetailPage({ params }: { params: Promise<{
                   <span className={s.pledgeDate}>{fmtDate(pl.confirmedAt ?? pl.createdAt)}</span>
                   {pl.status === 'pending' && (
                     <>
-                      {/* TODO: wire up pledge confirmation — inert placeholder for now */}
-                      <button
-                        type="button"
-                        style={{
-                          fontSize: 12, fontWeight: 600, padding: '5px 10px', borderRadius: 6,
-                          border: 'none', background: 'var(--green-500)', color: 'var(--white)', cursor: 'pointer',
-                        }}
-                      >
-                        Confirm
-                      </button>
+                      <ConfirmPledgeButton pledgeId={pl.id} />
                       <CancelPledgeButton
                         pledgeId={pl.id}
                         canCancel={pl.property.status === 'open'}
