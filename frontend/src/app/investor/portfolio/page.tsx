@@ -2,6 +2,7 @@
 
 import s from '../investor.module.css';
 import { useMe } from '../../../lib/useMe';
+import CancelPledgeButton from '../../../components/CancelPledgeButton';
 
 function fmtRand(n: number) {
   if (!n) return 'R0';
@@ -123,6 +124,14 @@ export default function InvestorPortfolio() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
                     <span className={statusPill(p.status, s as Record<string, string>)} style={{ textTransform: 'capitalize' }}>{p.status}</span>
                     <a href={`/investor/properties/${p.property.id}`}><button className={s.btnSm}>View</button></a>
+                    {p.status === 'pending' && (
+                      <CancelPledgeButton
+                        pledgeId={p.id}
+                        canCancel={p.property.status === 'open'}
+                        disabledReason="Property funding is closed — this pledge can no longer be cancelled."
+                        refreshMode="reload"
+                      />
+                    )}
                   </div>
                 </div>
 
