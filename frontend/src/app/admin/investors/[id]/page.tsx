@@ -194,11 +194,23 @@ export default async function InvestorDetailPage({ params }: { params: Promise<{
                   </span>
                   <span className={s.pledgeDate}>{fmtDate(pl.confirmedAt ?? pl.createdAt)}</span>
                   {pl.status === 'pending' && (
-                    <CancelPledgeButton
-                      pledgeId={pl.id}
-                      canCancel={pl.property.status === 'open'}
-                      disabledReason="Property funding is closed — this pledge can no longer be cancelled."
-                    />
+                    <>
+                      {/* TODO: wire up pledge confirmation — inert placeholder for now */}
+                      <button
+                        type="button"
+                        style={{
+                          fontSize: 12, fontWeight: 600, padding: '5px 10px', borderRadius: 6,
+                          border: 'none', background: 'var(--green-500)', color: 'var(--white)', cursor: 'pointer',
+                        }}
+                      >
+                        Confirm
+                      </button>
+                      <CancelPledgeButton
+                        pledgeId={pl.id}
+                        canCancel={pl.property.status === 'open'}
+                        disabledReason="Property funding is closed — this pledge can no longer be cancelled."
+                      />
+                    </>
                   )}
                 </div>
               </div>
