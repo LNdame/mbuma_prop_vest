@@ -22,7 +22,8 @@ router.get('/', requireAuth, requireRole('admin', 'super_admin'), async (_req, r
           orderBy: { createdAt: 'desc' },
         }),
         prisma.user.findMany({
-          where:   { role: 'investor', kycStatus: 'pending' },
+          // Investors who have submitted KYC documents and are awaiting admin review.
+          where:   { role: 'investor', kycStatus: 'under_review' },
           select:  { id: true, fullName: true },
           orderBy: { createdAt: 'desc' },
         }),
