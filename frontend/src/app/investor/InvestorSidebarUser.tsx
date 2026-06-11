@@ -6,7 +6,7 @@ import s from './layout.module.css';
 interface StoredUser {
   fullName: string;
   role: string;
-  kycStatus?: 'pending' | 'approved' | 'rejected';
+  kycStatus?: 'pending' | 'approved' | 'rejected' | 'under_review';
 }
 
 function initials(name: string) {
@@ -15,7 +15,8 @@ function initials(name: string) {
 
 function kycView(kyc?: string) {
   if (kyc === 'approved') return { label: 'KYC Verified', sub: 'Account in good standing', color: 'var(--green-500, #22c55e)' };
-  if (kyc === 'pending')  return { label: 'KYC Pending',  sub: 'Verification in progress', color: '#d97706' };
+  if (kyc === 'pending')  return { label: 'KYC Pending',  sub: 'Verification required',    color: '#d97706' };
+  if (kyc === 'under_review') return { label: 'KYC Under Review', sub: 'Documents submitted', color: '#2563eb' };
   if (kyc === 'rejected') return { label: 'KYC Rejected', sub: 'Action required',          color: '#dc2626' };
   return { label: 'Signed in', sub: 'Investor account', color: '#9ca3af' };
 }
