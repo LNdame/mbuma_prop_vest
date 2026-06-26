@@ -1,0 +1,105 @@
+/* Overlay */
+.overlay {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+}
+
+/* Modal card */
+.modal {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  box-shadow: 0 20px 60px rgba(0,0,0,.18);
+  width: 100%; max-width: 520px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  display: flex; flex-direction: column;
+}
+
+/* Header */
+.modalHead {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--neutral-100);
+  background: var(--neutral-50);
+}
+.modalTitle { font-size: 17px; font-weight: 700; color: var(--neutral-900); letter-spacing: -0.3px; }
+.modalSub   { font-size: 13px; color: var(--neutral-500); margin-top: 3px; line-height: 1.5; }
+.closeBtn   {
+  background: none; border: none; font-size: 16px; color: var(--neutral-400);
+  padding: 2px 6px; border-radius: var(--radius-sm); cursor: pointer; flex-shrink: 0;
+  transition: color .12s, background .12s;
+}
+.closeBtn:hover { color: var(--neutral-700); background: var(--neutral-100); }
+
+/* Form */
+.form { padding: 20px 24px; display: flex; flex-direction: column; gap: 18px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.label { font-size: 13px; font-weight: 500; color: var(--neutral-700); }
+.optional { font-weight: 400; color: var(--neutral-400); }
+.hint  { font-size: 12px; color: var(--neutral-400); margin-top: 2px; line-height: 1.5; }
+
+.input, .select, .textarea {
+  width: 100%; padding: 10px 14px; font-size: 14px;
+  border: 1px solid var(--neutral-200); border-radius: var(--radius-sm);
+  outline: none; transition: border-color .15s;
+  font-family: var(--font-sans); color: var(--neutral-900);
+  background: var(--white);
+}
+.input:focus, .select:focus, .textarea:focus { border-color: var(--green-500); }
+.inputError { border-color: #E53935 !important; }
+.textarea { resize: vertical; }
+
+/* R prefix */
+.inputPrefix { display: flex; align-items: stretch; }
+.prefix {
+  display: flex; align-items: center; padding: 0 12px;
+  background: var(--neutral-50); border: 1px solid var(--neutral-200);
+  border-right: none; border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  font-size: 14px; font-weight: 500; color: var(--neutral-500); flex-shrink: 0;
+}
+.inputWithPrefix { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+
+/* Preview box */
+.preview {
+  background: var(--green-50); border: 1px solid var(--green-200);
+  border-radius: var(--radius-sm); padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.previewTitle { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--green-700); margin-bottom: 2px; }
+.previewRow { display: flex; justify-content: space-between; font-size: 13px; color: var(--neutral-700); }
+.previewRow span:last-child { font-weight: 500; color: var(--neutral-900); }
+
+/* Error */
+.errorMsg { font-size: 13px; color: #E53935; }
+
+/* Actions */
+.actions { display: flex; justify-content: flex-end; gap: 10px; padding-top: 4px; border-top: 1px solid var(--neutral-100); margin-top: 2px; }
+.btnCancel {
+  font-size: 13px; font-weight: 500; color: var(--neutral-500);
+  padding: 9px 18px; border-radius: var(--radius-sm);
+  border: 1px solid var(--neutral-200); background: var(--white); cursor: pointer;
+  transition: color .12s;
+}
+.btnCancel:hover { color: var(--neutral-700); }
+.btnCancel:disabled { opacity: .5; cursor: not-allowed; }
+
+.btnSubmit {
+  background: linear-gradient(135deg, var(--green-500), var(--green-700));
+  color: var(--white); border: none; border-radius: var(--radius-sm);
+  padding: 10px 22px; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: opacity .15s; white-space: nowrap;
+}
+.btnSubmit:hover { opacity: .88; }
+.btnSubmit:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Trigger button (replaces the static one on the page) */
+.btnPrimary {
+  background: linear-gradient(135deg, var(--green-500), var(--green-700));
+  color: var(--white); border: none; border-radius: var(--radius-sm);
+  padding: 10px 20px; font-size: 14px; font-weight: 600;
+  white-space: nowrap; cursor: pointer; transition: opacity .15s;
+}
+.btnPrimary:hover { opacity: .88; }

@@ -52,7 +52,8 @@
 .invName { font-size: 13px; font-weight: 500; color: var(--neutral-800); }
 .money   { font-size: 13px; font-weight: 500; color: var(--green-600); white-space: nowrap; }
 .muted   { font-size: 13px; color: var(--neutral-500); }
-.runId   { font-size: 12px; font-family: monospace; color: var(--neutral-600); background: var(--neutral-100); padding: 2px 8px; border-radius: 4px; }
+.runId        { font-size: 12px; font-family: monospace; color: var(--neutral-600); background: var(--neutral-100); padding: 2px 8px; border-radius: 4px; text-decoration: none; }
+.runId:hover  { background: var(--green-100); color: var(--green-700); }
 
 .bankOk      { font-size: 12px; font-weight: 500; color: var(--green-600); }
 .bankMissing { font-size: 12px; font-weight: 500; color: #C0392B; }

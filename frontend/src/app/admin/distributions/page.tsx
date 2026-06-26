@@ -1,5 +1,7 @@
+import Link from 'next/link';
 import { apiFetch } from '@/lib/api';
 import s from './page.module.css';
+import RunDistributionModal, { type PropertyOption } from './RunDistributionModal';
 
 interface DistRow {
   id: string;
@@ -39,8 +41,15 @@ function statusLabel(st: string) {
 
 export default async function DistributionsPage() {
   let res: DistResponse = { data: [], summary: { totalDistributed: 0, ytdDistributed: 0, runCount: 0, recipientCount: 0, lastAmount: 0, lastDate: null } };
+  let properties: PropertyOption[] = [];
   try {
     res = await apiFetch<DistResponse>('/api/distributions');
+  } catch {
+    /* keep defaults */
+  }
+  try {
+    const propsRes = await apiFetch<{ data: PropertyOption[] }>('/api/properties');
+    properties = propsRes.data ?? [];
   } catch {
     /* keep defaults */
   }
@@ -60,7 +69,7 @@ export default async function DistributionsPage() {
           <h1 className={s.pageTitle}>Distributions</h1>
           <p className={s.pageSub}>Track rental income distributions to investors</p>
         </div>
-        <button className={s.btnPrimary}>Run distribution →</button>
+        <RunDistributionModal properties={properties} />
       </div>
 
       <div className={s.statsRow}>
@@ -99,7 +108,9 @@ export default async function DistributionsPage() {
               <tbody>
                 {data.map((d) => (
                   <tr key={d.id} className={s.tr}>
-                    <td className={s.td}><span className={s.runId}>{d.periodLabel}</span></td>
+                    <td className={s.td}>
+                      <Link href={`/admin/distributions/${d.id}`} className={s.runId}>{d.periodLabel}</Link>
+                    </td>
                     <td className={s.td}><span className={s.muted}>{d.property?.title ?? '—'}</span></td>
                     <td className={s.td}><span className={s.money}>{fmt(d.net)}</span></td>
                     <td className={s.td}><span className={s.muted}>{d.recipients} {d.recipients === 1 ? 'investor' : 'investors'}</span></td>
