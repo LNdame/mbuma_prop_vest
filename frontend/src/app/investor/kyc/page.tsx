@@ -151,7 +151,7 @@ export default function InvestorKycPage() {
     kycStatus === 'approved'     ? { cls: s.bannerOk,      icon: '✓', title: 'Identity verified', text: 'Your KYC documents have been approved. You’re fully verified.' }
     : kycStatus === 'under_review' ? { cls: s.bannerReview, icon: '⏳', title: 'Under review', text: 'Your documents have been submitted and are being reviewed. We’ll notify you once verified.' }
     : kycStatus === 'rejected'    ? { cls: s.bannerReject, icon: '!', title: 'Verification rejected', text: 'Something was wrong with your previous submission. Please re-upload the documents below.' }
-    :                              { cls: s.bannerPending, icon: '!', title: 'Verification required', text: 'Upload the three documents below to verify your identity and unlock investing.' };
+    :                              { cls: s.bannerPending, icon: '!', title: 'Verification required', text: 'Upload the three documents below to verify your identity and unlock pledging.' };
 
   const verified = kycStatus === 'approved';
 

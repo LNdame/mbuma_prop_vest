@@ -3,9 +3,9 @@ import type { ReactNode } from 'react';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Mbuma PropVest — Property Investments for Everyone',
+  title: 'Mbuma PropVest — Property Pledges for Everyone',
   description:
-    'Fractionalised property investment platform. Start investing in South African real estate from as little as R1 000.',
+    'Fractionalised property pledge platform. Start pledging in South African real estate from as little as R1 000.',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

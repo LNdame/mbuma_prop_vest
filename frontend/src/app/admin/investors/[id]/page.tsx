@@ -173,7 +173,7 @@ export default async function InvestorDetailPage({ params }: { params: Promise<{
           <div className={`${s.statValue} ${s.accent}`}>{fmtRand(investor.availableFunds) || 'R0'}</div>
         </div>
         <div className={s.statCard}>
-          <div className={s.statLabel}>Total invested</div>
+          <div className={s.statLabel}>Total pledged</div>
           <div className={s.statValue}>{fmtRand(totalInvested)}</div>
         </div>
         <div className={s.statCard}>

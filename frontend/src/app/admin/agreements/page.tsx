@@ -54,7 +54,7 @@ export default async function AdminAgreementsPage() {
       <div className={s.pageHeader}>
         <div>
           <h1 className={s.pageTitle}>Agreements</h1>
-          <p className={s.pageSub}>Investment agreements and their signing status</p>
+          <p className={s.pageSub}>Pledge agreements and their signing status</p>
         </div>
       </div>
 
@@ -74,7 +74,7 @@ export default async function AdminAgreementsPage() {
         <div className={s.tableWrap}>
           {data.length === 0 ? (
             <div style={{ padding: '40px 18px', textAlign: 'center', color: 'var(--neutral-500)', fontSize: 14 }}>
-              No agreements yet. Investment agreements appear here once generated.
+              No agreements yet. Pledge agreements appear here once generated.
             </div>
           ) : (
             <table className={s.table}>

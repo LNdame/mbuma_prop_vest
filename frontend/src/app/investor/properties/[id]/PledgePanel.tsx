@@ -99,7 +99,7 @@ export default function PledgePanel({
   return (
     <>
       <div className={s.ctaCard}>
-        <div className={s.ctaTitle}>Invest in this property</div>
+        <div className={s.ctaTitle}>Pledge to this property</div>
         <div className={s.ctaSub}>
           Pledge your share and start earning a projected {yieldPct}% yield.
         </div>

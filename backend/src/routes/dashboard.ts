@@ -81,7 +81,7 @@ router.get('/', requireAuth, requireRole('admin', 'super_admin'), async (_req, r
       pendingActions.push({ name: `Confirm pledge — ${p.user.fullName}`, sub: `${fmtRand(Number(p.amount))} · ${p.property.title}`, action: 'Confirm', href: `/admin/properties/${p.property.id}`, dot: 'green' });
     }
     for (const d of unsignedAgreements) {
-      pendingActions.push({ name: `Agreement unsigned — ${d.user.fullName}`, sub: d.property?.title ?? 'Investment agreement', action: 'Follow up', href: '/admin/agreements', dot: 'gray' });
+      pendingActions.push({ name: `Agreement unsigned — ${d.user.fullName}`, sub: d.property?.title ?? 'Pledge agreement', action: 'Follow up', href: '/admin/agreements', dot: 'gray' });
     }
     for (const u of missingBank) {
       pendingActions.push({ name: `Missing bank details — ${u.fullName}`, sub: 'Cannot distribute until resolved', action: 'Chase', href: `/admin/investors/${u.id}`, dot: 'orange' });
