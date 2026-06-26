@@ -21,7 +21,8 @@ export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 export const KycStatus = {
   pending: 'pending',
   approved: 'approved',
-  rejected: 'rejected'
+  rejected: 'rejected',
+  under_review: 'under_review'
 } as const
 
 export type KycStatus = (typeof KycStatus)[keyof typeof KycStatus]
@@ -87,7 +88,8 @@ export const DocType = {
   proof_of_address: 'proof_of_address',
   investment_agreement: 'investment_agreement',
   title_deed: 'title_deed',
-  other: 'other'
+  other: 'other',
+  selfie_with_id: 'selfie_with_id'
 } as const
 
 export type DocType = (typeof DocType)[keyof typeof DocType]

@@ -7,7 +7,7 @@ import s from './page.module.css';
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
-type KycStatus = 'pending' | 'approved' | 'rejected';
+type KycStatus = 'pending' | 'approved' | 'rejected' | 'under_review';
 type Filter = 'All' | 'Active' | 'Pending' | 'Verified';
 
 export interface Investor {
@@ -34,14 +34,15 @@ function initials(name: string) {
 
 function kycLabel(status: KycStatus) {
   if (status === 'approved') return 'Verified';
-  if (status === 'pending') return 'Under review';
-  return 'Rejected';
+  if (status === 'under_review') return 'Under review';
+  if (status === 'rejected') return 'Rejected';
+  return 'Pending';
 }
 
 function kycCls(status: KycStatus) {
   if (status === 'approved') return s.kycVerified;
-  if (status === 'pending') return s.kycPending;
-  return s.kycFailed;
+  if (status === 'rejected') return s.kycFailed;
+  return s.kycPending; // pending / under_review
 }
 
 function fmt(n: number) {
@@ -60,7 +61,7 @@ export default function InvestorsClient({ investors }: { investors: Investor[] }
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  const totalPendingKyc = investors.filter(i => i.kycStatus === 'pending').length;
+  const totalPendingKyc = investors.filter(i => i.kycStatus === 'pending' || i.kycStatus === 'under_review').length;
   const totalActive = investors.filter(i => i.isActive).length;
   const totalInvested = investors.reduce((sum, i) => sum + i.totalInvested, 0);
 
@@ -74,7 +75,7 @@ export default function InvestorsClient({ investors }: { investors: Investor[] }
   const filtered = investors
     .filter(inv => {
       if (filter === 'Active')   return inv.isActive;
-      if (filter === 'Pending')  return inv.kycStatus === 'pending' || !inv.isActive;
+      if (filter === 'Pending')  return inv.kycStatus === 'pending' || inv.kycStatus === 'under_review' || !inv.isActive;
       if (filter === 'Verified') return inv.kycStatus === 'approved';
       return true;
     })

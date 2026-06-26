@@ -36,7 +36,7 @@ export interface MeDistributionLine {
 }
 export interface MeDocument {
   id: string;
-  docType: 'id_document' | 'proof_of_address' | 'investment_agreement' | 'title_deed' | 'other';
+  docType: 'id_document' | 'proof_of_address' | 'investment_agreement' | 'title_deed' | 'other' | 'selfie_with_id';
   fileName: string;
   mimeType: string;
   signingStatus: 'pending' | 'sent' | 'signed' | 'declined';
@@ -63,7 +63,7 @@ export interface Me {
   fullName: string;
   phone: string | null;
   role: string;
-  kycStatus: 'pending' | 'approved' | 'rejected';
+  kycStatus: 'pending' | 'approved' | 'rejected' | 'under_review';
   kycVerifiedAt: string | null;
   isActive: boolean;
   createdAt: string;

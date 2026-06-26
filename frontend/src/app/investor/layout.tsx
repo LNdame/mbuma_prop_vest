@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { icon: '💼', label: 'My Portfolio',  href: '/investor/portfolio' },
   { icon: '💸', label: 'Distributions', href: '/investor/distributions' },
   { icon: '📄', label: 'Documents',     href: '/investor/documents' },
+  { icon: '🪪', label: 'Verification',  href: '/investor/kyc' },
   { icon: '👤', label: 'My Profile',    href: '/investor/profile' },
 ];
 

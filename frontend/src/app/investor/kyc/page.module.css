@@ -1,0 +1,84 @@
+.page { max-width: 760px; margin: 0 auto; padding: 28px 24px 60px; }
+
+.pageHeader { margin-bottom: 18px; }
+.pageTitle  { font-size: 22px; font-weight: 800; color: var(--neutral-900); letter-spacing: -0.4px; }
+.pageSub    { font-size: 14px; color: var(--neutral-500); margin-top: 2px; }
+
+.empty { padding: 40px; text-align: center; color: var(--neutral-500); }
+.link  { color: var(--green-600); font-weight: 600; text-decoration: none; }
+.link:hover { text-decoration: underline; }
+
+/* ── Status banner ────────────────────────────────────────────────── */
+.banner {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px 16px; border-radius: var(--radius-md);
+  border: 1px solid var(--neutral-200); margin-bottom: 18px;
+}
+.bannerIcon  { font-size: 18px; line-height: 1.4; flex-shrink: 0; }
+.bannerTitle { font-size: 14px; font-weight: 700; color: var(--neutral-900); }
+.bannerText  { font-size: 13px; color: var(--neutral-600, #4b5563); line-height: 1.5; margin-top: 2px; }
+
+.bannerOk      { background: var(--green-100); border-color: rgba(45,184,130,.35); }
+.bannerReview  { background: #eef4ff; border-color: #c7d7fe; }
+.bannerReject  { background: #fef3f2; border-color: #fecdca; }
+.bannerPending { background: var(--gold-100, #fdf6e3); border-color: #f0dca8; }
+
+/* ── Section card ─────────────────────────────────────────────────── */
+.card {
+  background: var(--white); border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-md); padding: 18px; margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.05);
+}
+.cardHead { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.stepNum {
+  flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--green-500); color: #fff; font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.cardTitle { font-size: 15px; font-weight: 700; color: var(--neutral-900); }
+.cardDesc  { font-size: 13px; color: var(--neutral-500); line-height: 1.5; margin-top: 2px; }
+.readyPill {
+  margin-left: auto; flex-shrink: 0; align-self: center;
+  font-size: 11px; font-weight: 600; color: var(--green-700, #15803d);
+  background: var(--green-100); padding: 3px 10px; border-radius: 99px;
+}
+
+.existing { font-size: 12px; color: var(--neutral-500); margin-bottom: 10px; }
+
+/* ── Drop zone ────────────────────────────────────────────────────── */
+.dropZone {
+  display: block; cursor: pointer;
+  border: 1.5px dashed var(--neutral-300, #d1d5db); border-radius: var(--radius-sm);
+  background: var(--neutral-50, #f9fafb); transition: border-color .15s ease, background .15s ease;
+}
+.dropZone:hover { border-color: var(--green-500); background: #f3faf6; }
+.hiddenInput { display: none; }
+
+.dropContent { padding: 22px; text-align: center; }
+.dropIcon { font-size: 22px; }
+.dropText { font-size: 13px; color: var(--neutral-700, #374151); margin-top: 6px; }
+.dropHint { font-size: 11px; color: var(--neutral-500); margin-top: 4px; }
+
+.selected { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+.thumb { width: 56px; height: 56px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+.fileIcon { font-size: 34px; width: 56px; text-align: center; flex-shrink: 0; }
+.fileMeta { min-width: 0; }
+.fileName { font-size: 13px; font-weight: 600; color: var(--neutral-900); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fileSize { font-size: 11px; color: var(--neutral-500); margin-top: 2px; }
+
+.fieldError { font-size: 12px; color: #b42318; margin-top: 8px; }
+
+/* ── Submit ───────────────────────────────────────────────────────── */
+.submitError {
+  font-size: 13px; color: #b42318; background: #fef3f2; border: 1px solid #fecdca;
+  border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 14px;
+}
+.submitBar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 6px; }
+.submitHint { font-size: 13px; color: var(--neutral-500); }
+.btnSubmit {
+  background: var(--green-500); color: #fff; border: none; border-radius: var(--radius-sm);
+  padding: 12px 22px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .15s ease;
+}
+.btnSubmit:hover { background: var(--green-600); }
+.btnDisabled { background: var(--neutral-200); color: var(--neutral-500); cursor: not-allowed; }
+.btnDisabled:hover { background: var(--neutral-200); }

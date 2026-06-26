@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import s from './page.module.css';
 import AllocateFundsForm from '@/components/AllocateFundsForm';
 import CancelPledgeButton from '@/components/CancelPledgeButton';
+import ConfirmPledgeButton from '@/components/ConfirmPledgeButton';
+import VerifyInvestorButton from '@/components/VerifyInvestorButton';
 
 /* ── Types ──────────────────────────────────────────────────────── */
 interface Pledge {
@@ -53,6 +55,7 @@ interface InvestorDetail {
   distributionLines: DistributionLine[];
   availableFunds: number;
   fundAllocations: FundAllocation[];
+  kycDocuments: KycDoc[];
 }
 
 interface FundAllocation {
@@ -61,6 +64,15 @@ interface FundAllocation {
   reference: string | null;
   note: string | null;
   createdAt: string;
+}
+
+interface KycDoc {
+  id: string;
+  docType: 'id_document' | 'selfie_with_id' | 'proof_of_address' | string;
+  fileName: string;
+  mimeType: string;
+  createdAt: string;
+  downloadUrl: string;
 }
 
 /* ── Helpers ────────────────────────────────────────────────────── */
@@ -84,7 +96,14 @@ function propertyIcon(type: string) {
 function kycLabel(status: string) {
   if (status === 'approved') return 'Verified';
   if (status === 'rejected') return 'Rejected';
+  if (status === 'under_review') return 'Under review';
   return 'Pending';
+}
+function kycDocMeta(t: string) {
+  if (t === 'id_document')      return { icon: '🪪', label: 'ID Document' };
+  if (t === 'selfie_with_id')   return { icon: '🤳', label: 'Selfie with ID' };
+  if (t === 'proof_of_address') return { icon: '📋', label: 'Proof of Residence' };
+  return { icon: '📄', label: t };
 }
 
 /* ── Page (Server Component) ────────────────────────────────────── */
@@ -118,8 +137,8 @@ export default async function InvestorDetailPage({ params }: { params: Promise<{
       <div className={s.pageHeader}>
         <a href="/admin/investors" className={s.backLink}>← Investors</a>
         <div className={s.headerActions}>
-          {investor.kycStatus === 'pending' && (
-            <button className={s.btnVerify}>Verify investor</button>
+          {(investor.kycStatus === 'pending' || investor.kycStatus === 'under_review') && (
+            <VerifyInvestorButton investorId={investor.id} className={s.btnVerify} />
           )}
           <button className={s.btnSecondary}>Send message</button>
         </div>
@@ -171,6 +190,33 @@ export default async function InvestorDetailPage({ params }: { params: Promise<{
         {/* Left column */}
         <div className={s.leftCol}>
 
+          {/* KYC documents */}
+          <div className={s.panel}>
+            <div className={s.panelHead}>
+              <span className={s.panelTitle}>KYC documents</span>
+              {investor.kycStatus === 'under_review' && (
+                <span style={{ fontSize: 11, fontWeight: 600, color: '#2563eb', background: '#eef4ff', padding: '3px 9px', borderRadius: 99 }}>Awaiting review</span>
+              )}
+            </div>
+            {investor.kycDocuments.length === 0 ? (
+              <div className={s.empty}>No KYC documents uploaded yet</div>
+            ) : investor.kycDocuments.map((d) => {
+              const meta = kycDocMeta(d.docType);
+              return (
+                <div key={d.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: '12px 18px', borderBottom: '1px solid var(--neutral-100)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+                    <span style={{ fontSize: 22 }}>{meta.icon}</span>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--neutral-900)' }}>{meta.label}</div>
+                      <div style={{ fontSize: 11, color: 'var(--neutral-500)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{d.fileName} · {fmtDate(d.createdAt)}</div>
+                    </div>
+                  </div>
+                  <a href={d.downloadUrl} target="_blank" rel="noreferrer"><button className={s.btnSecondary}>View</button></a>
+                </div>
+              );
+            })}
+          </div>
+
           {/* Pledges */}
           <div className={s.panel}>
             <div className={s.panelHead}><span className={s.panelTitle}>Pledges</span></div>
@@ -194,11 +240,14 @@ export default async function InvestorDetailPage({ params }: { params: Promise<{
                   </span>
                   <span className={s.pledgeDate}>{fmtDate(pl.confirmedAt ?? pl.createdAt)}</span>
                   {pl.status === 'pending' && (
-                    <CancelPledgeButton
-                      pledgeId={pl.id}
-                      canCancel={pl.property.status === 'open'}
-                      disabledReason="Property funding is closed — this pledge can no longer be cancelled."
-                    />
+                    <>
+                      <ConfirmPledgeButton pledgeId={pl.id} />
+                      <CancelPledgeButton
+                        pledgeId={pl.id}
+                        canCancel={pl.property.status === 'open'}
+                        disabledReason="Property funding is closed — this pledge can no longer be cancelled."
+                      />
+                    </>
                   )}
                 </div>
               </div>

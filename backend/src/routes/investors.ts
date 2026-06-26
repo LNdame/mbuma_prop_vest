@@ -120,6 +120,10 @@ router.get('/:id', requireAuth, requireRole('admin', 'super_admin'), async (req,
           take: 12,
         },
         fundAllocations: { orderBy: { createdAt: 'desc' } },
+        documents: {
+          where:   { docType: { in: ['id_document', 'selfie_with_id', 'proof_of_address'] } },
+          orderBy: { createdAt: 'desc' },
+        },
       },
     });
 
@@ -128,10 +132,19 @@ router.get('/:id', requireAuth, requireRole('admin', 'super_admin'), async (req,
       return;
     }
 
+    // Sign each KYC document so the admin can open it for review.
+    const kycDocuments = await Promise.all(
+      user.documents.map(async (d) => ({
+        id: d.id, docType: d.docType, fileName: d.fileName, mimeType: d.mimeType,
+        createdAt: d.createdAt, downloadUrl: await presignDownload(d.s3Key),
+      })),
+    );
+
     // Available funds = allocations received − amount reserved by active (pending/confirmed) pledges.
     const availableFunds = user.fundAllocations.reduce((s, a) => s + Number(a.amount), 0)
                          - user.pledges.filter((p) => p.status !== 'cancelled').reduce((s, p) => s + Number(p.amount), 0);
-    res.json({ data: { ...user, availableFunds } });
+    const { documents: _rawDocs, ...safe } = user;
+    res.json({ data: { ...safe, kycDocuments, availableFunds } });
   } catch (err) {
     console.error('GET /api/investors/:id error:', err);
     res.status(500).json({ error: 'Failed to fetch investor' });
