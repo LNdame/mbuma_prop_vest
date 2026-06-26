@@ -72,7 +72,14 @@ export interface Me {
   distributionLines: MeDistributionLine[];
   documents: MeDocument[];
   availableFunds: number;
+  fundsBreakdown: FundsBreakdown;
   fundAllocations: MeFundAllocation[];
+}
+
+export interface FundsBreakdown {
+  deposits: number;      // direct bank deposits credited
+  distributions: number; // net rental income allocated from distributions
+  reserved: number;      // amount reserved by active (pending/confirmed) pledges
 }
 
 export interface MeFundAllocation {

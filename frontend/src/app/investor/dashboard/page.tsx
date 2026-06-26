@@ -207,6 +207,25 @@ export default function InvestorDashboard() {
         {/* Right */}
         <div className={s.rightCol}>
 
+          {/* Available funds wallet */}
+          <div className={s.panel}>
+            <div className={s.panelHead}>
+              <span className={s.panelTitle}>Available Funds</span>
+              <a href="/investor/properties" className={s.panelLink}>Invest →</a>
+            </div>
+            <div style={{ padding: '16px 18px', borderBottom: '1px solid var(--neutral-100)' }}>
+              <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--green-600)', letterSpacing: '-0.5px' }}>
+                {fmtRand(me.availableFunds)}
+              </div>
+              <div style={{ fontSize: 12, color: 'var(--neutral-500)', marginTop: 2 }}>Ready to invest</div>
+            </div>
+            <div className={s.metaBlock}>
+              <div className={s.metaRow}><span className={s.metaLabel}>Bank deposits</span><span className={s.metaVal}>+{fmtRand(me.fundsBreakdown.deposits)}</span></div>
+              <div className={s.metaRow}><span className={s.metaLabel}>From distributions</span><span className={[s.metaVal, s.accent].join(' ')}>+{fmtRand(me.fundsBreakdown.distributions)}</span></div>
+              <div className={s.metaRow}><span className={s.metaLabel}>Reserved in pledges</span><span className={s.metaVal}>−{fmtRand(me.fundsBreakdown.reserved)}</span></div>
+            </div>
+          </div>
+
           {/* Distribution chart */}
           <div className={s.panel}>
             <div className={s.panelHead}>

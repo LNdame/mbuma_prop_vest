@@ -5,6 +5,16 @@ import { requireAuth, requireRole, type AuthRequest } from '../middleware/auth.j
 
 const router = Router();
 
+/* Net rental income credited to an investor via allocated (paid) distribution
+   lines. This becomes spendable account credit alongside direct deposits. */
+async function allocatedDistributionTotal(userId: string): Promise<number> {
+  const agg = await prisma.distributionLine.aggregate({
+    where: { userId, paymentStatus: 'paid' },
+    _sum: { netAmount: true },
+  });
+  return Number(agg._sum.netAmount ?? 0);
+}
+
 /* ── GET /api/investors ──────────────────────────────────────────── */
 router.get('/', requireAuth, requireRole('admin', 'super_admin'), async (_req, res: Response) => {
   try {
@@ -21,6 +31,14 @@ router.get('/', requireAuth, requireRole('admin', 'super_admin'), async (_req, r
       },
     });
 
+    // Net distribution income credited per investor, summed in one query to avoid N+1.
+    const distSums = await prisma.distributionLine.groupBy({
+      by: ['userId'],
+      where: { paymentStatus: 'paid', userId: { in: investors.map((u) => u.id) } },
+      _sum: { netAmount: true },
+    });
+    const distByUser = new Map(distSums.map((d) => [d.userId, Number(d._sum.netAmount ?? 0)]));
+
     const data = investors.map((u) => ({
       id:            u.id,
       fullName:      u.fullName,
@@ -36,8 +54,9 @@ router.get('/', requireAuth, requireRole('admin', 'super_admin'), async (_req, r
         .filter((p) => p.status === 'confirmed')
         .reduce((sum, p) => sum + Number(p.amount), 0),
       propertyCount: new Set(u.pledges.map((p) => p.propertyId)).size,
-      // Available funds = allocations received − amount reserved by active (pending/confirmed) pledges.
+      // Available funds = direct deposits + net distribution income − amount reserved by active (pending/confirmed) pledges.
       availableFunds: u.fundAllocations.reduce((sum, a) => sum + Number(a.amount), 0)
+                    + (distByUser.get(u.id) ?? 0)
                     - u.pledges.reduce((sum, p) => sum + Number(p.amount), 0),
     }));
 
@@ -88,13 +107,17 @@ router.get('/me', requireAuth, async (req: AuthRequest, res: Response) => {
       user.documents.map(async (d) => ({ ...d, downloadUrl: await presignDownload(d.s3Key) })),
     );
 
-    // Available funds = allocations received − amount reserved by active (pending/confirmed) pledges.
-    // user.pledges is already filtered to status != 'cancelled' above.
-    const availableFunds = user.fundAllocations.reduce((s, a) => s + Number(a.amount), 0)
-                         - user.pledges.reduce((s, p) => s + Number(p.amount), 0);
+    // Available funds = direct deposits + net distribution income − amount reserved by active (pending/confirmed) pledges.
+    // user.pledges is already filtered to status != 'cancelled' above. Distribution income is summed
+    // separately (not from user.distributionLines, which is take-limited for display).
+    const deposits     = user.fundAllocations.reduce((s, a) => s + Number(a.amount), 0);
+    const reserved     = user.pledges.reduce((s, p) => s + Number(p.amount), 0);
+    const distributions = await allocatedDistributionTotal(user.id);
+    const availableFunds = deposits + distributions - reserved;
+    const fundsBreakdown = { deposits, distributions, reserved };
 
     const { passwordHash: _omit, documents: _docs, ...safe } = user;
-    res.json({ data: { ...safe, documents, availableFunds } });
+    res.json({ data: { ...safe, documents, availableFunds, fundsBreakdown } });
   } catch (err) {
     console.error('GET /api/investors/me error:', err);
     res.status(500).json({ error: 'Failed to fetch account' });
@@ -140,11 +163,14 @@ router.get('/:id', requireAuth, requireRole('admin', 'super_admin'), async (req,
       })),
     );
 
-    // Available funds = allocations received − amount reserved by active (pending/confirmed) pledges.
-    const availableFunds = user.fundAllocations.reduce((s, a) => s + Number(a.amount), 0)
-                         - user.pledges.filter((p) => p.status !== 'cancelled').reduce((s, p) => s + Number(p.amount), 0);
+    // Available funds = direct deposits + net distribution income − amount reserved by active (pending/confirmed) pledges.
+    const deposits      = user.fundAllocations.reduce((s, a) => s + Number(a.amount), 0);
+    const reserved      = user.pledges.filter((p) => p.status !== 'cancelled').reduce((s, p) => s + Number(p.amount), 0);
+    const distributions = await allocatedDistributionTotal(user.id);
+    const availableFunds = deposits + distributions - reserved;
+    const fundsBreakdown = { deposits, distributions, reserved };
     const { documents: _rawDocs, ...safe } = user;
-    res.json({ data: { ...safe, kycDocuments, availableFunds } });
+    res.json({ data: { ...safe, kycDocuments, availableFunds, fundsBreakdown } });
   } catch (err) {
     console.error('GET /api/investors/:id error:', err);
     res.status(500).json({ error: 'Failed to fetch investor' });
@@ -183,12 +209,15 @@ router.post(
       },
     });
 
-    // Available funds = allocations received − amount reserved by active (pending/confirmed) pledges.
-    const [allocAgg, pledgeAgg] = await Promise.all([
+    // Available funds = direct deposits + net distribution income − amount reserved by active (pending/confirmed) pledges.
+    const [allocAgg, pledgeAgg, distAgg] = await Promise.all([
       prisma.fundAllocation.aggregate({ where: { userId: user.id }, _sum: { amount: true } }),
       prisma.pledge.aggregate({ where: { userId: user.id, status: { not: 'cancelled' } }, _sum: { amount: true } }),
+      prisma.distributionLine.aggregate({ where: { userId: user.id, paymentStatus: 'paid' }, _sum: { netAmount: true } }),
     ]);
-    const availableFunds = Number(allocAgg._sum.amount ?? 0) - Number(pledgeAgg._sum.amount ?? 0);
+    const availableFunds = Number(allocAgg._sum.amount ?? 0)
+                         + Number(distAgg._sum.netAmount ?? 0)
+                         - Number(pledgeAgg._sum.amount ?? 0);
     res.status(201).json({ data: { allocation, availableFunds } });
   },
 );
