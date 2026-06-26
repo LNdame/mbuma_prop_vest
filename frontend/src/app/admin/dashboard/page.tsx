@@ -104,7 +104,7 @@ function buildGlance(properties: Property[], investors: Investor[]) {
     { label: 'Open raises',           value: String(properties.filter(p => p.status === 'open').length),      accent: false },
     { label: 'Fully funded',          value: String(properties.filter(p => p.status === 'funded').length),    accent: false },
     { label: 'Total investors',       value: String(investors.length),                                         accent: false },
-    { label: 'Total invested',        value: totalInvested ? fmtRandShort(totalInvested) : 'R0',              accent: true  },
+    { label: 'Total pledged',         value: totalInvested ? fmtRandShort(totalInvested) : 'R0',              accent: true  },
   ];
 }
 
@@ -354,7 +354,7 @@ export default async function AdminDashboard() {
                 <div>
                   <div className={s.invName}>{inv.fullName}</div>
                   <div className={s.invSub}>
-                    {inv.propertyCount} {inv.propertyCount === 1 ? 'property' : 'properties'} · {fmtRand(inv.totalInvested)} invested
+                    {inv.propertyCount} {inv.propertyCount === 1 ? 'property' : 'properties'} · {fmtRand(inv.totalInvested)} pledged
                   </div>
                 </div>
               </div>

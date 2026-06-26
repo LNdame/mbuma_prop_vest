@@ -61,7 +61,7 @@ export default function LoginPage() {
               portfolio awaits.
             </h1>
             <p className={s.brandSub}>
-              Fractionalised South African property investments with monthly
+              Fractionalised South African property pledges with monthly
               distributions — starting from R1&nbsp;000.
             </p>
           </div>

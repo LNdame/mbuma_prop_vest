@@ -87,7 +87,7 @@ export default function InviteInvestorPage() {
                 </div>
                 <div className={s.infoRow}>
                   <span className={s.infoIcon}>✓</span>
-                  <span>Investor must complete FICA/KYC before investing</span>
+                  <span>Investor must complete FICA/KYC before pledging</span>
                 </div>
                 <div className={s.infoRow}>
                   <span className={s.infoIcon}>📧</span>

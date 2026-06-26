@@ -8,7 +8,7 @@ function docMeta(t: MeDocument['docType']) {
     case 'id_document':         return { icon: '🪪', label: 'ID Document' };
     case 'selfie_with_id':      return { icon: '🤳', label: 'Selfie with ID' };
     case 'proof_of_address':    return { icon: '📋', label: 'Proof of Residence' };
-    case 'investment_agreement':return { icon: '📄', label: 'Investment Agreement' };
+    case 'investment_agreement':return { icon: '📄', label: 'Pledge Agreement' };
     case 'title_deed':          return { icon: '📜', label: 'Title Deed' };
     default:                    return { icon: '📁', label: 'Other' };
   }
@@ -41,7 +41,7 @@ export default function InvestorDocuments() {
       <div className={s.pageHeader}>
         <div>
           <h1 className={s.pageTitle}>Documents</h1>
-          <p className={s.pageSub}>Your investment agreements, KYC documents, and tax certificates</p>
+          <p className={s.pageSub}>Your pledge agreements, KYC documents, and tax certificates</p>
         </div>
       </div>
 

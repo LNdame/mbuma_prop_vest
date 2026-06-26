@@ -169,7 +169,7 @@ export default async function PublicPropertyDetailPage({ params }: { params: Pro
 
         <div className={s.rightCol}>
           <div className={s.ctaCard}>
-            <div className={s.ctaTitle}>Invest in this property</div>
+            <div className={s.ctaTitle}>Pledge to this property</div>
             <div className={s.ctaSub}>
               Mbuma PropVest is invite-only. Log in or request an invitation to pledge your share
               and earn a projected {Number(property.projectedYieldPct).toFixed(1)}% yield.

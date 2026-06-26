@@ -60,7 +60,7 @@ export default function InvestorPortfolio() {
   })).sort((a, b) => b.amount - a.amount);
 
   const STATS = [
-    { label: 'Total invested',        value: fmtRand(totalInvested), sub: `${heldProps.size} ${heldProps.size === 1 ? 'property' : 'properties'}`, accent: false },
+    { label: 'Total pledged',         value: fmtRand(totalInvested), sub: `${heldProps.size} ${heldProps.size === 1 ? 'property' : 'properties'}`, accent: false },
     { label: 'Distributions received',value: fmtRand(totalDist), sub: 'all distributions', accent: true },
     { label: 'Avg. yield',            value: `${avgYield.toFixed(1)}%`, sub: 'gross p.a.', accent: false },
     { label: 'Active pledges',        value: String(confirmed.length + pending.length), sub: `${confirmed.length} confirmed`, accent: false },
@@ -81,9 +81,9 @@ export default function InvestorPortfolio() {
       <div className={s.pageHeader}>
         <div>
           <h1 className={s.pageTitle}>My Portfolio</h1>
-          <p className={s.pageSub}>Your pledges and investment performance</p>
+          <p className={s.pageSub}>Your pledges and their performance</p>
         </div>
-        <a href="/investor/properties"><button className={s.btnPrimary}>＋ New investment</button></a>
+        <a href="/investor/properties"><button className={s.btnPrimary}>＋ New pledge</button></a>
       </div>
 
       <div className={s.statsRow}>
@@ -167,7 +167,7 @@ export default function InvestorPortfolio() {
             ))}
 
             <div className={s.panelFooter}>
-              <a href="/investor/properties"><button className={s.btnOutline}>＋ Invest in another property</button></a>
+              <a href="/investor/properties"><button className={s.btnOutline}>＋ Pledge to another property</button></a>
             </div>
           </div>
         </div>
