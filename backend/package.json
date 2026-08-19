@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "dev": "node --env-file=../.env --import tsx/esm --watch src/index.ts",
+    "dev": "node --env-file=../.env.development --import tsx/esm --watch src/index.ts",
+    "dev:staging": "node --env-file=../.env.staging --import tsx/esm --watch src/index.ts",
+    "dev:prod": "node --env-file=../.env.production --import tsx/esm --watch src/index.ts",
     "start": "node dist/index.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint \"src/**/*.ts\""
