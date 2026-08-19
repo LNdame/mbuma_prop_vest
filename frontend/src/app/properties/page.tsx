@@ -4,7 +4,7 @@ import s from './properties.module.css';
 
 export const metadata = {
   title: 'Browse Properties · Mbuma PropVest',
-  description: 'Browse curated, yield-producing South African property investment opportunities.',
+  description: 'Browse curated, yield-producing South African property pledge opportunities.',
 };
 
 interface PropertyListItem {
@@ -57,7 +57,7 @@ export default async function BrowsePropertiesPage() {
   return (
     <div className={s.browse}>
       <div className={s.browseHead}>
-        <span className={s.eyebrow}>Investment Opportunities</span>
+        <span className={s.eyebrow}>Pledge Opportunities</span>
         <h1 className={s.title}>Browse Properties</h1>
         <p className={s.subtitle}>
           Curated, yield-producing South African real estate. Co-own institutional-grade

@@ -71,8 +71,8 @@ export default function InvestorDashboard() {
     .reduce((sum, l) => sum + Number(l.netAmount), 0);
 
   const STATS = [
-    { label: 'Available funds',     value: fmtRand(me.availableFunds), sub: 'ready to invest', accent: true },
-    { label: 'Total invested',      value: fmtRand(totalInvested), sub: `${propertyCount} ${propertyCount === 1 ? 'property' : 'properties'}`, accent: false },
+    { label: 'Available funds',     value: fmtRand(me.availableFunds), sub: 'ready to pledge', accent: true },
+    { label: 'Total pledged',       value: fmtRand(totalInvested), sub: `${propertyCount} ${propertyCount === 1 ? 'property' : 'properties'}`, accent: false },
     { label: 'Avg. projected yield',value: `${avgYield.toFixed(1)}%`, sub: 'gross p.a.', accent: false },
     { label: 'Distributions received', value: fmtRand(totalDist), sub: 'to date', accent: false },
   ];
@@ -123,10 +123,10 @@ export default function InvestorDashboard() {
       <div className={s.pageHeader}>
         <div>
           <h1 className={s.pageTitle}>Welcome back, {firstName} 👋</h1>
-          <p className={s.pageSub}>Here&apos;s an overview of your investment portfolio</p>
+          <p className={s.pageSub}>Here&apos;s an overview of your pledge portfolio</p>
         </div>
         <a href="/investor/properties">
-          <button className={s.btnPrimary}>＋ Invest in a property</button>
+          <button className={s.btnPrimary}>＋ Pledge to a property</button>
         </a>
       </div>
 
@@ -180,7 +180,7 @@ export default function InvestorDashboard() {
             ))}
             <div className={s.panelFooter}>
               <a href="/investor/properties">
-                <button className={s.btnOutline}>＋ Add investment</button>
+                <button className={s.btnOutline}>＋ Add pledge</button>
               </a>
             </div>
           </div>
@@ -206,6 +206,25 @@ export default function InvestorDashboard() {
 
         {/* Right */}
         <div className={s.rightCol}>
+
+          {/* Available funds wallet */}
+          <div className={s.panel}>
+            <div className={s.panelHead}>
+              <span className={s.panelTitle}>Available Funds</span>
+              <a href="/investor/properties" className={s.panelLink}>Pledge →</a>
+            </div>
+            <div style={{ padding: '16px 18px', borderBottom: '1px solid var(--neutral-100)' }}>
+              <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--green-600)', letterSpacing: '-0.5px' }}>
+                {fmtRand(me.availableFunds)}
+              </div>
+              <div style={{ fontSize: 12, color: 'var(--neutral-500)', marginTop: 2 }}>Ready to pledge</div>
+            </div>
+            <div className={s.metaBlock}>
+              <div className={s.metaRow}><span className={s.metaLabel}>Bank deposits</span><span className={s.metaVal}>+{fmtRand(me.fundsBreakdown.deposits)}</span></div>
+              <div className={s.metaRow}><span className={s.metaLabel}>From distributions</span><span className={[s.metaVal, s.accent].join(' ')}>+{fmtRand(me.fundsBreakdown.distributions)}</span></div>
+              <div className={s.metaRow}><span className={s.metaLabel}>Reserved in pledges</span><span className={s.metaVal}>−{fmtRand(me.fundsBreakdown.reserved)}</span></div>
+            </div>
+          </div>
 
           {/* Distribution chart */}
           <div className={s.panel}>

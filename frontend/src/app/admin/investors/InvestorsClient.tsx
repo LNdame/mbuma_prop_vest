@@ -145,7 +145,7 @@ export default function InvestorsClient({ investors }: { investors: Investor[] }
               <th className={s.th}>Status</th>
               <th className={s.th}>KYC</th>
               <th className={s.th}>Properties</th>
-              <th className={s.th}>Total invested</th>
+              <th className={s.th}>Total pledged</th>
               <th className={s.th}>Joined</th>
               <th className={s.th}></th>
             </tr>

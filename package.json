@@ -18,7 +18,15 @@
     "lint": "npm run lint --workspaces --if-present",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts",
+    "seed:staging": "APP_ENV=staging tsx prisma/seed.ts",
+    "seed:prod": "APP_ENV=production tsx prisma/seed.ts",
+    "db:migrate:dev": "APP_ENV=development prisma migrate dev",
+    "db:migrate:deploy:staging": "APP_ENV=staging prisma migrate deploy",
+    "db:migrate:deploy:prod": "APP_ENV=production prisma migrate deploy",
+    "db:studio:dev": "APP_ENV=development prisma studio",
+    "db:studio:staging": "APP_ENV=staging prisma studio",
+    "db:studio:prod": "APP_ENV=production prisma studio"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

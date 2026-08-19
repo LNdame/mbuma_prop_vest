@@ -125,8 +125,8 @@ router.patch(
 
 /* ── POST /api/properties/:id/pledges ────────────────────────────────
    An investor pledges into an open property. The pledge is created as
-   'pending' and reserves the investor's available funds (allocations −
-   active pledges). Funds and validation are checked in one transaction.
+   'pending' and reserves the investor's available funds (direct deposits +
+   net distribution income − active pledges). Validated in one transaction.
 ──────────────────────────────────────────────────────────────────────── */
 router.post(
   '/:id/pledges',
@@ -166,12 +166,15 @@ router.post(
       return;
     }
 
-    // Available funds = allocations received − amount reserved by active (pending/confirmed) pledges.
-    const [allocAgg, pledgeAgg] = await Promise.all([
+    // Available funds = direct deposits + net distribution income − amount reserved by active (pending/confirmed) pledges.
+    const [allocAgg, pledgeAgg, distAgg] = await Promise.all([
       prisma.fundAllocation.aggregate({ where: { userId: req.user!.sub }, _sum: { amount: true } }),
       prisma.pledge.aggregate({ where: { userId: req.user!.sub, status: { not: 'cancelled' } }, _sum: { amount: true } }),
+      prisma.distributionLine.aggregate({ where: { userId: req.user!.sub, paymentStatus: 'paid' }, _sum: { netAmount: true } }),
     ]);
-    const availableFunds = Number(allocAgg._sum.amount ?? 0) - Number(pledgeAgg._sum.amount ?? 0);
+    const availableFunds = Number(allocAgg._sum.amount ?? 0)
+                         + Number(distAgg._sum.netAmount ?? 0)
+                         - Number(pledgeAgg._sum.amount ?? 0);
     if (amount > availableFunds) {
       res.status(400).json({ error: `Insufficient available funds — you have ${rand(availableFunds)} available` });
       return;

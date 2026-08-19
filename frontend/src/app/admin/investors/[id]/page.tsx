@@ -54,6 +54,7 @@ interface InvestorDetail {
   pledges: Pledge[];
   distributionLines: DistributionLine[];
   availableFunds: number;
+  fundsBreakdown: { deposits: number; distributions: number; reserved: number };
   fundAllocations: FundAllocation[];
   kycDocuments: KycDoc[];
 }
@@ -172,7 +173,7 @@ export default async function InvestorDetailPage({ params }: { params: Promise<{
           <div className={`${s.statValue} ${s.accent}`}>{fmtRand(investor.availableFunds) || 'R0'}</div>
         </div>
         <div className={s.statCard}>
-          <div className={s.statLabel}>Total invested</div>
+          <div className={s.statLabel}>Total pledged</div>
           <div className={s.statValue}>{fmtRand(totalInvested)}</div>
         </div>
         <div className={s.statCard}>
@@ -285,10 +286,24 @@ export default async function InvestorDetailPage({ params }: { params: Promise<{
             <div className={s.panelHead}><span className={s.panelTitle}>Available funds</span></div>
             <div style={{ padding: '16px 18px', borderBottom: '1px solid var(--neutral-100)' }}>
               <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--green-600)', letterSpacing: '-0.5px' }}>
-                {fmtRand(investor.availableFunds) || 'R0'}
+                {'R' + Math.round(investor.availableFunds).toLocaleString('en-ZA')}
               </div>
               <div style={{ fontSize: 12, color: 'var(--neutral-500)', marginTop: 2 }}>
-                Allocated after receiving the investor&apos;s bank transfer
+                Spendable balance for new pledges
+              </div>
+              <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}>
+                  <span style={{ color: 'var(--neutral-500)' }}>Bank deposits</span>
+                  <span style={{ fontWeight: 600, color: 'var(--neutral-800)' }}>+R{Math.round(investor.fundsBreakdown.deposits).toLocaleString('en-ZA')}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}>
+                  <span style={{ color: 'var(--neutral-500)' }}>From distributions</span>
+                  <span style={{ fontWeight: 600, color: 'var(--green-600)' }}>+R{Math.round(investor.fundsBreakdown.distributions).toLocaleString('en-ZA')}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}>
+                  <span style={{ color: 'var(--neutral-500)' }}>Reserved in pledges</span>
+                  <span style={{ fontWeight: 600, color: 'var(--neutral-800)' }}>−R{Math.round(investor.fundsBreakdown.reserved).toLocaleString('en-ZA')}</span>
+                </div>
               </div>
             </div>
 

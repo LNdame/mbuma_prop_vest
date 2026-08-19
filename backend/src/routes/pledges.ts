@@ -47,11 +47,15 @@ router.post('/:id/cancel', requireAuth, async (req: AuthRequest, res: Response) 
   });
 
   // Recompute the pledge owner's available funds for the response.
-  const [allocAgg, pledgeAgg] = await Promise.all([
+  // Available funds = direct deposits + net distribution income − amount reserved by active pledges.
+  const [allocAgg, pledgeAgg, distAgg] = await Promise.all([
     prisma.fundAllocation.aggregate({ where: { userId: pledge.userId }, _sum: { amount: true } }),
     prisma.pledge.aggregate({ where: { userId: pledge.userId, status: { not: 'cancelled' } }, _sum: { amount: true } }),
+    prisma.distributionLine.aggregate({ where: { userId: pledge.userId, paymentStatus: 'paid' }, _sum: { netAmount: true } }),
   ]);
-  const availableFunds = Number(allocAgg._sum.amount ?? 0) - Number(pledgeAgg._sum.amount ?? 0);
+  const availableFunds = Number(allocAgg._sum.amount ?? 0)
+                       + Number(distAgg._sum.netAmount ?? 0)
+                       - Number(pledgeAgg._sum.amount ?? 0);
 
   res.json({ data: { id: pledge.id, status: 'cancelled', availableFunds } });
 });

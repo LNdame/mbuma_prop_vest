@@ -1,5 +1,8 @@
+import { loadEnv } from '../lib/load-env';
 import pg from 'pg';
 import { hashPassword } from '../backend/src/lib/password.js';
+
+loadEnv();
 
 const { Client } = pg;
 

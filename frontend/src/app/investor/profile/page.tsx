@@ -72,7 +72,7 @@ export default function InvestorProfile() {
             <div className={s.kycCardTitle}>KYC {kycLabel}</div>
             <div className={s.kycCardSub}>
               {kycVerified
-                ? 'Your identity has been verified. You are approved to invest on the platform.'
+                ? 'Your identity has been verified. You are approved to pledge on the platform.'
                 : 'Your identity verification is ' + kycLabel.toLowerCase() + '. Some actions may be limited until verified.'}
             </div>
           </div>

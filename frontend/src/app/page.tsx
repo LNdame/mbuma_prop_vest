@@ -67,12 +67,12 @@ const FEATURES = [
   {
     icon: '🔐',
     title: 'KYC & Compliance',
-    desc: 'Fully FICA-compliant onboarding. All investors are verified before participating in any investment.',
+    desc: 'Fully FICA-compliant onboarding. All investors are verified before participating in any pledge.',
   },
   {
     icon: '📄',
     title: 'Digital Agreements',
-    desc: 'Investment agreements are generated and signed electronically via DocuSign — no paperwork required.',
+    desc: 'Pledge agreements are generated and signed electronically via DocuSign — no paperwork required.',
   },
   {
     icon: '🏘️',
@@ -140,7 +140,7 @@ export default async function HomePage() {
               Now accepting invitations
             </div>
             <h1 className={s.heroH1}>
-              Property Investments,<br />
+              Property Pledges,<br />
               <em>Built for Everyone.</em>
             </h1>
             <p className={s.heroSubtitle}>
@@ -153,7 +153,7 @@ export default async function HomePage() {
               <a href="/properties" className={s.btnHeroSecondary}>View Properties</a>
             </div>
             <p className={s.heroNote}>
-              Invest from <span>R1 000</span> · FICA-compliant · Registered investors only
+              Pledge from <span>R1 000</span> · FICA-compliant · Registered investors only
             </p>
           </div>
 
@@ -239,7 +239,7 @@ export default async function HomePage() {
         <div className={s.sectionNarrow}>
           <div className={s.sectionHeader}>
             <div>
-              <span className={s.sectionEyebrow}>Investment Opportunities</span>
+              <span className={s.sectionEyebrow}>Pledge Opportunities</span>
               <h2 className={s.sectionTitle}>Featured Properties</h2>
               <p className={s.sectionSubtitle}>
                 Curated, yield-producing properties available to verified investors.
@@ -345,18 +345,18 @@ export default async function HomePage() {
             <span className={s.sectionEyebrow}>Fractionalised Ownership</span>
             <h2 className={s.sectionTitle}>Own a piece of premium real estate</h2>
             <p className={s.sectionSubtitle}>
-              You don&apos;t need millions to invest in property. Mbuma PropVest
+              You don&apos;t need millions to pledge to property. Mbuma PropVest
               splits each asset into affordable pledges — so you can build a
               diversified portfolio from day one.
             </p>
             <ul className={s.splitList}>
               <li>
                 <span className={s.splitListCheck}>✓</span>
-                Start investing from as little as R1 000 per property
+                Start pledging from as little as R1 000 per property
               </li>
               <li>
                 <span className={s.splitListCheck}>✓</span>
-                Your pledge is backed by a registered investment agreement
+                Your pledge is backed by a registered pledge agreement
               </li>
               <li>
                 <span className={s.splitListCheck}>✓</span>
@@ -428,7 +428,7 @@ export default async function HomePage() {
       {/* ── INVITATION CTA ── */}
       <section className={s.ctaSection} id="about">
         <div className={s.ctaInner}>
-          <h2 className={s.ctaTitle}>Ready to invest in South African property?</h2>
+          <h2 className={s.ctaTitle}>Ready to pledge to South African property?</h2>
           <p className={s.ctaSubtitle}>
             Mbuma PropVest is an invite-only platform. Enter your email and
             we&apos;ll reach out when a spot opens up.
@@ -448,7 +448,7 @@ export default async function HomePage() {
               </span>
             </div>
             <p>
-              A fractionalised property investment platform connecting South
+              A fractionalised property pledge platform connecting South
               African investors with curated, yield-producing real estate assets.
             </p>
           </div>
@@ -489,8 +489,8 @@ export default async function HomePage() {
             © {new Date().getFullYear()} Mbuma PropVest (Pty) Ltd. All rights reserved.
           </p>
           <p className={s.footerLegal}>
-            Investments involve risk. Past performance is not indicative of future results.
-            Please read our <a href="#">Risk Disclosure</a> before investing.
+            Pledges involve risk. Past performance is not indicative of future results.
+            Please read our <a href="#">Risk Disclosure</a> before pledging.
           </p>
         </div>
       </footer>

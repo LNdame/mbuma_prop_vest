@@ -8,7 +8,7 @@ function fmtRand(n: number) {
   return 'R' + Math.round(n).toLocaleString('en-ZA');
 }
 function fmtDate(d: string | null) {
-  if (!d) return 'Not yet paid';
+  if (!d) return 'Not yet allocated';
   return new Date(d).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 function statusPill(st: string, cls: Record<string, string>) {
@@ -54,7 +54,7 @@ export default function InvestorDistributions() {
   const STATS = [
     { label: 'Total received',  value: fmtRand(totalNet), sub: 'net of withholding tax', accent: true  },
     { label: `YTD ${year}`,     value: fmtRand(ytdNet),   sub: 'this year',              accent: true  },
-    { label: 'Payments',        value: String(paid.length), sub: 'distributions paid',   accent: false },
+    { label: 'Allocations',     value: String(paid.length), sub: 'distributions allocated', accent: false },
     { label: 'Tax withheld',    value: fmtRand(totalTax), sub: 'withholding tax',        accent: false },
   ];
 
@@ -63,8 +63,8 @@ export default function InvestorDistributions() {
     { label: 'Total withholding tax',     value: fmtRand(totalTax) },
     { label: 'Total net received',        value: fmtRand(totalNet), accent: true },
     { label: `YTD net (${year})`,         value: fmtRand(ytdNet),   accent: true },
-    { label: 'Payments received',         value: String(paid.length) },
-    { label: 'Last payment date',         value: fmtDate(lastPaid) },
+    { label: 'Allocations received',      value: String(paid.length) },
+    { label: 'Last allocation date',      value: fmtDate(lastPaid) },
   ];
 
   const cols = '1fr 1.4fr 0.8fr 0.8fr 0.8fr 0.9fr 0.8fr';
@@ -75,7 +75,7 @@ export default function InvestorDistributions() {
       <div className={s.pageHeader}>
         <div>
           <h1 className={s.pageTitle}>Distributions</h1>
-          <p className={s.pageSub}>Your rental income history and payments</p>
+          <p className={s.pageSub}>Your rental income history and allocations</p>
         </div>
       </div>
 
@@ -104,7 +104,7 @@ export default function InvestorDistributions() {
             ) : (
               <>
                 <div style={{ display: 'grid', gridTemplateColumns: cols, padding: '8px 18px', background: 'var(--neutral-50)', borderBottom: '1px solid var(--neutral-100)', gap: 8 }}>
-                  {['Period', 'Property', 'Gross', 'Tax', 'Net', 'Date', 'Status'].map((h) => (
+                  {['Period', 'Property', 'Gross', 'Tax', 'Net', 'Allocated on', 'Status'].map((h) => (
                     <span key={h} style={{ fontSize: 11, fontWeight: 600, color: 'var(--neutral-500)', textTransform: 'uppercase', letterSpacing: '.04em' }}>{h}</span>
                   ))}
                 </div>
@@ -116,7 +116,9 @@ export default function InvestorDistributions() {
                     <span style={{ fontSize: 13, color: 'var(--neutral-500)' }}>{fmtRand(Number(d.withholdingTax))}</span>
                     <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--green-600)' }}>{fmtRand(Number(d.netAmount))}</span>
                     <span style={{ fontSize: 11, color: 'var(--neutral-500)' }}>{fmtDate(d.paidAt)}</span>
-                    <span className={statusPill(d.paymentStatus, s as Record<string, string>)} style={{ textTransform: 'capitalize' }}>{d.paymentStatus}</span>
+                    <span className={statusPill(d.paymentStatus, s as Record<string, string>)}>
+                      {d.paymentStatus === 'paid' ? 'Allocated' : d.paymentStatus === 'failed' ? 'Failed' : 'Pending'}
+                    </span>
                   </div>
                 ))}
               </>

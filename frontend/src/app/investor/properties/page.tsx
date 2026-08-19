@@ -52,7 +52,7 @@ export default async function InvestorProperties() {
       <div className={s.pageHeader}>
         <div>
           <h1 className={s.pageTitle}>Available Properties</h1>
-          <p className={s.pageSub}>Browse curated investment opportunities and pledge your share</p>
+          <p className={s.pageSub}>Browse curated opportunities and pledge your share</p>
         </div>
         <span className={s.pageSub}>{listed.length} {listed.length === 1 ? 'property' : 'properties'}</span>
       </div>
