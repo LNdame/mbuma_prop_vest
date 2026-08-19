@@ -7,5 +7,10 @@ coverage/
 *.log
 .env
 .env.local
+.env.development
+.env.staging
+.env.production
+# ...but keep the committed templates
+!.env.example
 .DS_Store
 *.tsbuildinfo
