@@ -1,7 +1,12 @@
 const BACKEND = process.env.BACKEND_URL ?? 'http://localhost:4000';
 
-// Admin token for SSR calls — in production this comes from a session cookie/JWT.
-// For now we use the hardcoded dev admin credentials to obtain a token at build time.
+// Service-account token for authenticated SSR calls. Credentials come from env
+// (SSR_ADMIN_EMAIL / SSR_ADMIN_PASSWORD), set per environment — e.g. as Railway
+// service variables in production. The fallbacks are the local dev-seed admin so
+// `npm run dev` keeps working without extra setup.
+const SSR_ADMIN_EMAIL = process.env.SSR_ADMIN_EMAIL ?? 'admin@mbuma.co.za';
+const SSR_ADMIN_PASSWORD = process.env.SSR_ADMIN_PASSWORD ?? 'Admin1234!';
+
 let _cachedToken: string | null = null;
 
 async function getAdminToken(): Promise<string> {
@@ -9,10 +14,10 @@ async function getAdminToken(): Promise<string> {
   const res = await fetch(`${BACKEND}/api/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: 'admin@mbuma.co.za', password: 'Admin1234!' }),
+    body: JSON.stringify({ email: SSR_ADMIN_EMAIL, password: SSR_ADMIN_PASSWORD }),
     cache: 'no-store',
   });
-  if (!res.ok) throw new Error('Admin login failed');
+  if (!res.ok) throw new Error(`SSR admin login failed (${res.status}) for ${SSR_ADMIN_EMAIL}`);
   const { token } = await res.json();
   _cachedToken = token;
   return token;
