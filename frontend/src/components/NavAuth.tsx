@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import s from '../app/page.module.css';
+import { isTokenValid, clearAuth } from '../lib/auth';
 
 interface User {
   id: string;
@@ -31,7 +32,14 @@ export default function NavAuth() {
     try {
       const raw = localStorage.getItem('user');
       const token = localStorage.getItem('token');
-      if (raw && token) setUser(JSON.parse(raw) as User);
+      // Only treat the user as logged in if the token is present AND unexpired.
+      // An expired token leaves stale storage, so clear it to fall back to the
+      // logged-out CTAs instead of offering a dead Dashboard link.
+      if (raw && isTokenValid(token)) {
+        setUser(JSON.parse(raw) as User);
+      } else if (raw || token) {
+        clearAuth();
+      }
     } catch {
       /* ignore malformed storage */
     }
