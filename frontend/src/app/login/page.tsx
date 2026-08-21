@@ -144,18 +144,20 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Dev hint */}
-          <div className={s.devHint}>
-            <span className={s.devHintTitle}>Test accounts</span>
-            <div className={s.devHintRow}>
-              <span>investor@propvest.dev</span>
-              <span className={s.devHintPw}>Investor@123</span>
+          {/* Dev hint — only in non-production builds (hidden on staging/prod). */}
+          {process.env.NODE_ENV !== 'production' && (
+            <div className={s.devHint}>
+              <span className={s.devHintTitle}>Test accounts</span>
+              <div className={s.devHintRow}>
+                <span>investor@propvest.dev</span>
+                <span className={s.devHintPw}>Investor@123</span>
+              </div>
+              <div className={s.devHintRow}>
+                <span>admin@propvest.dev</span>
+                <span className={s.devHintPw}>Admin@123</span>
+              </div>
             </div>
-            <div className={s.devHintRow}>
-              <span>admin@propvest.dev</span>
-              <span className={s.devHintPw}>Admin@123</span>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
