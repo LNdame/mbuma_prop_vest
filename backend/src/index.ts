@@ -13,6 +13,7 @@ import distributionsRouter from './routes/distributions.js';
 import agreementsRouter    from './routes/agreements.js';
 import reportsRouter       from './routes/reports.js';
 import dashboardRouter     from './routes/dashboard.js';
+import settingsRouter       from './routes/settings.js';
 
 const app = express();
 app.use(cors());
@@ -74,6 +75,7 @@ app.use('/api/distributions', distributionsRouter);
 app.use('/api/agreements',    agreementsRouter);
 app.use('/api/reports',       reportsRouter);
 app.use('/api/dashboard',     dashboardRouter);
+app.use('/api/settings',      settingsRouter);
 
 const PORT = Number(process.env.PORT) || 4000;
 const HOST = '0.0.0.0'; // bind all interfaces so Railway can reach the container

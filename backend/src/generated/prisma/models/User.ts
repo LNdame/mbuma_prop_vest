@@ -233,6 +233,7 @@ export type UserWhereInput = {
   createdProperties?: Prisma.PropertyListRelationFilter
   createdDistributions?: Prisma.DistributionListRelationFilter
   createdInvitations?: Prisma.InvitationListRelationFilter
+  updatedSettings?: Prisma.SettingsListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -257,6 +258,7 @@ export type UserOrderByWithRelationInput = {
   createdProperties?: Prisma.PropertyOrderByRelationAggregateInput
   createdDistributions?: Prisma.DistributionOrderByRelationAggregateInput
   createdInvitations?: Prisma.InvitationOrderByRelationAggregateInput
+  updatedSettings?: Prisma.SettingsOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -284,6 +286,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdProperties?: Prisma.PropertyListRelationFilter
   createdDistributions?: Prisma.DistributionListRelationFilter
   createdInvitations?: Prisma.InvitationListRelationFilter
+  updatedSettings?: Prisma.SettingsListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -340,6 +343,7 @@ export type UserCreateInput = {
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsCreateNestedManyWithoutEditorInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -364,6 +368,7 @@ export type UserUncheckedCreateInput = {
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionUncheckedCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsUncheckedCreateNestedManyWithoutEditorInput
 }
 
 export type UserUpdateInput = {
@@ -388,6 +393,7 @@ export type UserUpdateInput = {
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUpdateManyWithoutEditorNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -412,6 +418,7 @@ export type UserUncheckedUpdateInput = {
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUncheckedUpdateManyWithoutEditorNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -492,14 +499,14 @@ export type UserMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
 }
 
-export type UserScalarRelationFilter = {
-  is?: Prisma.UserWhereInput
-  isNot?: Prisma.UserWhereInput
-}
-
 export type UserNullableScalarRelationFilter = {
   is?: Prisma.UserWhereInput | null
   isNot?: Prisma.UserWhereInput | null
+}
+
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -528,6 +535,22 @@ export type BoolFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type UserCreateNestedOneWithoutUpdatedSettingsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUpdatedSettingsInput, Prisma.UserUncheckedCreateWithoutUpdatedSettingsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUpdatedSettingsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutUpdatedSettingsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUpdatedSettingsInput, Prisma.UserUncheckedCreateWithoutUpdatedSettingsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUpdatedSettingsInput
+  upsert?: Prisma.UserUpsertWithoutUpdatedSettingsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUpdatedSettingsInput, Prisma.UserUpdateWithoutUpdatedSettingsInput>, Prisma.UserUncheckedUpdateWithoutUpdatedSettingsInput>
 }
 
 export type UserCreateNestedOneWithoutInvestorProfileInput = {
@@ -686,6 +709,118 @@ export type UserUpdateOneWithoutAuditLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuditLogsInput, Prisma.UserUpdateWithoutAuditLogsInput>, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
 }
 
+export type UserCreateWithoutUpdatedSettingsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  fullName: string
+  phone?: string | null
+  role?: $Enums.UserRole
+  kycStatus?: $Enums.KycStatus
+  kycVerifiedAt?: Date | string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  investorProfile?: Prisma.InvestorProfileCreateNestedOneWithoutUserInput
+  pledges?: Prisma.PledgeCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
+  distributionLines?: Prisma.DistributionLineCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
+  createdDistributions?: Prisma.DistributionCreateNestedManyWithoutCreatorInput
+  createdInvitations?: Prisma.InvitationCreateNestedManyWithoutCreatorInput
+}
+
+export type UserUncheckedCreateWithoutUpdatedSettingsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  fullName: string
+  phone?: string | null
+  role?: $Enums.UserRole
+  kycStatus?: $Enums.KycStatus
+  kycVerifiedAt?: Date | string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  investorProfile?: Prisma.InvestorProfileUncheckedCreateNestedOneWithoutUserInput
+  pledges?: Prisma.PledgeUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
+  distributionLines?: Prisma.DistributionLineUncheckedCreateNestedManyWithoutUserInput
+  fundAllocations?: Prisma.FundAllocationUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
+  createdDistributions?: Prisma.DistributionUncheckedCreateNestedManyWithoutCreatorInput
+  createdInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatorInput
+}
+
+export type UserCreateOrConnectWithoutUpdatedSettingsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUpdatedSettingsInput, Prisma.UserUncheckedCreateWithoutUpdatedSettingsInput>
+}
+
+export type UserUpsertWithoutUpdatedSettingsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUpdatedSettingsInput, Prisma.UserUncheckedUpdateWithoutUpdatedSettingsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUpdatedSettingsInput, Prisma.UserUncheckedCreateWithoutUpdatedSettingsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUpdatedSettingsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUpdatedSettingsInput, Prisma.UserUncheckedUpdateWithoutUpdatedSettingsInput>
+}
+
+export type UserUpdateWithoutUpdatedSettingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+  kycVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  investorProfile?: Prisma.InvestorProfileUpdateOneWithoutUserNestedInput
+  pledges?: Prisma.PledgeUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
+  distributionLines?: Prisma.DistributionLineUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
+  createdDistributions?: Prisma.DistributionUpdateManyWithoutCreatorNestedInput
+  createdInvitations?: Prisma.InvitationUpdateManyWithoutCreatorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUpdatedSettingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+  kycVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  investorProfile?: Prisma.InvestorProfileUncheckedUpdateOneWithoutUserNestedInput
+  pledges?: Prisma.PledgeUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
+  distributionLines?: Prisma.DistributionLineUncheckedUpdateManyWithoutUserNestedInput
+  fundAllocations?: Prisma.FundAllocationUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
+  createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
+  createdInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutCreatorNestedInput
+}
+
 export type UserCreateWithoutInvestorProfileInput = {
   id?: string
   email: string
@@ -707,6 +842,7 @@ export type UserCreateWithoutInvestorProfileInput = {
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsCreateNestedManyWithoutEditorInput
 }
 
 export type UserUncheckedCreateWithoutInvestorProfileInput = {
@@ -730,6 +866,7 @@ export type UserUncheckedCreateWithoutInvestorProfileInput = {
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionUncheckedCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsUncheckedCreateNestedManyWithoutEditorInput
 }
 
 export type UserCreateOrConnectWithoutInvestorProfileInput = {
@@ -769,6 +906,7 @@ export type UserUpdateWithoutInvestorProfileInput = {
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUpdateManyWithoutEditorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInvestorProfileInput = {
@@ -792,6 +930,7 @@ export type UserUncheckedUpdateWithoutInvestorProfileInput = {
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUncheckedUpdateManyWithoutEditorNestedInput
 }
 
 export type UserCreateWithoutCreatedPropertiesInput = {
@@ -815,6 +954,7 @@ export type UserCreateWithoutCreatedPropertiesInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   createdDistributions?: Prisma.DistributionCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsCreateNestedManyWithoutEditorInput
 }
 
 export type UserUncheckedCreateWithoutCreatedPropertiesInput = {
@@ -838,6 +978,7 @@ export type UserUncheckedCreateWithoutCreatedPropertiesInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   createdDistributions?: Prisma.DistributionUncheckedCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsUncheckedCreateNestedManyWithoutEditorInput
 }
 
 export type UserCreateOrConnectWithoutCreatedPropertiesInput = {
@@ -877,6 +1018,7 @@ export type UserUpdateWithoutCreatedPropertiesInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   createdDistributions?: Prisma.DistributionUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUpdateManyWithoutEditorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedPropertiesInput = {
@@ -900,6 +1042,7 @@ export type UserUncheckedUpdateWithoutCreatedPropertiesInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUncheckedUpdateManyWithoutEditorNestedInput
 }
 
 export type UserCreateWithoutPledgesInput = {
@@ -923,6 +1066,7 @@ export type UserCreateWithoutPledgesInput = {
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsCreateNestedManyWithoutEditorInput
 }
 
 export type UserUncheckedCreateWithoutPledgesInput = {
@@ -946,6 +1090,7 @@ export type UserUncheckedCreateWithoutPledgesInput = {
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionUncheckedCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsUncheckedCreateNestedManyWithoutEditorInput
 }
 
 export type UserCreateOrConnectWithoutPledgesInput = {
@@ -985,6 +1130,7 @@ export type UserUpdateWithoutPledgesInput = {
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUpdateManyWithoutEditorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPledgesInput = {
@@ -1008,6 +1154,7 @@ export type UserUncheckedUpdateWithoutPledgesInput = {
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUncheckedUpdateManyWithoutEditorNestedInput
 }
 
 export type UserCreateWithoutPaymentsInput = {
@@ -1031,6 +1178,7 @@ export type UserCreateWithoutPaymentsInput = {
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsCreateNestedManyWithoutEditorInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -1054,6 +1202,7 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionUncheckedCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsUncheckedCreateNestedManyWithoutEditorInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -1093,6 +1242,7 @@ export type UserUpdateWithoutPaymentsInput = {
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUpdateManyWithoutEditorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -1116,6 +1266,7 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUncheckedUpdateManyWithoutEditorNestedInput
 }
 
 export type UserCreateWithoutDocumentsInput = {
@@ -1139,6 +1290,7 @@ export type UserCreateWithoutDocumentsInput = {
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsCreateNestedManyWithoutEditorInput
 }
 
 export type UserUncheckedCreateWithoutDocumentsInput = {
@@ -1162,6 +1314,7 @@ export type UserUncheckedCreateWithoutDocumentsInput = {
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionUncheckedCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsUncheckedCreateNestedManyWithoutEditorInput
 }
 
 export type UserCreateOrConnectWithoutDocumentsInput = {
@@ -1201,6 +1354,7 @@ export type UserUpdateWithoutDocumentsInput = {
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUpdateManyWithoutEditorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDocumentsInput = {
@@ -1224,6 +1378,7 @@ export type UserUncheckedUpdateWithoutDocumentsInput = {
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUncheckedUpdateManyWithoutEditorNestedInput
 }
 
 export type UserCreateWithoutCreatedDistributionsInput = {
@@ -1247,6 +1402,7 @@ export type UserCreateWithoutCreatedDistributionsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsCreateNestedManyWithoutEditorInput
 }
 
 export type UserUncheckedCreateWithoutCreatedDistributionsInput = {
@@ -1270,6 +1426,7 @@ export type UserUncheckedCreateWithoutCreatedDistributionsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsUncheckedCreateNestedManyWithoutEditorInput
 }
 
 export type UserCreateOrConnectWithoutCreatedDistributionsInput = {
@@ -1309,6 +1466,7 @@ export type UserUpdateWithoutCreatedDistributionsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUpdateManyWithoutEditorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedDistributionsInput = {
@@ -1332,6 +1490,7 @@ export type UserUncheckedUpdateWithoutCreatedDistributionsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUncheckedUpdateManyWithoutEditorNestedInput
 }
 
 export type UserCreateWithoutDistributionLinesInput = {
@@ -1355,6 +1514,7 @@ export type UserCreateWithoutDistributionLinesInput = {
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsCreateNestedManyWithoutEditorInput
 }
 
 export type UserUncheckedCreateWithoutDistributionLinesInput = {
@@ -1378,6 +1538,7 @@ export type UserUncheckedCreateWithoutDistributionLinesInput = {
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionUncheckedCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsUncheckedCreateNestedManyWithoutEditorInput
 }
 
 export type UserCreateOrConnectWithoutDistributionLinesInput = {
@@ -1417,6 +1578,7 @@ export type UserUpdateWithoutDistributionLinesInput = {
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUpdateManyWithoutEditorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDistributionLinesInput = {
@@ -1440,6 +1602,7 @@ export type UserUncheckedUpdateWithoutDistributionLinesInput = {
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUncheckedUpdateManyWithoutEditorNestedInput
 }
 
 export type UserCreateWithoutCreatedInvitationsInput = {
@@ -1463,6 +1626,7 @@ export type UserCreateWithoutCreatedInvitationsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsCreateNestedManyWithoutEditorInput
 }
 
 export type UserUncheckedCreateWithoutCreatedInvitationsInput = {
@@ -1486,6 +1650,7 @@ export type UserUncheckedCreateWithoutCreatedInvitationsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionUncheckedCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsUncheckedCreateNestedManyWithoutEditorInput
 }
 
 export type UserCreateOrConnectWithoutCreatedInvitationsInput = {
@@ -1525,6 +1690,7 @@ export type UserUpdateWithoutCreatedInvitationsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUpdateManyWithoutEditorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedInvitationsInput = {
@@ -1548,6 +1714,7 @@ export type UserUncheckedUpdateWithoutCreatedInvitationsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUncheckedUpdateManyWithoutEditorNestedInput
 }
 
 export type UserCreateWithoutFundAllocationsInput = {
@@ -1571,6 +1738,7 @@ export type UserCreateWithoutFundAllocationsInput = {
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsCreateNestedManyWithoutEditorInput
 }
 
 export type UserUncheckedCreateWithoutFundAllocationsInput = {
@@ -1594,6 +1762,7 @@ export type UserUncheckedCreateWithoutFundAllocationsInput = {
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionUncheckedCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsUncheckedCreateNestedManyWithoutEditorInput
 }
 
 export type UserCreateOrConnectWithoutFundAllocationsInput = {
@@ -1633,6 +1802,7 @@ export type UserUpdateWithoutFundAllocationsInput = {
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUpdateManyWithoutEditorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFundAllocationsInput = {
@@ -1656,6 +1826,7 @@ export type UserUncheckedUpdateWithoutFundAllocationsInput = {
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUncheckedUpdateManyWithoutEditorNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -1679,6 +1850,7 @@ export type UserCreateWithoutNotificationsInput = {
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsCreateNestedManyWithoutEditorInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -1702,6 +1874,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionUncheckedCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsUncheckedCreateNestedManyWithoutEditorInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -1741,6 +1914,7 @@ export type UserUpdateWithoutNotificationsInput = {
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUpdateManyWithoutEditorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -1764,6 +1938,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUncheckedUpdateManyWithoutEditorNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -1787,6 +1962,7 @@ export type UserCreateWithoutAuditLogsInput = {
   createdProperties?: Prisma.PropertyCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsCreateNestedManyWithoutEditorInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -1810,6 +1986,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   createdProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCreatorInput
   createdDistributions?: Prisma.DistributionUncheckedCreateNestedManyWithoutCreatorInput
   createdInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatorInput
+  updatedSettings?: Prisma.SettingsUncheckedCreateNestedManyWithoutEditorInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -1849,6 +2026,7 @@ export type UserUpdateWithoutAuditLogsInput = {
   createdProperties?: Prisma.PropertyUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUpdateManyWithoutEditorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -1872,6 +2050,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   createdProperties?: Prisma.PropertyUncheckedUpdateManyWithoutCreatorNestedInput
   createdDistributions?: Prisma.DistributionUncheckedUpdateManyWithoutCreatorNestedInput
   createdInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutCreatorNestedInput
+  updatedSettings?: Prisma.SettingsUncheckedUpdateManyWithoutEditorNestedInput
 }
 
 
@@ -1890,6 +2069,7 @@ export type UserCountOutputType = {
   createdProperties: number
   createdDistributions: number
   createdInvitations: number
+  updatedSettings: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1903,6 +2083,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   createdProperties?: boolean | UserCountOutputTypeCountCreatedPropertiesArgs
   createdDistributions?: boolean | UserCountOutputTypeCountCreatedDistributionsArgs
   createdInvitations?: boolean | UserCountOutputTypeCountCreatedInvitationsArgs
+  updatedSettings?: boolean | UserCountOutputTypeCountUpdatedSettingsArgs
 }
 
 /**
@@ -1985,6 +2166,13 @@ export type UserCountOutputTypeCountCreatedInvitationsArgs<ExtArgs extends runti
   where?: Prisma.InvitationWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountUpdatedSettingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SettingsWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2008,6 +2196,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdProperties?: boolean | Prisma.User$createdPropertiesArgs<ExtArgs>
   createdDistributions?: boolean | Prisma.User$createdDistributionsArgs<ExtArgs>
   createdInvitations?: boolean | Prisma.User$createdInvitationsArgs<ExtArgs>
+  updatedSettings?: boolean | Prisma.User$updatedSettingsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2063,6 +2252,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdProperties?: boolean | Prisma.User$createdPropertiesArgs<ExtArgs>
   createdDistributions?: boolean | Prisma.User$createdDistributionsArgs<ExtArgs>
   createdInvitations?: boolean | Prisma.User$createdInvitationsArgs<ExtArgs>
+  updatedSettings?: boolean | Prisma.User$updatedSettingsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2082,6 +2272,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     createdProperties: Prisma.$PropertyPayload<ExtArgs>[]
     createdDistributions: Prisma.$DistributionPayload<ExtArgs>[]
     createdInvitations: Prisma.$InvitationPayload<ExtArgs>[]
+    updatedSettings: Prisma.$SettingsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2499,6 +2690,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   createdProperties<T extends Prisma.User$createdPropertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdPropertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdDistributions<T extends Prisma.User$createdDistributionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdDistributionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DistributionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdInvitations<T extends Prisma.User$createdInvitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdInvitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  updatedSettings<T extends Prisma.User$updatedSettingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$updatedSettingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SettingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3187,6 +3379,30 @@ export type User$createdInvitationsArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.InvitationScalarFieldEnum | Prisma.InvitationScalarFieldEnum[]
+}
+
+/**
+ * User.updatedSettings
+ */
+export type User$updatedSettingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Settings
+   */
+  select?: Prisma.SettingsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Settings
+   */
+  omit?: Prisma.SettingsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SettingsInclude<ExtArgs> | null
+  where?: Prisma.SettingsWhereInput
+  orderBy?: Prisma.SettingsOrderByWithRelationInput | Prisma.SettingsOrderByWithRelationInput[]
+  cursor?: Prisma.SettingsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SettingsScalarFieldEnum | Prisma.SettingsScalarFieldEnum[]
 }
 
 /**

@@ -4,6 +4,7 @@ import { prisma } from '../lib/prisma.js';
 import { hashPassword } from '../lib/password.js';
 import { signJwt } from '../lib/jwt.js';
 import { requireAuth, requireRole, type AuthRequest } from '../middleware/auth.js';
+import { getSettings } from '../lib/settings.js';
 
 const router = Router();
 
@@ -83,7 +84,8 @@ router.post(
     });
 
     const token     = randomBytes(32).toString('hex');
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+    const { invitationExpiryDays } = await getSettings();
+    const expiresAt = new Date(Date.now() + invitationExpiryDays * 24 * 60 * 60 * 1000);
 
     const invitation = await prisma.invitation.create({
       data: {
