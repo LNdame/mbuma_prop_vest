@@ -23,6 +23,13 @@ export * from './enums.js';
  */
 export type User = Prisma.UserModel
 /**
+ * Model Settings
+ * Platform-wide configuration. A single row (id = 1) holds values that used to
+ * be hardcoded in the backend — tax rate, expiries, defaults. Read through
+ * backend/src/lib/settings.ts (cached); edited from the admin Settings page.
+ */
+export type Settings = Prisma.SettingsModel
+/**
  * Model InvestorProfile
  * 
  */

@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  Settings: 'Settings',
   InvestorProfile: 'InvestorProfile',
   Property: 'Property',
   PropertyImage: 'PropertyImage',
@@ -97,6 +98,21 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const SettingsScalarFieldEnum = {
+  id: 'id',
+  withholdingTaxRate: 'withholdingTaxRate',
+  invitationExpiryDays: 'invitationExpiryDays',
+  sessionHours: 'sessionHours',
+  defaultMinPledge: 'defaultMinPledge',
+  supportEmail: 'supportEmail',
+  publicSiteUrl: 'publicSiteUrl',
+  updatedBy: 'updatedBy',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SettingsScalarFieldEnum = (typeof SettingsScalarFieldEnum)[keyof typeof SettingsScalarFieldEnum]
 
 
 export const InvestorProfileScalarFieldEnum = {
@@ -244,6 +260,7 @@ export const InvitationScalarFieldEnum = {
   createdBy: 'createdBy',
   email: 'email',
   token: 'token',
+  role: 'role',
   status: 'status',
   expiresAt: 'expiresAt',
   acceptedAt: 'acceptedAt',
