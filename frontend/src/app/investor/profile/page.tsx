@@ -16,12 +16,6 @@ function idTypeLabel(t: string | null) {
   if (t === 'drivers_license') return "Driver's License";
   return '—';
 }
-function maskAccount(n: string | null) {
-  if (!n) return '—';
-  const s2 = n.replace(/\s/g, '');
-  if (s2.length <= 4) return s2;
-  return `${s2.slice(0, 2)} *** *** ${s2.slice(-1)}`;
-}
 function memberSince(d: string) {
   return new Date(d).toLocaleDateString('en-ZA', { month: 'long', year: 'numeric' });
 }
@@ -60,7 +54,7 @@ export default function InvestorProfile() {
       <div className={s.pageHeader}>
         <div>
           <h1 className={s.pageTitle}>My Profile</h1>
-          <p className={s.pageSub}>Manage your personal details, KYC status, and banking information</p>
+          <p className={s.pageSub}>Your personal details and KYC status. Manage banking in Settings.</p>
         </div>
       </div>
 
@@ -149,37 +143,6 @@ export default function InvestorProfile() {
 
         <div className={s.rightCol}>
 
-          {/* Banking details */}
-          <div className={s.panel}>
-            <div className={s.panelHead}>
-              <span className={s.panelTitle}>Banking Details</span>
-              <button className={s.btnSm}>Edit</button>
-            </div>
-            <div className={s.formGrid}>
-              <div className={`${s.formGroup} ${s.fullWidth}`}>
-                <label className={s.formLabel}>Bank Name</label>
-                <input className={s.formInput} value={dash(p?.bankName)} disabled />
-              </div>
-              <div className={`${s.formGroup} ${s.fullWidth}`}>
-                <label className={s.formLabel}>Account Number</label>
-                <input className={s.formInput} value={maskAccount(p?.bankAccountNumber ?? null)} disabled />
-              </div>
-              <div className={s.formGroup}>
-                <label className={s.formLabel}>Branch Code</label>
-                <input className={s.formInput} value={dash(p?.bankBranchCode)} disabled />
-              </div>
-              <div className={s.formGroup}>
-                <label className={s.formLabel}>Account Type</label>
-                <input className={s.formInput} value="Cheque / Current" disabled />
-              </div>
-            </div>
-            <div className={s.panelFooter}>
-              <p style={{ fontSize: 12, color: 'var(--neutral-500)', lineHeight: 1.6 }}>
-                Banking details are used exclusively for distribution payments. Changes require re-verification.
-              </p>
-            </div>
-          </div>
-
           {/* Account info */}
           <div className={s.panel}>
             <div className={s.panelHead}>
@@ -198,11 +161,6 @@ export default function InvestorProfile() {
                 <span className={[s.glanceVal, (g as { accent?: boolean }).accent ? s.accent : ''].filter(Boolean).join(' ')}>{g.value}</span>
               </div>
             ))}
-            <div className={s.panelFooter}>
-              <button className={s.btnOutline} style={{ color: '#C0392B', borderColor: '#e8b4b0' }}>
-                Change Password
-              </button>
-            </div>
           </div>
 
         </div>

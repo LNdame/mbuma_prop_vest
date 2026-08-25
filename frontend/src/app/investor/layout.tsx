@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { icon: '📄', label: 'Documents',     href: '/investor/documents' },
   { icon: '🪪', label: 'Verification',  href: '/investor/kyc' },
   { icon: '👤', label: 'My Profile',    href: '/investor/profile' },
+  { icon: '⚙', label: 'Settings',      href: '/investor/settings' },
 ];
 
 export default function InvestorLayout({ children }: { children: ReactNode }) {
