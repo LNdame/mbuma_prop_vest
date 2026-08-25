@@ -140,8 +140,28 @@ model User {
   createdProperties    Property[]         @relation("CreatedBy")
   createdDistributions Distribution[]     @relation("DistributionCreatedBy")
   createdInvitations   Invitation[]       @relation("InvitationCreatedBy")
+  updatedSettings      Settings[]         @relation("SettingsUpdatedBy")
 
   @@map("users")
+}
+
+/// Platform-wide configuration. A single row (id = 1) holds values that used to
+/// be hardcoded in the backend — tax rate, expiries, defaults. Read through
+/// backend/src/lib/settings.ts (cached); edited from the admin Settings page.
+model Settings {
+  id                   Int      @id @default(1)
+  withholdingTaxRate   Decimal  @default(0.15) @map("withholding_tax_rate") @db.Decimal(5, 4)
+  invitationExpiryDays Int      @default(7)    @map("invitation_expiry_days")
+  sessionHours         Int      @default(24)   @map("session_hours")
+  defaultMinPledge     Decimal  @default(1000) @map("default_min_pledge") @db.Decimal(14, 2)
+  supportEmail         String?  @map("support_email")
+  publicSiteUrl        String?  @map("public_site_url")
+  updatedBy            String?  @map("updated_by") @db.Uuid
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  editor User? @relation("SettingsUpdatedBy", fields: [updatedBy], references: [id])
+
+  @@map("settings")
 }
 
 model InvestorProfile {
@@ -312,6 +332,7 @@ model Invitation {
   createdBy  String           @map("created_by") @db.Uuid
   email      String
   token      String           @unique
+  role       UserRole         @default(investor)
   status     InvitationStatus @default(pending)
   expiresAt  DateTime         @map("expires_at")
   acceptedAt DateTime?        @map("accepted_at")

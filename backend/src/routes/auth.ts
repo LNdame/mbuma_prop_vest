@@ -2,6 +2,7 @@ import { Router, type Request, type Response } from 'express';
 import { prisma } from '../lib/prisma.js';
 import { verifyPassword } from '../lib/password.js';
 import { signJwt } from '../lib/jwt.js';
+import { getSettings } from '../lib/settings.js';
 
 const router = Router();
 
@@ -36,7 +37,8 @@ router.post('/login', async (req: Request, res: Response) => {
   }
 
   const secret = process.env.JWT_SECRET!;
-  const token = signJwt({ sub: user.id, email: user.email, role: user.role }, secret);
+  const { sessionHours } = await getSettings();
+  const token = signJwt({ sub: user.id, email: user.email, role: user.role }, secret, sessionHours * 3600);
 
   res.json({
     token,

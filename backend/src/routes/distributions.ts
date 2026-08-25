@@ -1,6 +1,7 @@
 import { Router, type Response } from 'express';
 import { prisma } from '../lib/prisma.js';
 import { requireAuth, requireRole, type AuthRequest } from '../middleware/auth.js';
+import { getSettings } from '../lib/settings.js';
 
 const router = Router();
 
@@ -70,11 +71,9 @@ router.get('/', requireAuth, requireRole('admin', 'super_admin'), async (_req, r
 /* ── POST /api/distributions ─────────────────────────────────────────
    Create a distribution run for a property.
    Body: { propertyId, periodLabel, totalAmount, notes? }
-   Splits totalAmount pro-rata across confirmed pledges, deducts 15%
+   Splits totalAmount pro-rata across confirmed pledges, deducts the configured
    withholding tax per line, and records a DistributionLine per pledge.
 ──────────────────────────────────────────────────────────────────────── */
-const WITHHOLDING_TAX_RATE = 0.15;
-
 router.post('/', requireAuth, requireRole('admin', 'super_admin'), async (req: AuthRequest, res: Response) => {
   const { propertyId, periodLabel, totalAmount, notes } = req.body as {
     propertyId: string;
@@ -101,6 +100,7 @@ router.post('/', requireAuth, requireRole('admin', 'super_admin'), async (req: A
 
     const totalPledged = pledges.reduce((sum, p) => sum + Number(p.amount), 0);
     const createdBy = req.user!.sub;
+    const { withholdingTaxRate } = await getSettings();
 
     const dist = await prisma.distribution.create({
       data: {
@@ -116,7 +116,7 @@ router.post('/', requireAuth, requireRole('admin', 'super_admin'), async (req: A
     const lines = pledges.map((pledge) => {
       const share = Number(pledge.amount) / totalPledged;
       const gross = parseFloat((totalAmount * share).toFixed(2));
-      const tax   = parseFloat((gross * WITHHOLDING_TAX_RATE).toFixed(2));
+      const tax   = parseFloat((gross * withholdingTaxRate).toFixed(2));
       const net   = parseFloat((gross - tax).toFixed(2));
       return {
         distributionId: dist.id,
