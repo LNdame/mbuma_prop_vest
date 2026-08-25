@@ -185,7 +185,7 @@ router.post('/:token/accept', async (req, res: Response) => {
         passwordHash,
         fullName:     fullName.trim(),
         phone:        phone?.trim() || null,
-        role:         'investor',
+        role:         inv.role,
       },
     });
     await tx.invitation.update({ where: { id: inv.id }, data: { status: 'accepted', acceptedAt: new Date() } });

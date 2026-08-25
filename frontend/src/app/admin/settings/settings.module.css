@@ -67,4 +67,41 @@
 
 .loading { color: var(--neutral-500); font-size: 14px; padding: 20px 0; }
 
+/* Team & Roles */
+.tableWrap { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; }
+.table th { text-align: left; font-size: 10.5px; font-weight: 700; letter-spacing: .06em; color: var(--neutral-400);
+  text-transform: uppercase; padding: 0 10px 10px; }
+.table td { padding: 12px 10px; border-top: 1px solid var(--neutral-200); font-size: 13px; vertical-align: middle; }
+.u { display: flex; align-items: center; gap: 10px; }
+.uAv { width: 32px; height: 32px; border-radius: 50%; background: var(--green-100); color: var(--green-600);
+  display: grid; place-items: center; font-weight: 700; font-size: 11px; flex: none; }
+.uName { font-weight: 600; color: var(--neutral-900); }
+.uEmail { color: var(--neutral-400); display: block; font-size: 11.5px; }
+.pill { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.pillAdmin { color: var(--green-600); background: var(--green-100); }
+.pillSuper { color: var(--gold-500); background: var(--gold-100); }
+.pillActive { color: var(--green-700); background: var(--green-50); }
+.pillActive::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green-500); }
+.pillInactive { color: var(--neutral-500); background: var(--neutral-100); }
+.rowActions { display: flex; gap: 8px; justify-content: flex-end; }
+.btnSm { border-radius: 7px; font: inherit; font-size: 12px; font-weight: 600; padding: 6px 11px;
+  border: 1px solid var(--neutral-200); background: var(--white); color: var(--neutral-900); }
+.btnSm:hover:not(:disabled) { background: var(--neutral-50); }
+.btnSm:disabled { opacity: .5; cursor: default; }
+.btnDanger { color: #8A2A1E; border-color: #F3C9C2; }
+.btnDanger:hover:not(:disabled) { background: #FCEEEC; }
+.youTag { color: var(--neutral-400); font-size: 12px; }
+
+.inviteRow { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; align-items: end; }
+.selectWrap { border: 1px solid var(--neutral-200); border-radius: 8px; background: var(--white); }
+.selectWrap:focus-within { border-color: var(--green-600); box-shadow: 0 0 0 3px var(--green-100); }
+.selectWrap select { border: 0; outline: 0; background: none; font: inherit; font-size: 13.5px; padding: 9px 11px;
+  color: var(--neutral-900); }
+.linkBox { display: flex; gap: 8px; align-items: center; margin-top: 14px; background: var(--green-50);
+  border: 1px solid var(--green-100); border-radius: 9px; padding: 10px 12px; }
+.linkBox code { flex: 1; font-size: 12px; color: var(--neutral-700); overflow-x: auto; white-space: nowrap; }
+.emptyRow { color: var(--neutral-400); font-size: 12.5px; padding: 14px 10px; }
+@media (max-width: 720px) { .inviteRow { grid-template-columns: 1fr; } }
+
 @media (max-width: 720px) { .page { padding: 22px; } .row { grid-template-columns: 1fr; } }

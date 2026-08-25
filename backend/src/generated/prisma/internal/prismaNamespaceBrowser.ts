@@ -260,6 +260,7 @@ export const InvitationScalarFieldEnum = {
   createdBy: 'createdBy',
   email: 'email',
   token: 'token',
+  role: 'role',
   status: 'status',
   expiresAt: 'expiresAt',
   acceptedAt: 'acceptedAt',

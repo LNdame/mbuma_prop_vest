@@ -1,9 +1,13 @@
 import { Router, type Response } from 'express';
+import { randomBytes } from 'crypto';
 import { prisma } from '../lib/prisma.js';
 import { requireAuth, requireRole, type AuthRequest } from '../middleware/auth.js';
-import { invalidateSettings } from '../lib/settings.js';
+import { invalidateSettings, getSettings } from '../lib/settings.js';
 
 const router = Router();
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ADMIN_ROLES = ['admin', 'super_admin'] as const;
 
 /* The public site URL is normally a deployment variable (APP_URL). When it is
    set, it wins over any stored value and the field is read-only in the UI. */
@@ -103,6 +107,114 @@ router.put('/', requireAuth, requireRole('super_admin'), async (req: AuthRequest
   } catch (err) {
     console.error('PUT /api/settings error:', err);
     res.status(500).json({ error: 'Failed to save settings' });
+  }
+});
+
+/* ── Team & Roles (super admin only) ────────────────────────────────
+   Manage who can administer PropVest: list administrators, invite a new
+   one, change a role, or activate/deactivate an account.
+──────────────────────────────────────────────────────────────────────── */
+
+/* GET /api/settings/admins — administrators + pending admin invitations */
+router.get('/admins', requireAuth, requireRole('super_admin'), async (_req, res: Response) => {
+  try {
+    const [admins, pendingInvites] = await Promise.all([
+      prisma.user.findMany({
+        where:   { role: { in: ['admin', 'super_admin'] } },
+        select:  { id: true, fullName: true, email: true, role: true, isActive: true, createdAt: true },
+        orderBy: { createdAt: 'asc' },
+      }),
+      prisma.invitation.findMany({
+        where:   { role: { in: ['admin', 'super_admin'] }, status: 'pending' },
+        select:  { id: true, email: true, role: true, expiresAt: true, createdAt: true },
+        orderBy: { createdAt: 'desc' },
+      }),
+    ]);
+    res.json({ data: { admins, pendingInvites } });
+  } catch (err) {
+    console.error('GET /api/settings/admins error:', err);
+    res.status(500).json({ error: 'Failed to load administrators' });
+  }
+});
+
+/* POST /api/settings/admins/invite — invite a new administrator */
+router.post('/admins/invite', requireAuth, requireRole('super_admin'), async (req: AuthRequest, res: Response) => {
+  const b = req.body as { email?: unknown; role?: unknown };
+  const email = typeof b.email === 'string' ? b.email.trim().toLowerCase() : '';
+  const role = b.role === 'super_admin' ? 'super_admin' : 'admin';
+
+  if (!EMAIL_RE.test(email)) {
+    res.status(400).json({ error: 'A valid email is required.', fields: { email: 'Enter a valid email address.' } });
+    return;
+  }
+  try {
+    const existing = await prisma.user.findUnique({ where: { email } });
+    if (existing) {
+      res.status(409).json({ error: 'An account with this email already exists.', fields: { email: 'That email already has an account.' } });
+      return;
+    }
+    // Supersede any earlier pending invitation for the same email.
+    await prisma.invitation.updateMany({ where: { email, status: 'pending' }, data: { status: 'expired' } });
+
+    const token = randomBytes(32).toString('hex');
+    const { invitationExpiryDays } = await getSettings();
+    const expiresAt = new Date(Date.now() + invitationExpiryDays * 24 * 60 * 60 * 1000);
+    const inv = await prisma.invitation.create({
+      data: { email, token, role, expiresAt, createdBy: req.user!.sub },
+    });
+    const inviteLink = `${process.env.APP_URL ?? 'http://localhost:3000'}/invite/${token}`;
+    res.status(201).json({ data: { id: inv.id, email, role, expiresAt: inv.expiresAt, inviteLink } });
+  } catch (err) {
+    console.error('POST /api/settings/admins/invite error:', err);
+    res.status(500).json({ error: 'Failed to create invitation' });
+  }
+});
+
+/* PATCH /api/settings/admins/:id — change role and/or active status */
+router.patch('/admins/:id', requireAuth, requireRole('super_admin'), async (req: AuthRequest, res: Response) => {
+  const { id } = req.params;
+  const b = req.body as { role?: unknown; isActive?: unknown };
+
+  if (id === req.user!.sub) {
+    res.status(400).json({ error: 'You can’t change your own role or status.' });
+    return;
+  }
+  try {
+    const target = await prisma.user.findUnique({ where: { id } });
+    if (!target || !ADMIN_ROLES.includes(target.role as (typeof ADMIN_ROLES)[number])) {
+      res.status(404).json({ error: 'Administrator not found.' });
+      return;
+    }
+
+    let nextRole = target.role;
+    if (b.role !== undefined) {
+      if (b.role !== 'admin' && b.role !== 'super_admin') {
+        res.status(400).json({ error: 'Role must be admin or super_admin.' });
+        return;
+      }
+      nextRole = b.role;
+    }
+    const nextActive = typeof b.isActive === 'boolean' ? b.isActive : target.isActive;
+
+    // Never leave the platform without an active super admin.
+    const losingSuper = target.role === 'super_admin' && (nextRole !== 'super_admin' || nextActive === false);
+    if (losingSuper) {
+      const activeSupers = await prisma.user.count({ where: { role: 'super_admin', isActive: true } });
+      if (activeSupers <= 1) {
+        res.status(400).json({ error: 'There must be at least one active super admin.' });
+        return;
+      }
+    }
+
+    const updated = await prisma.user.update({
+      where:  { id },
+      data:   { role: nextRole, isActive: nextActive },
+      select: { id: true, fullName: true, email: true, role: true, isActive: true, createdAt: true },
+    });
+    res.json({ data: updated });
+  } catch (err) {
+    console.error('PATCH /api/settings/admins/:id error:', err);
+    res.status(500).json({ error: 'Failed to update administrator' });
   }
 });
 

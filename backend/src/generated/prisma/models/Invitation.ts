@@ -29,6 +29,7 @@ export type InvitationMinAggregateOutputType = {
   createdBy: string | null
   email: string | null
   token: string | null
+  role: $Enums.UserRole | null
   status: $Enums.InvitationStatus | null
   expiresAt: Date | null
   acceptedAt: Date | null
@@ -40,6 +41,7 @@ export type InvitationMaxAggregateOutputType = {
   createdBy: string | null
   email: string | null
   token: string | null
+  role: $Enums.UserRole | null
   status: $Enums.InvitationStatus | null
   expiresAt: Date | null
   acceptedAt: Date | null
@@ -51,6 +53,7 @@ export type InvitationCountAggregateOutputType = {
   createdBy: number
   email: number
   token: number
+  role: number
   status: number
   expiresAt: number
   acceptedAt: number
@@ -64,6 +67,7 @@ export type InvitationMinAggregateInputType = {
   createdBy?: true
   email?: true
   token?: true
+  role?: true
   status?: true
   expiresAt?: true
   acceptedAt?: true
@@ -75,6 +79,7 @@ export type InvitationMaxAggregateInputType = {
   createdBy?: true
   email?: true
   token?: true
+  role?: true
   status?: true
   expiresAt?: true
   acceptedAt?: true
@@ -86,6 +91,7 @@ export type InvitationCountAggregateInputType = {
   createdBy?: true
   email?: true
   token?: true
+  role?: true
   status?: true
   expiresAt?: true
   acceptedAt?: true
@@ -170,6 +176,7 @@ export type InvitationGroupByOutputType = {
   createdBy: string
   email: string
   token: string
+  role: $Enums.UserRole
   status: $Enums.InvitationStatus
   expiresAt: Date
   acceptedAt: Date | null
@@ -202,6 +209,7 @@ export type InvitationWhereInput = {
   createdBy?: Prisma.UuidFilter<"Invitation"> | string
   email?: Prisma.StringFilter<"Invitation"> | string
   token?: Prisma.StringFilter<"Invitation"> | string
+  role?: Prisma.EnumUserRoleFilter<"Invitation"> | $Enums.UserRole
   status?: Prisma.EnumInvitationStatusFilter<"Invitation"> | $Enums.InvitationStatus
   expiresAt?: Prisma.DateTimeFilter<"Invitation"> | Date | string
   acceptedAt?: Prisma.DateTimeNullableFilter<"Invitation"> | Date | string | null
@@ -214,6 +222,7 @@ export type InvitationOrderByWithRelationInput = {
   createdBy?: Prisma.SortOrder
   email?: Prisma.SortOrder
   token?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -229,6 +238,7 @@ export type InvitationWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.InvitationWhereInput | Prisma.InvitationWhereInput[]
   createdBy?: Prisma.UuidFilter<"Invitation"> | string
   email?: Prisma.StringFilter<"Invitation"> | string
+  role?: Prisma.EnumUserRoleFilter<"Invitation"> | $Enums.UserRole
   status?: Prisma.EnumInvitationStatusFilter<"Invitation"> | $Enums.InvitationStatus
   expiresAt?: Prisma.DateTimeFilter<"Invitation"> | Date | string
   acceptedAt?: Prisma.DateTimeNullableFilter<"Invitation"> | Date | string | null
@@ -241,6 +251,7 @@ export type InvitationOrderByWithAggregationInput = {
   createdBy?: Prisma.SortOrder
   email?: Prisma.SortOrder
   token?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -258,6 +269,7 @@ export type InvitationScalarWhereWithAggregatesInput = {
   createdBy?: Prisma.UuidWithAggregatesFilter<"Invitation"> | string
   email?: Prisma.StringWithAggregatesFilter<"Invitation"> | string
   token?: Prisma.StringWithAggregatesFilter<"Invitation"> | string
+  role?: Prisma.EnumUserRoleWithAggregatesFilter<"Invitation"> | $Enums.UserRole
   status?: Prisma.EnumInvitationStatusWithAggregatesFilter<"Invitation"> | $Enums.InvitationStatus
   expiresAt?: Prisma.DateTimeWithAggregatesFilter<"Invitation"> | Date | string
   acceptedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Invitation"> | Date | string | null
@@ -268,6 +280,7 @@ export type InvitationCreateInput = {
   id?: string
   email: string
   token: string
+  role?: $Enums.UserRole
   status?: $Enums.InvitationStatus
   expiresAt: Date | string
   acceptedAt?: Date | string | null
@@ -280,6 +293,7 @@ export type InvitationUncheckedCreateInput = {
   createdBy: string
   email: string
   token: string
+  role?: $Enums.UserRole
   status?: $Enums.InvitationStatus
   expiresAt: Date | string
   acceptedAt?: Date | string | null
@@ -290,6 +304,7 @@ export type InvitationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -302,6 +317,7 @@ export type InvitationUncheckedUpdateInput = {
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -313,6 +329,7 @@ export type InvitationCreateManyInput = {
   createdBy: string
   email: string
   token: string
+  role?: $Enums.UserRole
   status?: $Enums.InvitationStatus
   expiresAt: Date | string
   acceptedAt?: Date | string | null
@@ -323,6 +340,7 @@ export type InvitationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -334,6 +352,7 @@ export type InvitationUncheckedUpdateManyInput = {
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -355,6 +374,7 @@ export type InvitationCountOrderByAggregateInput = {
   createdBy?: Prisma.SortOrder
   email?: Prisma.SortOrder
   token?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrder
@@ -366,6 +386,7 @@ export type InvitationMaxOrderByAggregateInput = {
   createdBy?: Prisma.SortOrder
   email?: Prisma.SortOrder
   token?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrder
@@ -377,6 +398,7 @@ export type InvitationMinOrderByAggregateInput = {
   createdBy?: Prisma.SortOrder
   email?: Prisma.SortOrder
   token?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrder
@@ -433,6 +455,7 @@ export type InvitationCreateWithoutCreatorInput = {
   id?: string
   email: string
   token: string
+  role?: $Enums.UserRole
   status?: $Enums.InvitationStatus
   expiresAt: Date | string
   acceptedAt?: Date | string | null
@@ -443,6 +466,7 @@ export type InvitationUncheckedCreateWithoutCreatorInput = {
   id?: string
   email: string
   token: string
+  role?: $Enums.UserRole
   status?: $Enums.InvitationStatus
   expiresAt: Date | string
   acceptedAt?: Date | string | null
@@ -483,6 +507,7 @@ export type InvitationScalarWhereInput = {
   createdBy?: Prisma.UuidFilter<"Invitation"> | string
   email?: Prisma.StringFilter<"Invitation"> | string
   token?: Prisma.StringFilter<"Invitation"> | string
+  role?: Prisma.EnumUserRoleFilter<"Invitation"> | $Enums.UserRole
   status?: Prisma.EnumInvitationStatusFilter<"Invitation"> | $Enums.InvitationStatus
   expiresAt?: Prisma.DateTimeFilter<"Invitation"> | Date | string
   acceptedAt?: Prisma.DateTimeNullableFilter<"Invitation"> | Date | string | null
@@ -493,6 +518,7 @@ export type InvitationCreateManyCreatorInput = {
   id?: string
   email: string
   token: string
+  role?: $Enums.UserRole
   status?: $Enums.InvitationStatus
   expiresAt: Date | string
   acceptedAt?: Date | string | null
@@ -503,6 +529,7 @@ export type InvitationUpdateWithoutCreatorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -513,6 +540,7 @@ export type InvitationUncheckedUpdateWithoutCreatorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -523,6 +551,7 @@ export type InvitationUncheckedUpdateManyWithoutCreatorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -536,6 +565,7 @@ export type InvitationSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   createdBy?: boolean
   email?: boolean
   token?: boolean
+  role?: boolean
   status?: boolean
   expiresAt?: boolean
   acceptedAt?: boolean
@@ -548,6 +578,7 @@ export type InvitationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   createdBy?: boolean
   email?: boolean
   token?: boolean
+  role?: boolean
   status?: boolean
   expiresAt?: boolean
   acceptedAt?: boolean
@@ -560,6 +591,7 @@ export type InvitationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   createdBy?: boolean
   email?: boolean
   token?: boolean
+  role?: boolean
   status?: boolean
   expiresAt?: boolean
   acceptedAt?: boolean
@@ -572,13 +604,14 @@ export type InvitationSelectScalar = {
   createdBy?: boolean
   email?: boolean
   token?: boolean
+  role?: boolean
   status?: boolean
   expiresAt?: boolean
   acceptedAt?: boolean
   createdAt?: boolean
 }
 
-export type InvitationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdBy" | "email" | "token" | "status" | "expiresAt" | "acceptedAt" | "createdAt", ExtArgs["result"]["invitation"]>
+export type InvitationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdBy" | "email" | "token" | "role" | "status" | "expiresAt" | "acceptedAt" | "createdAt", ExtArgs["result"]["invitation"]>
 export type InvitationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -599,6 +632,7 @@ export type $InvitationPayload<ExtArgs extends runtime.Types.Extensions.Internal
     createdBy: string
     email: string
     token: string
+    role: $Enums.UserRole
     status: $Enums.InvitationStatus
     expiresAt: Date
     acceptedAt: Date | null
@@ -1031,6 +1065,7 @@ export interface InvitationFieldRefs {
   readonly createdBy: Prisma.FieldRef<"Invitation", 'String'>
   readonly email: Prisma.FieldRef<"Invitation", 'String'>
   readonly token: Prisma.FieldRef<"Invitation", 'String'>
+  readonly role: Prisma.FieldRef<"Invitation", 'UserRole'>
   readonly status: Prisma.FieldRef<"Invitation", 'InvitationStatus'>
   readonly expiresAt: Prisma.FieldRef<"Invitation", 'DateTime'>
   readonly acceptedAt: Prisma.FieldRef<"Invitation", 'DateTime'>

@@ -332,6 +332,7 @@ model Invitation {
   createdBy  String           @map("created_by") @db.Uuid
   email      String
   token      String           @unique
+  role       UserRole         @default(investor)
   status     InvitationStatus @default(pending)
   expiresAt  DateTime         @map("expires_at")
   acceptedAt DateTime?        @map("accepted_at")
