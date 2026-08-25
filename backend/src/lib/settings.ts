@@ -7,6 +7,9 @@ import { prisma } from './prisma.js';
  * the row is updated (see routes/settings.ts).
  */
 
+/** Fixed peg: 1 EUR = 655.957 XAF (Central African CFA franc). */
+export const XAF_PER_EUR = 655.957;
+
 export interface PlatformSettings {
   withholdingTaxRate: number;   // fraction, e.g. 0.15 = 15%
   invitationExpiryDays: number;
@@ -14,6 +17,8 @@ export interface PlatformSettings {
   defaultMinPledge: number;
   supportEmail: string | null;
   publicSiteUrl: string | null;
+  eurPerZar: number;            // EUR value of 1 ZAR (admin-managed)
+  ratesUpdatedAt: string | null;
 }
 
 /** Built-in fallbacks — mirror the @default() values in schema.prisma. Used if
@@ -25,6 +30,8 @@ export const DEFAULT_SETTINGS: PlatformSettings = {
   defaultMinPledge: 1000,
   supportEmail: null,
   publicSiteUrl: null,
+  eurPerZar: 0.05,
+  ratesUpdatedAt: null,
 };
 
 let cache: PlatformSettings | null = null;
@@ -40,6 +47,8 @@ export async function getSettings(): Promise<PlatformSettings> {
         defaultMinPledge: Number(row.defaultMinPledge),
         supportEmail: row.supportEmail,
         publicSiteUrl: row.publicSiteUrl,
+        eurPerZar: Number(row.eurPerZar),
+        ratesUpdatedAt: row.ratesUpdatedAt ? row.ratesUpdatedAt.toISOString() : null,
       }
     : DEFAULT_SETTINGS;
   return cache;

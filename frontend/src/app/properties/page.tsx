@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { publicFetch } from '@/lib/api';
+import Money from '@/components/Money';
+import CurrencySwitcher from '@/components/CurrencySwitcher';
 import s from './properties.module.css';
 
 export const metadata = {
@@ -22,11 +24,6 @@ interface PropertyListItem {
   coverImageUrl: string | null;
 }
 
-function fmtRand(n: string | number | null) {
-  const v = Number(n);
-  if (!v) return 'R0';
-  return 'R' + v.toLocaleString('en-ZA');
-}
 function pct(funded: string, target: string) {
   const t = Number(target);
   if (!t) return 0;
@@ -70,6 +67,7 @@ export default async function BrowsePropertiesPage() {
           <span className={s.filterCount}>
             {listed.length} {listed.length === 1 ? 'property' : 'properties'}
           </span>
+          <div style={{ marginLeft: 'auto' }}><CurrencySwitcher /></div>
         </div>
       </div>
 
@@ -107,7 +105,7 @@ export default async function BrowsePropertiesPage() {
 
                   <div className={s.metrics}>
                     <div className={s.metricCell}>
-                      <div className={s.metricValue}>{fmtRand(p.minimumPledge)}</div>
+                      <div className={s.metricValue}><Money amount={p.minimumPledge} /></div>
                       <div className={s.metricLabel}>Min. pledge</div>
                     </div>
                     <div className={s.metricCell}>
@@ -115,14 +113,14 @@ export default async function BrowsePropertiesPage() {
                       <div className={s.metricLabel}>Proj. yield</div>
                     </div>
                     <div className={s.metricCell}>
-                      <div className={s.metricValue}>{fmtRand(p.targetRaise)}</div>
+                      <div className={s.metricValue}><Money amount={p.targetRaise} /></div>
                       <div className={s.metricLabel}>Total raise</div>
                     </div>
                   </div>
 
                   <div className={s.fundingRow}>
                     <span>{funded}% funded</span>
-                    <strong>{fmtRand(p.fundedAmount)} raised</strong>
+                    <strong><Money amount={p.fundedAmount} /> raised</strong>
                   </div>
                   <div className={s.fundingTrack}>
                     <div className={s.fundingFill} style={{ width: `${funded}%` }} />

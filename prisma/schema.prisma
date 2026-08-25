@@ -156,6 +156,10 @@ model Settings {
   defaultMinPledge     Decimal  @default(1000) @map("default_min_pledge") @db.Decimal(14, 2)
   supportEmail         String?  @map("support_email")
   publicSiteUrl        String?  @map("public_site_url")
+  // FX: base currency is ZAR. eurPerZar is the admin-managed EUR value of 1 ZAR;
+  // XAF is derived from the fixed EUR peg (1 EUR = 655.957 XAF). Display only.
+  eurPerZar            Decimal   @default(0.05) @map("eur_per_zar") @db.Decimal(14, 8)
+  ratesUpdatedAt       DateTime? @map("rates_updated_at")
   updatedBy            String?  @map("updated_by") @db.Uuid
   updatedAt            DateTime @updatedAt @map("updated_at")
 
