@@ -2,11 +2,9 @@
 
 import s from '../investor.module.css';
 import { useMe, type MePledge } from '../../../lib/useMe';
+import { useCurrency } from '@/lib/CurrencyContext';
+import CurrencySwitcher from '@/components/CurrencySwitcher';
 
-function fmtRand(n: number) {
-  if (!n) return 'R0';
-  return 'R' + Math.round(n).toLocaleString('en-ZA');
-}
 function fundedPct(funded: string, target: string) {
   const t = Number(target);
   if (!t) return 0;
@@ -35,6 +33,7 @@ function timeAgo(d: string) {
 
 export default function InvestorDashboard() {
   const { me, loading, error } = useMe();
+  const { format } = useCurrency();
 
   if (loading) {
     return <div className={s.page}><div className={s.emptyState}>Loading your portfolio…</div></div>;
@@ -71,19 +70,19 @@ export default function InvestorDashboard() {
     .reduce((sum, l) => sum + Number(l.netAmount), 0);
 
   const STATS = [
-    { label: 'Available funds',     value: fmtRand(me.availableFunds), sub: 'ready to pledge', accent: true },
-    { label: 'Total pledged',       value: fmtRand(totalInvested), sub: `${propertyCount} ${propertyCount === 1 ? 'property' : 'properties'}`, accent: false },
+    { label: 'Available funds',     value: format(me.availableFunds), sub: 'ready to pledge', accent: true },
+    { label: 'Total pledged',       value: format(totalInvested), sub: `${propertyCount} ${propertyCount === 1 ? 'property' : 'properties'}`, accent: false },
     { label: 'Avg. projected yield',value: `${avgYield.toFixed(1)}%`, sub: 'gross p.a.', accent: false },
-    { label: 'Distributions received', value: fmtRand(totalDist), sub: 'to date', accent: false },
+    { label: 'Distributions received', value: format(totalDist), sub: 'to date', accent: false },
   ];
 
   const GLANCE = [
-    { label: 'Available funds',     value: fmtRand(me.availableFunds), accent: true },
+    { label: 'Available funds',     value: format(me.availableFunds), accent: true },
     { label: 'Properties held',     value: String(propertyCount) },
     { label: 'Confirmed pledges',   value: String(confirmed.length) },
     { label: 'Pending pledges',     value: String(pending.length) },
-    { label: 'Total distributions', value: fmtRand(totalDist) },
-    { label: 'YTD distributions',   value: fmtRand(ytdDist), accent: true },
+    { label: 'Total distributions', value: format(totalDist) },
+    { label: 'YTD distributions',   value: format(ytdDist), accent: true },
     { label: 'Active pledges',      value: String(confirmed.length + pending.length) },
   ];
 
@@ -107,7 +106,7 @@ export default function InvestorDashboard() {
   for (const l of paidLines) {
     events.push({
       date: l.paidAt ?? l.createdAt,
-      text: `${fmtRand(Number(l.netAmount))} received — ${l.distribution.property.title}`,
+      text: `${format(Number(l.netAmount))} received — ${l.distribution.property.title}`,
       dot: 'blue',
     });
   }
@@ -125,9 +124,12 @@ export default function InvestorDashboard() {
           <h1 className={s.pageTitle}>Welcome back, {firstName} 👋</h1>
           <p className={s.pageSub}>Here&apos;s an overview of your pledge portfolio</p>
         </div>
-        <a href="/investor/properties">
-          <button className={s.btnPrimary}>＋ Pledge to a property</button>
-        </a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <CurrencySwitcher />
+          <a href="/investor/properties">
+            <button className={s.btnPrimary}>＋ Pledge to a property</button>
+          </a>
+        </div>
       </div>
 
       {/* Stats */}
@@ -164,7 +166,7 @@ export default function InvestorDashboard() {
                   <span className={s.rowIcon}>{propertyIcon(h.property.propertyType)}</span>
                   <div>
                     <div className={s.rowName}>{h.property.title}</div>
-                    <div className={s.rowSub}>{typeLabel(h.property.propertyType)} · {fmtRand(Number(h.amount))} pledged{h.status !== 'confirmed' ? ` · ${h.status}` : ''}</div>
+                    <div className={s.rowSub}>{typeLabel(h.property.propertyType)} · {format(Number(h.amount))} pledged{h.status !== 'confirmed' ? ` · ${h.status}` : ''}</div>
                   </div>
                 </div>
                 <div className={s.rowRight}>
@@ -215,14 +217,14 @@ export default function InvestorDashboard() {
             </div>
             <div style={{ padding: '16px 18px', borderBottom: '1px solid var(--neutral-100)' }}>
               <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--green-600)', letterSpacing: '-0.5px' }}>
-                {fmtRand(me.availableFunds)}
+                {format(me.availableFunds)}
               </div>
               <div style={{ fontSize: 12, color: 'var(--neutral-500)', marginTop: 2 }}>Ready to pledge</div>
             </div>
             <div className={s.metaBlock}>
-              <div className={s.metaRow}><span className={s.metaLabel}>Bank deposits</span><span className={s.metaVal}>+{fmtRand(me.fundsBreakdown.deposits)}</span></div>
-              <div className={s.metaRow}><span className={s.metaLabel}>From distributions</span><span className={[s.metaVal, s.accent].join(' ')}>+{fmtRand(me.fundsBreakdown.distributions)}</span></div>
-              <div className={s.metaRow}><span className={s.metaLabel}>Reserved in pledges</span><span className={s.metaVal}>−{fmtRand(me.fundsBreakdown.reserved)}</span></div>
+              <div className={s.metaRow}><span className={s.metaLabel}>Bank deposits</span><span className={s.metaVal}>+{format(me.fundsBreakdown.deposits)}</span></div>
+              <div className={s.metaRow}><span className={s.metaLabel}>From distributions</span><span className={[s.metaVal, s.accent].join(' ')}>+{format(me.fundsBreakdown.distributions)}</span></div>
+              <div className={s.metaRow}><span className={s.metaLabel}>Reserved in pledges</span><span className={s.metaVal}>−{format(me.fundsBreakdown.reserved)}</span></div>
             </div>
           </div>
 
@@ -238,7 +240,7 @@ export default function InvestorDashboard() {
               <>
                 <div className={s.chartWrap}>
                   {periods.map(([label, v], i) => (
-                    <div key={i} className={s.bar} style={{ height: `${Math.max(6, Math.round((v / maxDist) * 100))}%` }} title={`${label}: ${fmtRand(v)}`} />
+                    <div key={i} className={s.bar} style={{ height: `${Math.max(6, Math.round((v / maxDist) * 100))}%` }} title={`${label}: ${format(v)}`} />
                   ))}
                 </div>
                 <div className={s.chartLabels}>
@@ -247,8 +249,8 @@ export default function InvestorDashboard() {
               </>
             )}
             <div className={s.metaBlock}>
-              <div className={s.metaRow}><span className={s.metaLabel}>Distributions received</span><span className={[s.metaVal, s.accent].join(' ')}>{fmtRand(totalDist)}</span></div>
-              <div className={s.metaRow}><span className={s.metaLabel}>This year</span><span className={s.metaVal}>{fmtRand(ytdDist)}</span></div>
+              <div className={s.metaRow}><span className={s.metaLabel}>Distributions received</span><span className={[s.metaVal, s.accent].join(' ')}>{format(totalDist)}</span></div>
+              <div className={s.metaRow}><span className={s.metaLabel}>This year</span><span className={s.metaVal}>{format(ytdDist)}</span></div>
               <div className={s.metaRow}><span className={s.metaLabel}>Payments</span><span className={s.metaVal}>{paidLines.length}</span></div>
             </div>
           </div>

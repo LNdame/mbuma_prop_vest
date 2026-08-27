@@ -34,6 +34,7 @@ export type SettingsAvgAggregateOutputType = {
   invitationExpiryDays: number | null
   sessionHours: number | null
   defaultMinPledge: runtime.Decimal | null
+  eurPerZar: runtime.Decimal | null
 }
 
 export type SettingsSumAggregateOutputType = {
@@ -42,6 +43,7 @@ export type SettingsSumAggregateOutputType = {
   invitationExpiryDays: number | null
   sessionHours: number | null
   defaultMinPledge: runtime.Decimal | null
+  eurPerZar: runtime.Decimal | null
 }
 
 export type SettingsMinAggregateOutputType = {
@@ -52,6 +54,8 @@ export type SettingsMinAggregateOutputType = {
   defaultMinPledge: runtime.Decimal | null
   supportEmail: string | null
   publicSiteUrl: string | null
+  eurPerZar: runtime.Decimal | null
+  ratesUpdatedAt: Date | null
   updatedBy: string | null
   updatedAt: Date | null
 }
@@ -64,6 +68,8 @@ export type SettingsMaxAggregateOutputType = {
   defaultMinPledge: runtime.Decimal | null
   supportEmail: string | null
   publicSiteUrl: string | null
+  eurPerZar: runtime.Decimal | null
+  ratesUpdatedAt: Date | null
   updatedBy: string | null
   updatedAt: Date | null
 }
@@ -76,6 +82,8 @@ export type SettingsCountAggregateOutputType = {
   defaultMinPledge: number
   supportEmail: number
   publicSiteUrl: number
+  eurPerZar: number
+  ratesUpdatedAt: number
   updatedBy: number
   updatedAt: number
   _all: number
@@ -88,6 +96,7 @@ export type SettingsAvgAggregateInputType = {
   invitationExpiryDays?: true
   sessionHours?: true
   defaultMinPledge?: true
+  eurPerZar?: true
 }
 
 export type SettingsSumAggregateInputType = {
@@ -96,6 +105,7 @@ export type SettingsSumAggregateInputType = {
   invitationExpiryDays?: true
   sessionHours?: true
   defaultMinPledge?: true
+  eurPerZar?: true
 }
 
 export type SettingsMinAggregateInputType = {
@@ -106,6 +116,8 @@ export type SettingsMinAggregateInputType = {
   defaultMinPledge?: true
   supportEmail?: true
   publicSiteUrl?: true
+  eurPerZar?: true
+  ratesUpdatedAt?: true
   updatedBy?: true
   updatedAt?: true
 }
@@ -118,6 +130,8 @@ export type SettingsMaxAggregateInputType = {
   defaultMinPledge?: true
   supportEmail?: true
   publicSiteUrl?: true
+  eurPerZar?: true
+  ratesUpdatedAt?: true
   updatedBy?: true
   updatedAt?: true
 }
@@ -130,6 +144,8 @@ export type SettingsCountAggregateInputType = {
   defaultMinPledge?: true
   supportEmail?: true
   publicSiteUrl?: true
+  eurPerZar?: true
+  ratesUpdatedAt?: true
   updatedBy?: true
   updatedAt?: true
   _all?: true
@@ -229,6 +245,8 @@ export type SettingsGroupByOutputType = {
   defaultMinPledge: runtime.Decimal
   supportEmail: string | null
   publicSiteUrl: string | null
+  eurPerZar: runtime.Decimal
+  ratesUpdatedAt: Date | null
   updatedBy: string | null
   updatedAt: Date
   _count: SettingsCountAggregateOutputType | null
@@ -264,6 +282,8 @@ export type SettingsWhereInput = {
   defaultMinPledge?: Prisma.DecimalFilter<"Settings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: Prisma.StringNullableFilter<"Settings"> | string | null
   publicSiteUrl?: Prisma.StringNullableFilter<"Settings"> | string | null
+  eurPerZar?: Prisma.DecimalFilter<"Settings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Prisma.DateTimeNullableFilter<"Settings"> | Date | string | null
   updatedBy?: Prisma.UuidNullableFilter<"Settings"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Settings"> | Date | string
   editor?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -277,6 +297,8 @@ export type SettingsOrderByWithRelationInput = {
   defaultMinPledge?: Prisma.SortOrder
   supportEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   publicSiteUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  eurPerZar?: Prisma.SortOrder
+  ratesUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   editor?: Prisma.UserOrderByWithRelationInput
@@ -293,6 +315,8 @@ export type SettingsWhereUniqueInput = Prisma.AtLeast<{
   defaultMinPledge?: Prisma.DecimalFilter<"Settings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: Prisma.StringNullableFilter<"Settings"> | string | null
   publicSiteUrl?: Prisma.StringNullableFilter<"Settings"> | string | null
+  eurPerZar?: Prisma.DecimalFilter<"Settings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Prisma.DateTimeNullableFilter<"Settings"> | Date | string | null
   updatedBy?: Prisma.UuidNullableFilter<"Settings"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Settings"> | Date | string
   editor?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -306,6 +330,8 @@ export type SettingsOrderByWithAggregationInput = {
   defaultMinPledge?: Prisma.SortOrder
   supportEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   publicSiteUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  eurPerZar?: Prisma.SortOrder
+  ratesUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.SettingsCountOrderByAggregateInput
@@ -326,6 +352,8 @@ export type SettingsScalarWhereWithAggregatesInput = {
   defaultMinPledge?: Prisma.DecimalWithAggregatesFilter<"Settings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: Prisma.StringNullableWithAggregatesFilter<"Settings"> | string | null
   publicSiteUrl?: Prisma.StringNullableWithAggregatesFilter<"Settings"> | string | null
+  eurPerZar?: Prisma.DecimalWithAggregatesFilter<"Settings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Settings"> | Date | string | null
   updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"Settings"> | string | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Settings"> | Date | string
 }
@@ -338,6 +366,8 @@ export type SettingsCreateInput = {
   defaultMinPledge?: runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: string | null
   publicSiteUrl?: string | null
+  eurPerZar?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Date | string | null
   updatedAt?: Date | string
   editor?: Prisma.UserCreateNestedOneWithoutUpdatedSettingsInput
 }
@@ -350,6 +380,8 @@ export type SettingsUncheckedCreateInput = {
   defaultMinPledge?: runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: string | null
   publicSiteUrl?: string | null
+  eurPerZar?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Date | string | null
   updatedBy?: string | null
   updatedAt?: Date | string
 }
@@ -362,6 +394,8 @@ export type SettingsUpdateInput = {
   defaultMinPledge?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publicSiteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eurPerZar?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   editor?: Prisma.UserUpdateOneWithoutUpdatedSettingsNestedInput
 }
@@ -374,6 +408,8 @@ export type SettingsUncheckedUpdateInput = {
   defaultMinPledge?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publicSiteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eurPerZar?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -386,6 +422,8 @@ export type SettingsCreateManyInput = {
   defaultMinPledge?: runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: string | null
   publicSiteUrl?: string | null
+  eurPerZar?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Date | string | null
   updatedBy?: string | null
   updatedAt?: Date | string
 }
@@ -398,6 +436,8 @@ export type SettingsUpdateManyMutationInput = {
   defaultMinPledge?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publicSiteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eurPerZar?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -409,6 +449,8 @@ export type SettingsUncheckedUpdateManyInput = {
   defaultMinPledge?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publicSiteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eurPerZar?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -431,6 +473,8 @@ export type SettingsCountOrderByAggregateInput = {
   defaultMinPledge?: Prisma.SortOrder
   supportEmail?: Prisma.SortOrder
   publicSiteUrl?: Prisma.SortOrder
+  eurPerZar?: Prisma.SortOrder
+  ratesUpdatedAt?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -441,6 +485,7 @@ export type SettingsAvgOrderByAggregateInput = {
   invitationExpiryDays?: Prisma.SortOrder
   sessionHours?: Prisma.SortOrder
   defaultMinPledge?: Prisma.SortOrder
+  eurPerZar?: Prisma.SortOrder
 }
 
 export type SettingsMaxOrderByAggregateInput = {
@@ -451,6 +496,8 @@ export type SettingsMaxOrderByAggregateInput = {
   defaultMinPledge?: Prisma.SortOrder
   supportEmail?: Prisma.SortOrder
   publicSiteUrl?: Prisma.SortOrder
+  eurPerZar?: Prisma.SortOrder
+  ratesUpdatedAt?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -463,6 +510,8 @@ export type SettingsMinOrderByAggregateInput = {
   defaultMinPledge?: Prisma.SortOrder
   supportEmail?: Prisma.SortOrder
   publicSiteUrl?: Prisma.SortOrder
+  eurPerZar?: Prisma.SortOrder
+  ratesUpdatedAt?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -473,6 +522,7 @@ export type SettingsSumOrderByAggregateInput = {
   invitationExpiryDays?: Prisma.SortOrder
   sessionHours?: Prisma.SortOrder
   defaultMinPledge?: Prisma.SortOrder
+  eurPerZar?: Prisma.SortOrder
 }
 
 export type SettingsCreateNestedManyWithoutEditorInput = {
@@ -541,6 +591,8 @@ export type SettingsCreateWithoutEditorInput = {
   defaultMinPledge?: runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: string | null
   publicSiteUrl?: string | null
+  eurPerZar?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Date | string | null
   updatedAt?: Date | string
 }
 
@@ -552,6 +604,8 @@ export type SettingsUncheckedCreateWithoutEditorInput = {
   defaultMinPledge?: runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: string | null
   publicSiteUrl?: string | null
+  eurPerZar?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Date | string | null
   updatedAt?: Date | string
 }
 
@@ -592,6 +646,8 @@ export type SettingsScalarWhereInput = {
   defaultMinPledge?: Prisma.DecimalFilter<"Settings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: Prisma.StringNullableFilter<"Settings"> | string | null
   publicSiteUrl?: Prisma.StringNullableFilter<"Settings"> | string | null
+  eurPerZar?: Prisma.DecimalFilter<"Settings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Prisma.DateTimeNullableFilter<"Settings"> | Date | string | null
   updatedBy?: Prisma.UuidNullableFilter<"Settings"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Settings"> | Date | string
 }
@@ -604,6 +660,8 @@ export type SettingsCreateManyEditorInput = {
   defaultMinPledge?: runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: string | null
   publicSiteUrl?: string | null
+  eurPerZar?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Date | string | null
   updatedAt?: Date | string
 }
 
@@ -615,6 +673,8 @@ export type SettingsUpdateWithoutEditorInput = {
   defaultMinPledge?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publicSiteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eurPerZar?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -626,6 +686,8 @@ export type SettingsUncheckedUpdateWithoutEditorInput = {
   defaultMinPledge?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publicSiteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eurPerZar?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -637,6 +699,8 @@ export type SettingsUncheckedUpdateManyWithoutEditorInput = {
   defaultMinPledge?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publicSiteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eurPerZar?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  ratesUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -650,6 +714,8 @@ export type SettingsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   defaultMinPledge?: boolean
   supportEmail?: boolean
   publicSiteUrl?: boolean
+  eurPerZar?: boolean
+  ratesUpdatedAt?: boolean
   updatedBy?: boolean
   updatedAt?: boolean
   editor?: boolean | Prisma.Settings$editorArgs<ExtArgs>
@@ -663,6 +729,8 @@ export type SettingsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   defaultMinPledge?: boolean
   supportEmail?: boolean
   publicSiteUrl?: boolean
+  eurPerZar?: boolean
+  ratesUpdatedAt?: boolean
   updatedBy?: boolean
   updatedAt?: boolean
   editor?: boolean | Prisma.Settings$editorArgs<ExtArgs>
@@ -676,6 +744,8 @@ export type SettingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   defaultMinPledge?: boolean
   supportEmail?: boolean
   publicSiteUrl?: boolean
+  eurPerZar?: boolean
+  ratesUpdatedAt?: boolean
   updatedBy?: boolean
   updatedAt?: boolean
   editor?: boolean | Prisma.Settings$editorArgs<ExtArgs>
@@ -689,11 +759,13 @@ export type SettingsSelectScalar = {
   defaultMinPledge?: boolean
   supportEmail?: boolean
   publicSiteUrl?: boolean
+  eurPerZar?: boolean
+  ratesUpdatedAt?: boolean
   updatedBy?: boolean
   updatedAt?: boolean
 }
 
-export type SettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "withholdingTaxRate" | "invitationExpiryDays" | "sessionHours" | "defaultMinPledge" | "supportEmail" | "publicSiteUrl" | "updatedBy" | "updatedAt", ExtArgs["result"]["settings"]>
+export type SettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "withholdingTaxRate" | "invitationExpiryDays" | "sessionHours" | "defaultMinPledge" | "supportEmail" | "publicSiteUrl" | "eurPerZar" | "ratesUpdatedAt" | "updatedBy" | "updatedAt", ExtArgs["result"]["settings"]>
 export type SettingsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   editor?: boolean | Prisma.Settings$editorArgs<ExtArgs>
 }
@@ -717,6 +789,8 @@ export type $SettingsPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     defaultMinPledge: runtime.Decimal
     supportEmail: string | null
     publicSiteUrl: string | null
+    eurPerZar: runtime.Decimal
+    ratesUpdatedAt: Date | null
     updatedBy: string | null
     updatedAt: Date
   }, ExtArgs["result"]["settings"]>
@@ -1150,6 +1224,8 @@ export interface SettingsFieldRefs {
   readonly defaultMinPledge: Prisma.FieldRef<"Settings", 'Decimal'>
   readonly supportEmail: Prisma.FieldRef<"Settings", 'String'>
   readonly publicSiteUrl: Prisma.FieldRef<"Settings", 'String'>
+  readonly eurPerZar: Prisma.FieldRef<"Settings", 'Decimal'>
+  readonly ratesUpdatedAt: Prisma.FieldRef<"Settings", 'DateTime'>
   readonly updatedBy: Prisma.FieldRef<"Settings", 'String'>
   readonly updatedAt: Prisma.FieldRef<"Settings", 'DateTime'>
 }

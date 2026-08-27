@@ -13,8 +13,12 @@ interface SettingsDto {
   supportEmail: string | null;
   publicSiteUrl: string | null;
   publicSiteUrlLocked: boolean;
+  eurPerZar: number;
+  ratesUpdatedAt: string | null;
   updatedAt: string | null;
 }
+
+const XAF_PER_EUR = 655.957;
 
 type FieldErrors = Partial<Record<keyof SettingsDto, string>>;
 
@@ -192,6 +196,42 @@ export default function PlatformTab({ role }: { role: string }) {
             <span>The public site URL is set by a deployment variable (APP_URL), so it can&apos;t be edited here.</span>
           </div>
         )}
+      </div>
+
+      {/* Currency & FX */}
+      <div className={s.card}>
+        <div className={s.cardHead}>
+          <h2 className={s.cardTitle}>Currency &amp; FX</h2>
+          <span className={`${s.badge} ${s.badgeSa}`}>SUPER ADMIN</span>
+        </div>
+        <p className={s.cardDesc}>
+          Base currency is ZAR. Set the EUR value of R1 for indicative display; FCFA (XAF) is derived
+          from the fixed EUR peg (1 EUR = {XAF_PER_EUR} XAF). Display only — pledges are always in ZAR.
+        </p>
+        <div className={s.row}>
+          <div className={s.field}>
+            <label className={s.label} htmlFor="eur">EUR per R1</label>
+            <div className={`${s.inWrap} ${errors.eurPerZar ? s.invalid : ''}`}>
+              <span className={s.pre}>€</span>
+              <input id="eur" type="number" step="0.001" min="0" disabled={!canEdit}
+                value={numOrEmpty(form.eurPerZar)}
+                onChange={(e) => set('eurPerZar', e.target.valueAsNumber)} />
+            </div>
+            {errors.eurPerZar
+              ? <span className={s.err}>{errors.eurPerZar}</span>
+              : <span className={s.hint}>
+                  {form.eurPerZar > 0
+                    ? `≈ R${(1 / form.eurPerZar).toLocaleString('en-ZA', { maximumFractionDigits: 2 })} per €1 · R1 ≈ FCFA ${(form.eurPerZar * XAF_PER_EUR).toLocaleString('fr-FR', { maximumFractionDigits: 2 })}`
+                    : 'EUR value of one rand.'}
+                </span>}
+          </div>
+          <div className={s.field}>
+            <label className={s.label}>Rates last updated</label>
+            <div className={`${s.inWrap} ${s.disabled}`}>
+              <input type="text" disabled value={form.ratesUpdatedAt ? new Date(form.ratesUpdatedAt).toLocaleString('en-ZA') : 'Never'} />
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className={s.footer}>
