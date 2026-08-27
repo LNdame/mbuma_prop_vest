@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import { publicFetch } from '@/lib/api';
 import s from '../properties.module.css';
 import PropertyCarousel, { type CarouselImage } from '@/components/PropertyCarousel';
+import Money from '@/components/Money';
+import CurrencySwitcher from '@/components/CurrencySwitcher';
 
 interface PropertyDetail {
   id: string;
@@ -27,11 +29,6 @@ interface PropertyDetail {
 function fmtDate(d: string | null) {
   if (!d) return '—';
   return new Date(d).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
-}
-function fmtRand(n: string | number | null) {
-  const v = Number(n);
-  if (!v) return '—';
-  return 'R' + v.toLocaleString('en-ZA');
 }
 function pct(funded: string, target: string) {
   const t = Number(target);
@@ -94,10 +91,14 @@ export default async function PublicPropertyDetailPage({ params }: { params: Pro
         </div>
       </div>
 
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
+        <CurrencySwitcher />
+      </div>
+
       <div className={s.statsRow}>
         <div className={s.statCard}>
           <div className={s.statLabel}>Min. pledge</div>
-          <div className={s.statValue}>{fmtRand(property.minimumPledge)}</div>
+          <div className={s.statValue}><Money amount={property.minimumPledge} /></div>
         </div>
         <div className={s.statCard}>
           <div className={s.statLabel}>Projected yield</div>
@@ -105,7 +106,7 @@ export default async function PublicPropertyDetailPage({ params }: { params: Pro
         </div>
         <div className={s.statCard}>
           <div className={s.statLabel}>Target raise</div>
-          <div className={s.statValue}>{fmtRand(property.targetRaise)}</div>
+          <div className={s.statValue}><Money amount={property.targetRaise} /></div>
         </div>
         <div className={s.statCard}>
           <div className={s.statLabel}>Funded</div>
@@ -128,15 +129,15 @@ export default async function PublicPropertyDetailPage({ params }: { params: Pro
               <div className={s.fundingMeta}>
                 <div className={s.fundMetaItem}>
                   <span className={s.fundMetaLabel}>Raised so far</span>
-                  <span className={s.fundMetaValue}>{fmtRand(property.fundedAmount)}</span>
+                  <span className={s.fundMetaValue}><Money amount={property.fundedAmount} /></span>
                 </div>
                 <div className={s.fundMetaItem}>
                   <span className={s.fundMetaLabel}>Target raise</span>
-                  <span className={s.fundMetaValue}>{fmtRand(property.targetRaise)}</span>
+                  <span className={s.fundMetaValue}><Money amount={property.targetRaise} /></span>
                 </div>
                 <div className={s.fundMetaItem}>
                   <span className={s.fundMetaLabel}>Min. pledge</span>
-                  <span className={s.fundMetaValue}>{fmtRand(property.minimumPledge)}</span>
+                  <span className={s.fundMetaValue}><Money amount={property.minimumPledge} /></span>
                 </div>
                 <div className={s.fundMetaItem}>
                   <span className={s.fundMetaLabel}>Investors</span>
@@ -150,12 +151,12 @@ export default async function PublicPropertyDetailPage({ params }: { params: Pro
             <div className={s.panelHead}><span className={s.panelTitle}>Property details</span></div>
             <div className={s.detailGrid}>
               {[
-                { label: 'Purchase price',     value: fmtRand(property.purchasePrice) },
+                { label: 'Purchase price',     value: <Money amount={property.purchasePrice} /> },
                 { label: 'Property type',      value: typeLabel(property.propertyType) },
                 { label: 'Province',           value: property.province },
-                { label: 'Gross monthly rent', value: fmtRand(property.grossMonthlyRent) },
-                { label: 'Operating expenses', value: fmtRand(property.operatingExpensesMonthly) },
-                { label: 'Net monthly rent',   value: fmtRand(property.netMonthlyRent) },
+                { label: 'Gross monthly rent', value: <Money amount={property.grossMonthlyRent} /> },
+                { label: 'Operating expenses', value: <Money amount={property.operatingExpensesMonthly} /> },
+                { label: 'Net monthly rent',   value: <Money amount={property.netMonthlyRent} /> },
               ].map((f) => (
                 <div key={f.label} className={s.detailField}>
                   <div className={s.fieldLabel}>{f.label}</div>
@@ -176,7 +177,7 @@ export default async function PublicPropertyDetailPage({ params }: { params: Pro
             </div>
             <div className={s.ctaRow}>
               <span className={s.ctaLabel}>Minimum pledge</span>
-              <span className={s.ctaValue}>{fmtRand(property.minimumPledge)}</span>
+              <span className={s.ctaValue}><Money amount={property.minimumPledge} /></span>
             </div>
             <div className={s.ctaRow}>
               <span className={s.ctaLabel}>Projected yield</span>

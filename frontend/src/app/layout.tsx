@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';
+import { CurrencyProvider } from '@/lib/CurrencyContext';
 
 export const metadata: Metadata = {
   title: 'Mbuma PropVest — Property Pledges for Everyone',
@@ -19,7 +20,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body><CurrencyProvider>{children}</CurrencyProvider></body>
     </html>
   );
 }

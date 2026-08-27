@@ -23,6 +23,8 @@ interface SettingsDto {
   supportEmail: string | null;
   publicSiteUrl: string | null;
   publicSiteUrlLocked: boolean;
+  eurPerZar: number;             // EUR value of 1 ZAR (admin-managed FX rate)
+  ratesUpdatedAt: string | null;
   updatedAt: Date | null;
 }
 
@@ -36,6 +38,8 @@ async function readDto(): Promise<SettingsDto> {
     supportEmail: row?.supportEmail ?? null,
     publicSiteUrl: process.env.APP_URL ?? row?.publicSiteUrl ?? null,
     publicSiteUrlLocked: appUrlLocked(),
+    eurPerZar: row ? Number(row.eurPerZar) : 0.05,
+    ratesUpdatedAt: row?.ratesUpdatedAt ? row.ratesUpdatedAt.toISOString() : null,
     updatedAt: row?.updatedAt ?? null,
   };
 }
@@ -82,19 +86,28 @@ router.put('/', requireAuth, requireRole('super_admin'), async (req: AuthRequest
     try { new URL(publicSiteUrl); } catch { fields.publicSiteUrl = 'Enter a valid URL, e.g. https://mbumapropvest.com'; }
   }
 
+  const eurPerZar = num(b.eurPerZar);
+  if (Number.isNaN(eurPerZar) || eurPerZar <= 0 || eurPerZar > 100) fields.eurPerZar = 'Enter the EUR value of 1 ZAR (greater than 0).';
+
   if (Object.keys(fields).length > 0) {
     res.status(400).json({ error: 'Some settings are invalid.', fields });
     return;
   }
 
   try {
+    // Stamp ratesUpdatedAt only when the FX rate actually changes.
+    const current = await prisma.settings.findUnique({ where: { id: 1 }, select: { eurPerZar: true } });
+    const rateChanged = !current || Number(current.eurPerZar) !== eurPerZar;
+
     const data = {
       withholdingTaxRate: taxPct / 100,
       invitationExpiryDays: expiry,
       sessionHours: session,
       defaultMinPledge: minPledge,
       supportEmail,
+      eurPerZar,
       updatedBy: req.user!.sub,
+      ...(rateChanged ? { ratesUpdatedAt: new Date() } : {}),
       ...(appUrlLocked() ? {} : { publicSiteUrl }),
     };
     await prisma.settings.upsert({

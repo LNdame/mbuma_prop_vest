@@ -108,6 +108,8 @@ export const SettingsScalarFieldEnum = {
   defaultMinPledge: 'defaultMinPledge',
   supportEmail: 'supportEmail',
   publicSiteUrl: 'publicSiteUrl',
+  eurPerZar: 'eurPerZar',
+  ratesUpdatedAt: 'ratesUpdatedAt',
   updatedBy: 'updatedBy',
   updatedAt: 'updatedAt'
 } as const
