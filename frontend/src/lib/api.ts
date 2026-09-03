@@ -9,8 +9,8 @@ const SSR_ADMIN_PASSWORD = process.env.SSR_ADMIN_PASSWORD ?? 'Admin1234!';
 
 let _cachedToken: string | null = null;
 
-async function getAdminToken(): Promise<string> {
-  if (_cachedToken) return _cachedToken;
+async function getAdminToken(forceRefresh = false): Promise<string> {
+  if (_cachedToken && !forceRefresh) return _cachedToken;
   const res = await fetch(`${BACKEND}/api/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -24,11 +24,22 @@ async function getAdminToken(): Promise<string> {
 }
 
 export async function apiFetch<T>(path: string): Promise<T> {
-  const token = await getAdminToken();
-  const res = await fetch(`${BACKEND}${path}`, {
+  // The SSR admin token expires (24h TTL) while the Next.js server process keeps
+  // running for days, so a cached token eventually goes stale. On a 401 we drop
+  // the cached token, re-login once, and retry before giving up.
+  let token = await getAdminToken();
+  let res = await fetch(`${BACKEND}${path}`, {
     headers: { Authorization: `Bearer ${token}` },
     cache: 'no-store',
   });
+  if (res.status === 401) {
+    _cachedToken = null;
+    token = await getAdminToken(true);
+    res = await fetch(`${BACKEND}${path}`, {
+      headers: { Authorization: `Bearer ${token}` },
+      cache: 'no-store',
+    });
+  }
   if (!res.ok) {
     const body = await res.text().catch(() => '');
     throw new Error(`API ${path} failed: ${res.status} ${body}`);
