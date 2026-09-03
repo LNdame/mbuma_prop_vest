@@ -163,6 +163,7 @@ export default async function AdminDashboard() {
   let properties: Property[] = [];
   let investors:  Investor[]  = [];
   let dash: DashboardData = EMPTY_DASH;
+  let loadError = false;
 
   try {
     const [propsRes, invRes, dashRes] = await Promise.all([
@@ -175,6 +176,7 @@ export default async function AdminDashboard() {
     dash       = dashRes;
   } catch (err) {
     console.error('[dashboard] apiFetch failed:', err);
+    loadError = true;
   }
 
   const maxDistMonth = Math.max(1, ...dash.distributionSummary.months.map((m) => m.amount));
@@ -193,6 +195,14 @@ export default async function AdminDashboard() {
         </div>
         <a href="/admin/properties/new"><button className={s.btnPrimary}>＋ New property</button></a>
       </div>
+
+      {/* Load error banner */}
+      {loadError && (
+        <div className={s.errorBanner} role="alert">
+          <span className={s.errorBannerIcon}>⚠️</span>
+          <span>Couldn’t load dashboard data. The figures below may be missing or out of date — please refresh, and if this persists contact support.</span>
+        </div>
+      )}
 
       {/* Stats row */}
       <div className={s.statsRow}>
